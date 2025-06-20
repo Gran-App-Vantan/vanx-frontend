@@ -26,6 +26,6 @@ body:
     attributes:
       label: 備考
       description: 補足情報や関連Issueがあれば記入してください
-      placeholder: 関連Issue: #456
+      placeholder: "関連Issue: #456"
     validations:
       required: false
