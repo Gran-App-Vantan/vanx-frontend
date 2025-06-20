@@ -1,19 +1,10 @@
----
-name: 新規追加のテンプレート
-about: ページやコンポーネント、昨日の新規追加の際に使用します
-title: ''
-labels: "\U0001F434 その他"
-assignees: junpei-chan
-
----
-
 name: タスク報告
 description: タスクや作業内容の報告用テンプレート
-title: "[タイトル] 何をしたのかをできるだけ具体的に書いてください"
-labels: [報告, 作業ログ]
+title: タイトルを入力してください
+labels: ["report"]
 body:
   - type: input
-    id: task_title
+    id: title_input
     attributes:
       label: タイトル
       description: 何をしたのかをできるだけ具体的に書いてください
