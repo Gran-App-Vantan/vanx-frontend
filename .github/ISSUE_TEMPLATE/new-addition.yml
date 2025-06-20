@@ -1,7 +1,7 @@
-name: タスク報告
-description: タスクや作業内容の報告用テンプレート
+name: 新規追加
+description: ページやコンポーネント、機能の新規追加を行う際に使用します
 title: タイトルを入力してください
-labels: ["report"]
+labels: ["新規追加"]
 body:
   - type: input
     id: title_input
@@ -16,7 +16,7 @@ body:
     id: remarks
     attributes:
       label: 備考
-      description: その他に記録しておきたいことがあれば記入してください
+      description: その他備考などがあれば記入してください
       placeholder: 例）関連Issueや背景情報など
     validations:
       required: false
