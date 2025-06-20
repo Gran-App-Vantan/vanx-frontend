@@ -3,15 +3,6 @@ description: バグなどの不具合を修正する際に使用します
 title: "タイトルを入力してください"
 labels: ["バグ・不具合修正"]
 body:
-  - type: input
-    id: bug_title
-    attributes:
-      label: タイトル
-      description: 不具合の内容を簡潔に書いてください
-      placeholder: 例）ログイン時にエラーが発生する
-    validations:
-      required: true
-
   - type: textarea
     id: bug_details
     attributes:

@@ -3,15 +3,6 @@ description: ページやコンポーネント、機能の新規追加を行う�
 title: タイトルを入力してください
 labels: ["新規追加"]
 body:
-  - type: input
-    id: title_input
-    attributes:
-      label: タイトル
-      description: 何をしたのかをできるだけ具体的に書いてください
-      placeholder: 例）APIエンドポイントのバグ修正
-    validations:
-      required: true
-
   - type: textarea
     id: remarks
     attributes:

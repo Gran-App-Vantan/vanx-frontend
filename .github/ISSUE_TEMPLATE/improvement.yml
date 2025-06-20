@@ -3,15 +3,6 @@ description: 不具合などではないが、何か改善が必要な場合に�
 title: "タイトルを入力してください"
 labels: ["改善"]
 body:
-  - type: input
-    id: improve_title
-    attributes:
-      label: タイトル
-      description: どのような改善かを簡潔に書いてください
-      placeholder: 例）ナビゲーションのレスポンス改善
-    validations:
-      required: true
-
   - type: textarea
     id: improve_details
     attributes:

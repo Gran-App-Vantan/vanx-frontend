@@ -3,15 +3,6 @@ description: 他のlabelに当てはまらない場合などに使用します
 title: "タイトルを入力してください"
 labels: ["その他"]
 body:
-  - type: input
-    id: other_title
-    attributes:
-      label: タイトル
-      description: トピックの概要を書いてください
-      placeholder: 例）調査依頼・メモ・雑談 など
-    validations:
-      required: true
-
   - type: textarea
     id: other_content
     attributes:
