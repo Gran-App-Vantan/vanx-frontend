@@ -1,6 +1,6 @@
 name: 🐴 その他
 description: 他のlabelに当てはまらない場合などに使用します
-title: "[Other] タイトルを入力してください"
+title: "タイトルを入力してください"
 labels: ["その他"]
 body:
   - type: input

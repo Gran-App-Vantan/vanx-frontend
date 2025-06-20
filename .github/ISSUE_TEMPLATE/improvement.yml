@@ -1,6 +1,6 @@
 name: 📝 改善
 description: 不具合などではないが、何か改善が必要な場合に使用します
-title: "[Improve] タイトルを入力してください"
+title: "タイトルを入力してください"
 labels: ["改善"]
 body:
   - type: input

@@ -1,6 +1,6 @@
 name: 🤯 バグ・不具合修正
 description: バグなどの不具合を修正する際に使用します
-title: "[BugFix] タイトルを入力してください"
+title: "タイトルを入力してください"
 labels: ["バグ・不具合修正"]
 body:
   - type: input
