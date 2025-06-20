@@ -1,0 +1,22 @@
+name: 🐴 その他
+description: 他のlabelに当てはまらない場合などに使用します
+title: "[Other] タイトルを入力してください"
+labels: ["その他"]
+body:
+  - type: input
+    id: other_title
+    attributes:
+      label: タイトル
+      description: トピックの概要を書いてください
+      placeholder: 例）調査依頼・メモ・雑談 など
+    validations:
+      required: true
+
+  - type: textarea
+    id: other_content
+    attributes:
+      label: 内容
+      description: 内容の詳細を自由に記述してください
+      placeholder: ここに詳細を入力
+    validations:
+      required: false
