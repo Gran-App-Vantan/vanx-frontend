@@ -1,7 +1,7 @@
 export default function Top() {
   return (
     <>
-      <h1>VANXやで</h1>
+      <h1>ルールテスト</h1>
     </>
   )
 }
