@@ -7,16 +7,7 @@ body:
     id: improve_details
     attributes:
       label: 詳細
-      description: 背景、目的、期待される効果などを書いてください
-      placeholder: 例）ユーザーが迷わないように導線を明確にしたい
+      description: 内容の詳細を自由に記述してください
+      placeholder: ここに詳細を入力
     validations:
       required: true
-
-  - type: textarea
-    id: improve_note
-    attributes:
-      label: 備考
-      description: 補足情報や関連Issueがあれば記入してください
-      placeholder: "関連Issue: #456"
-    validations:
-      required: false

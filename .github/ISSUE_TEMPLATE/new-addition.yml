@@ -6,8 +6,8 @@ body:
   - type: textarea
     id: remarks
     attributes:
-      label: 備考
-      description: その他備考などがあれば記入してください
-      placeholder: 例）関連Issueや背景情報など
+      label: 詳細
+      description: 内容の詳細を自由に記述してください
+      placeholder: ここに詳細を入力
     validations:
       required: false

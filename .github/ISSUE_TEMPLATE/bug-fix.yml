@@ -7,16 +7,7 @@ body:
     id: bug_details
     attributes:
       label: 詳細
-      description: 発生手順やスクリーンショット、エラーメッセージなど
-      placeholder: 手順や再現方法を記載
+      description: 内容の詳細を自由に記述してください
+      placeholder: ここに詳細を入力
     validations:
       required: true
-
-  - type: textarea
-    id: bug_note
-    attributes:
-      label: 備考
-      description: 関連Issue、優先度、その他特記事項があれば記入してください
-      placeholder: 例）関連するIssue番号や優先度
-    validations:
-      required: false
