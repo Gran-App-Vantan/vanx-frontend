@@ -1,7 +1,17 @@
 export default function Top() {
   return (
     <>
-      <h1>ルールテスト</h1>
+      <header>
+        {/* Logo Component */}
+      </header>
+
+      <main>
+        <div>
+          {/* PostItem Components */}
+        </div>
+      </main>
+
+      {/* FooterNavMenu Component */}
     </>
   )
 }
