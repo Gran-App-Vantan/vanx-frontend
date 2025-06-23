@@ -16,10 +16,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        {pathName === "/" 
-          ? <Header />
-          : ""
-        }
+        {pathName === "/" ? <Header />: ""}
         {children}
       </body>
     </html>
