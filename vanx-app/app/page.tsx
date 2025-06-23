@@ -1,12 +1,8 @@
-import { Logo } from "@/components/shared/Logo"
+"user client";
 
-export default function Top() {
+export default function Home() {
   return (
     <>
-      <header>
-        <Logo />
-      </header>
-
       <main>
         <div>
           {/* PostItem Components */}
