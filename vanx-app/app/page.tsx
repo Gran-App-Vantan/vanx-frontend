@@ -1,10 +1,8 @@
-export default function Top() {
+"user client";
+
+export default function Home() {
   return (
     <>
-      <header>
-        {/* Logo Component */}
-      </header>
-
       <main>
         <div>
           {/* PostItem Components */}
