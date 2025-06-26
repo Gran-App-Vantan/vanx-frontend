@@ -18,7 +18,7 @@ type Props = {
 
 export function PostItem({ post }: Props ) {
   return (
-    <div className="flex flex-col gap-2 w-full border-[0.5px] border-b-text-gray py-4 px-6">
+    <div className="flex flex-col gap-2 w-full border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
         <Image 
           src={post.imageSrc}
