@@ -1,7 +1,7 @@
 services:
   app:
-    build: ./
+    build: ./vanx-app
     volumes:
-      - .:/vanx-app
+      - ./vanx-app:/app
     ports:
       - 3005:3000
