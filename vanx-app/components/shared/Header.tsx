@@ -2,7 +2,7 @@ import { Logo } from "./Logo"
 
 export function Header() {
   return (
-    <header className="w-full h-28 flex items-center justify-center shadow-bottom">
+    <header className="fixed top-0 bg-base w-full h-24 flex items-center justify-center shadow-bottom z-50">
       <Logo />
     </header>
   )
