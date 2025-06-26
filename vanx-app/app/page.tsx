@@ -1,6 +1,7 @@
 "user client";
 
 import { PostItem } from "@/components/post";
+import { FooterNavItem } from "@/components/shared";
 
 // 仮データの皆さん
 const posts = [
@@ -70,7 +71,7 @@ export default function Home() {
   return (
     <>
       <main>
-        <div>
+        <div className="absolute top-24">
           <ul>
             {posts.map((post) => (
               <li key={post.id}>
@@ -90,7 +91,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* FooterNavMenu Component */}
+      <FooterNavItem />
     </>
   )
 }
