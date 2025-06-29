@@ -1,19 +1,12 @@
 import Image from "next/image"
+import { Reactions } from "@/api/posts/types"
 
-type Props = {
-  postReactions: {
-    reactionName: string;
-    reactionImageSrc: string;
-    reactionType: "emoji" | "nature" | "food" | "activity" | "travel" | "symbols";
-  }[];
-}
-
-export function Reaction({ postReactions }: Props ) {
+export function ReactionAddButton({ postReactions }: { postReactions: Reactions[] }) {
   return (
     <>
-      {postReactions.map((reaction, i) => (
+      {postReactions.map((reaction) => (
         <button
-          key={i}
+          key={reaction.id}
           className="flex justify-center items-center w-[50px] h-[30px] bg-gray rounded-full"
         >
           <Image
