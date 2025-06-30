@@ -1,36 +1,43 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 const navigationItems = [
   {
     src: "./icons/all-icon.svg", 
-    alt: "all-icon" 
+    alt: "all-icon",
+    category: "",
   },
   {
     src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon"
+    alt: "emoji-icon",
+    category: "emoji",
   },
   {
     src: "./icons/nature-icon.svg",
-    alt: "nature-icon"
+    alt: "nature-icon",
+    category: "nature",
   },
   {
     src: "./icons/food-icon.svg",
-    alt: "food-icon"
+    alt: "food-icon",
+    category: "food",
   },
   {
     src: "./icons/activity-icon.svg",
-    alt: "activity-icon"
+    alt: "activity-icon",
+    category: "activity",
   },
   {
     src: "./icons/travel-icon.svg",
-    alt: "travel-icon"
+    alt: "travel-icon",
+    category: "travel",
   },
   {
     src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon"
+    alt: "symbols-icon",
+    category: "symbols",
   },
 ]
 
@@ -38,35 +45,386 @@ const navigationItems = [
 const reactionIcons = [
   {
     src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon"
+    alt: "emoji-icon",
+    category: "emoji",
+    name: "平常心",
   },
   {
     src: "./icons/nature-icon.svg",
-    alt: "nature-icon"
+    alt: "nature-icon",
+    category: "nature",
+    name: "葉っぱ",
   },
   {
     src: "./icons/food-icon.svg",
-    alt: "food-icon"
+    alt: "food-icon",
+    category: "food",
+    name: "ジャンクフード",
   },
   {
     src: "./icons/activity-icon.svg",
-    alt: "activity-icon"
+    alt: "activity-icon",
+    category: "activity",
+    name: "コントローラー",
   },
   {
     src: "./icons/travel-icon.svg",
-    alt: "travel-icon"
+    alt: "travel-icon",
+    category: "travel",
+    name: "飛行機",
   },
   {
     src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon"
+    alt: "symbols-icon",
+    category: "symbols",
+    name: "ハート",
+  },
+  {
+    src: "./icons/emoji-icon.svg",
+    alt: "emoji-icon",
+    category: "emoji",
+    name: "平常心",
+  },
+  {
+    src: "./icons/nature-icon.svg",
+    alt: "nature-icon",
+    category: "nature",
+    name: "葉っぱ",
+  },
+  {
+    src: "./icons/food-icon.svg",
+    alt: "food-icon",
+    category: "food",
+    name: "ジャンクフード",
+  },
+  {
+    src: "./icons/activity-icon.svg",
+    alt: "activity-icon",
+    category: "activity",
+    name: "コントローラー",
+  },
+  {
+    src: "./icons/travel-icon.svg",
+    alt: "travel-icon",
+    category: "travel",
+    name: "飛行機",
+  },
+  {
+    src: "./icons/symbols-icon.svg",
+    alt: "symbols-icon",
+    category: "symbols",
+    name: "ハート",
+  },
+  {
+    src: "./icons/emoji-icon.svg",
+    alt: "emoji-icon",
+    category: "emoji",
+    name: "平常心",
+  },
+  {
+    src: "./icons/nature-icon.svg",
+    alt: "nature-icon",
+    category: "nature",
+    name: "葉っぱ",
+  },
+  {
+    src: "./icons/food-icon.svg",
+    alt: "food-icon",
+    category: "food",
+    name: "ジャンクフード",
+  },
+  {
+    src: "./icons/activity-icon.svg",
+    alt: "activity-icon",
+    category: "activity",
+    name: "コントローラー",
+  },
+  {
+    src: "./icons/travel-icon.svg",
+    alt: "travel-icon",
+    category: "travel",
+    name: "飛行機",
+  },
+  {
+    src: "./icons/symbols-icon.svg",
+    alt: "symbols-icon",
+    category: "symbols",
+    name: "ハート",
+  },
+  {
+    src: "./icons/emoji-icon.svg",
+    alt: "emoji-icon",
+    category: "emoji",
+    name: "平常心",
+  },
+  {
+    src: "./icons/nature-icon.svg",
+    alt: "nature-icon",
+    category: "nature",
+    name: "葉っぱ",
+  },
+  {
+    src: "./icons/food-icon.svg",
+    alt: "food-icon",
+    category: "food",
+    name: "ジャンクフード",
+  },
+  {
+    src: "./icons/activity-icon.svg",
+    alt: "activity-icon",
+    category: "activity",
+    name: "コントローラー",
+  },
+  {
+    src: "./icons/travel-icon.svg",
+    alt: "travel-icon",
+    category: "travel",
+    name: "飛行機",
+  },
+  {
+    src: "./icons/symbols-icon.svg",
+    alt: "symbols-icon",
+    category: "symbols",
+    name: "ハート",
+  },
+  {
+    src: "./icons/emoji-icon.svg",
+    alt: "emoji-icon",
+    category: "emoji",
+    name: "平常心",
+  },
+  {
+    src: "./icons/nature-icon.svg",
+    alt: "nature-icon",
+    category: "nature",
+    name: "葉っぱ",
+  },
+  {
+    src: "./icons/food-icon.svg",
+    alt: "food-icon",
+    category: "food",
+    name: "ジャンクフード",
+  },
+  {
+    src: "./icons/activity-icon.svg",
+    alt: "activity-icon",
+    category: "activity",
+    name: "コントローラー",
+  },
+  {
+    src: "./icons/travel-icon.svg",
+    alt: "travel-icon",
+    category: "travel",
+    name: "飛行機",
+  },
+  {
+    src: "./icons/symbols-icon.svg",
+    alt: "symbols-icon",
+    category: "symbols",
+    name: "ハート",
+  },
+  {
+    src: "./icons/emoji-icon.svg",
+    alt: "emoji-icon",
+    category: "emoji",
+    name: "平常心",
+  },
+  {
+    src: "./icons/nature-icon.svg",
+    alt: "nature-icon",
+    category: "nature",
+    name: "葉っぱ",
+  },
+  {
+    src: "./icons/food-icon.svg",
+    alt: "food-icon",
+    category: "food",
+    name: "ジャンクフード",
+  },
+  {
+    src: "./icons/activity-icon.svg",
+    alt: "activity-icon",
+    category: "activity",
+    name: "コントローラー",
+  },
+  {
+    src: "./icons/travel-icon.svg",
+    alt: "travel-icon",
+    category: "travel",
+    name: "飛行機",
+  },
+  {
+    src: "./icons/symbols-icon.svg",
+    alt: "symbols-icon",
+    category: "symbols",
+    name: "ハート",
+  },
+  {
+    src: "./icons/emoji-icon.svg",
+    alt: "emoji-icon",
+    category: "emoji",
+    name: "平常心",
+  },
+  {
+    src: "./icons/nature-icon.svg",
+    alt: "nature-icon",
+    category: "nature",
+    name: "葉っぱ",
+  },
+  {
+    src: "./icons/food-icon.svg",
+    alt: "food-icon",
+    category: "food",
+    name: "ジャンクフード",
+  },
+  {
+    src: "./icons/activity-icon.svg",
+    alt: "activity-icon",
+    category: "activity",
+    name: "コントローラー",
+  },
+  {
+    src: "./icons/travel-icon.svg",
+    alt: "travel-icon",
+    category: "travel",
+    name: "飛行機",
+  },
+  {
+    src: "./icons/symbols-icon.svg",
+    alt: "symbols-icon",
+    category: "symbols",
+    name: "ハート",
+  },
+  {
+    src: "./icons/emoji-icon.svg",
+    alt: "emoji-icon",
+    category: "emoji",
+    name: "平常心",
+  },
+  {
+    src: "./icons/nature-icon.svg",
+    alt: "nature-icon",
+    category: "nature",
+    name: "葉っぱ",
+  },
+  {
+    src: "./icons/food-icon.svg",
+    alt: "food-icon",
+    category: "food",
+    name: "ジャンクフード",
+  },
+  {
+    src: "./icons/activity-icon.svg",
+    alt: "activity-icon",
+    category: "activity",
+    name: "コントローラー",
+  },
+  {
+    src: "./icons/travel-icon.svg",
+    alt: "travel-icon",
+    category: "travel",
+    name: "飛行機",
+  },
+  {
+    src: "./icons/symbols-icon.svg",
+    alt: "symbols-icon",
+    category: "symbols",
+    name: "ハート",
+  },
+  {
+    src: "./icons/emoji-icon.svg",
+    alt: "emoji-icon",
+    category: "emoji",
+    name: "平常心",
+  },
+  {
+    src: "./icons/nature-icon.svg",
+    alt: "nature-icon",
+    category: "nature",
+    name: "葉っぱ",
+  },
+  {
+    src: "./icons/food-icon.svg",
+    alt: "food-icon",
+    category: "food",
+    name: "ジャンクフード",
+  },
+  {
+    src: "./icons/activity-icon.svg",
+    alt: "activity-icon",
+    category: "activity",
+    name: "コントローラー",
+  },
+  {
+    src: "./icons/travel-icon.svg",
+    alt: "travel-icon",
+    category: "travel",
+    name: "飛行機",
+  },
+  {
+    src: "./icons/symbols-icon.svg",
+    alt: "symbols-icon",
+    category: "symbols",
+    name: "ハート",
+  },
+  {
+    src: "./icons/emoji-icon.svg",
+    alt: "emoji-icon",
+    category: "emoji",
+    name: "平常心",
+  },
+  {
+    src: "./icons/nature-icon.svg",
+    alt: "nature-icon",
+    category: "nature",
+    name: "葉っぱ",
+  },
+  {
+    src: "./icons/food-icon.svg",
+    alt: "food-icon",
+    category: "food",
+    name: "ジャンクフード",
+  },
+  {
+    src: "./icons/activity-icon.svg",
+    alt: "activity-icon",
+    category: "activity",
+    name: "コントローラー",
+  },
+  {
+    src: "./icons/travel-icon.svg",
+    alt: "travel-icon",
+    category: "travel",
+    name: "飛行機",
+  },
+  {
+    src: "./icons/symbols-icon.svg",
+    alt: "symbols-icon",
+    category: "symbols",
+    name: "ハート",
   },
 ]
 
 export function ReactionBottomSheet() {
-  const [navClicked, setNavClicked] = useState(false);
+  const [navClicked, setNavClicked] = useState(0);
+  const [reactionCategory, setReactionCategory] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+
+  const filteredIcons = reactionIcons.filter(
+    (icon) => icon.category === reactionCategory || reactionCategory === ""
+  );
+
+  const filteredResults = useMemo(() => {
+    if (!searchValue) return [];
+
+    return reactionIcons.filter(item => 
+      (item.category === reactionCategory || reactionCategory === "") &&
+      item.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  }, [searchValue]);
 
   return (
-    <div className="flex flex-col gap-6 w-full min-w-screen h-[330px] bg-base py-5 rounded-tr-xl rounded-tl-xl shadow-top">
+    <div className="flex flex-col gap-6 w-full min-w-screen h-[377px] bg-base py-5 rounded-tr-xl rounded-tl-xl shadow-top">
 
       <span className="block w-15 min-h-1 bg-text-gray rounded-full mx-auto"/>
 
@@ -83,19 +441,26 @@ export function ReactionBottomSheet() {
           type="text"
           placeholder="絵文字を検索する"
           autoComplete="off"
+          onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
 
-      <nav>
-        <ul className="flex justify-between px-[30px]">
-          {navigationItems.map((item, i) => (
-            <li key={i}>
+      <nav className="border-b-[0.5px] border-text-gray py-2">
+        <ul className="flex items-center justify-between px-[30px]">
+          {navigationItems.map((item, i) => {
+            const isClicked = navClicked === i;
+            
+            return (
+              <li key={i}>
               <button 
-                className="py-[2px] px-[10px] rounded cursor-pointer"
-                style={{
-                  background: navClicked ? "var(--gray-color)" : "var(--base-color)",
+                className={`
+                  py-[2px] px-[10px] rounded cursor-pointer
+                  ${isClicked ? "bg-gray" : "bg-base"}
+                `}
+                onClick={() => {
+                  setNavClicked(i);
+                  setReactionCategory(item.category || "");
                 }}
-                onClick={() => setNavClicked(!navClicked)}
               >
                 <Image
                   src={item.src}
@@ -105,21 +470,41 @@ export function ReactionBottomSheet() {
                 />
               </button>
             </li>
-          ))}
+            )
+          })}
         </ul>
       </nav>
       
-      <div>
-        {reactionIcons.map((icon, i) => (
-          <span key={i}>
-            <Image 
-              src={icon.src}
-              alt={icon.alt}
-              width={30}
-              height={30}
-            />
-          </span>
-        ))}
+      <div className="grid grid-cols-8 mx-auto gap-[15px] overflow-scroll">
+        {filteredResults.length > 0 ? (
+          filteredResults.map((icon, i) => (
+            <span 
+              key={i}
+              className="w-[30px] h-[30px]"
+            >
+              <Image 
+                src={icon.src}
+                alt={icon.alt}
+                width={30}
+                height={30}
+              />
+            </span>
+          ))
+        ) : (
+          filteredIcons.map((icon, i) => (
+            <span 
+              key={i}
+              className="w-[30px] h-[30px]"
+            >
+              <Image 
+                src={icon.src}
+                alt={icon.alt}
+                width={30}
+                height={30}
+              />
+            </span>
+          ))
+        )}
       </div>
       
     </div>
