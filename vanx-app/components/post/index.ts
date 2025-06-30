@@ -1,3 +1,4 @@
 export { PostItem } from "./PostItem";
-export { Reaction } from "./Reaction";
+export { ReactionAddButton } from "./ReactionAddButton";
 export { PostingButton } from "./PostingButton";
+export { ReactionBottomSheet } from "./ReactionBottomSheet";

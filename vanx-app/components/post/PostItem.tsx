@@ -1,24 +1,11 @@
 import Image from "next/image";
-import { Reaction } from "./Reaction";
 
-type Props = {
-  post: {
-    id: number;
-    userId: string;
-    userName: string;
-    imageSrc: string;
-    contents: string;
-    postReactions: {
-      reactionName: string;
-      reactionImageSrc: string;
-      reactionType: "emoji" | "nature" | "food" | "activity" | "travel" | "symbols";
-    }[];
-  }
-}
+import { ReactionAddButton } from "./ReactionAddButton";
+import { Post } from "@/api/posts/types";
 
-export function PostItem({ post }: Props ) {
+export function PostItem({ post }: Post ) {
   return (
-    <div className="flex flex-col gap-2 w-full border-b-[0.5px] border-b-text-gray py-4 px-6">
+    <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
         <Image 
           src={post.imageSrc}
@@ -42,7 +29,7 @@ export function PostItem({ post }: Props ) {
       </div>
 
       <div className="flex justify-end">
-        <Reaction postReactions={post.postReactions}/>
+        <ReactionAddButton postReactions={post.postReactions}/>
       </div>
     </div>
   );
