@@ -3,7 +3,17 @@ import Image from "next/image";
 import { ReactionAddButton } from "./ReactionAddButton";
 import { Post } from "@/api/posts/types";
 
-export function PostItem({ post }: Post ) {
+type PostItemProps = {
+  post: Post["post"];
+  onDelete: () => void;
+  onClick: () => void;
+}
+
+export function PostItem({ 
+  post, 
+  onDelete, 
+  onClick,
+}: PostItemProps) {
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
@@ -22,6 +32,20 @@ export function PostItem({ post }: Post ) {
             {post.userName}
           </h2>
         </div>
+
+        <div className="justify-self-end ml-auto">
+          <button
+            className="cursor-pointer"
+            onClick={onDelete}
+          >
+            <Image
+              src="/icons/delete-icon.svg"
+              alt="delete-icon"
+              width={24}
+              height={24}
+            />
+          </button>
+        </div>
       </div>
 
       <div>
@@ -29,7 +53,10 @@ export function PostItem({ post }: Post ) {
       </div>
 
       <div className="flex justify-end">
-        <ReactionAddButton postReactions={post.postReactions}/>
+        <ReactionAddButton 
+          postReactions={post.postReactions}
+          onClick={onClick}
+        />
       </div>
     </div>
   );

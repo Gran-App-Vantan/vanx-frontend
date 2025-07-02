@@ -1,7 +1,8 @@
-"user client";
+"use client";
 
-import { PostItem } from "@/components/post";
+import { PostItem, ReactionBottomSheet } from "@/components/post";
 import { FooterNavItem } from "@/components/shared";
+import { useState } from "react";
 
 // 仮データの皆さん
 const commonUser = {
@@ -29,6 +30,9 @@ const posts = Array.from({ length: 5 }, (_, i) => ({
 }));
 
 export default function Home() {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  
   return (
     <>
       <main>
@@ -42,11 +46,29 @@ export default function Home() {
 
               return (
                 <li key={post.id}>
-                  <PostItem post={normalizedPost} />
+                  <PostItem 
+                    post={normalizedPost}
+                    onDelete={() => setIsDeleteModalOpen(true)}
+                    onClick={() => setIsBottomSheetOpen(true)}
+                  />
                 </li>
               )
             })}
           </ul>
+
+          {isDeleteModalOpen && (
+            <>
+              {/* 
+                <Modal>
+                  <PostDeleteModal />
+                </Modal> 
+              */}
+            </>
+          )}
+
+          {isBottomSheetOpen && (
+            <ReactionBottomSheet />
+          )}
         </div>
       </main>
 
