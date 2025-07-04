@@ -1,7 +1,7 @@
 "use client";
 
 import { PostingButton, PostItem, ReactionAddButton, ReactionBottomSheet } from "@/components/post";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // 仮データの皆さん
 const postInfo = {
@@ -24,6 +24,25 @@ const postInfo = {
 export default function Test() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const bottomSheetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isBottomSheetOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        bottomSheetRef.current &&
+        !bottomSheetRef.current.contains(event.target as Node)
+      ) {
+        setIsBottomSheetOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isBottomSheetOpen]);
 
   return (
     <main>
@@ -44,7 +63,17 @@ export default function Test() {
       )}
 
       {isBottomSheetOpen && (
-        <ReactionBottomSheet />
+        <div 
+          className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end"
+          onClick={() => setIsBottomSheetOpen(false)}
+        >
+          <div
+            ref={bottomSheetRef}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ReactionBottomSheet />
+          </div>
+        </div>
       )}
     </main>
   );

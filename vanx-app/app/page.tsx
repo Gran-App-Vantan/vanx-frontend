@@ -2,7 +2,7 @@
 
 import { PostItem, ReactionBottomSheet } from "@/components/post";
 import { FooterNavItem } from "@/components/shared";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // 仮データの皆さん
 const commonUser = {
@@ -32,6 +32,18 @@ const posts = Array.from({ length: 5 }, (_, i) => ({
 export default function Home() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const bottomSheetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isBottomSheetOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isBottomSheetOpen]);
   
   return (
     <>
@@ -66,9 +78,19 @@ export default function Home() {
             </>
           )}
 
-          {isBottomSheetOpen && (
-            <ReactionBottomSheet />
-          )}
+        {isBottomSheetOpen && (
+          <div 
+            className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
+            onClick={() => setIsBottomSheetOpen(false)}
+          >
+            <div
+              ref={bottomSheetRef}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <ReactionBottomSheet />
+            </div>
+          </div>
+        )}
         </div>
       </main>
 

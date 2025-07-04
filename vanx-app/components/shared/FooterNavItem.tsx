@@ -5,7 +5,7 @@ import { PostingButton } from "@/components/post";
 
 export function FooterNavItem() {
   return (
-    <footer className="fixed bottom-0 z-50 w-full min-w-screen bg-base p-5 shadow-top rounded-tr-xl rounded-tl-xl">
+    <footer className="fixed bottom-0 z-40 w-full min-w-screen bg-base p-5 shadow-top rounded-tr-xl rounded-tl-xl">
       <nav>
         <ul className="flex justify-around items-center">
           <li>
