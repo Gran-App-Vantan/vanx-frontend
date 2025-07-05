@@ -1,13 +1,13 @@
+"use client";
+
 import { PostingButton, PostItem, ReactionAddButton, ReactionBottomSheet } from "@/components/post";
-import { Button } from "@/components/shared/Button";
+import { useState, useEffect, useRef } from "react";
+
 
 export default function Test() {
   return (
-    <main>
-      <div className="absolute bottom-0">
-        <Button buttonType="redButton" size="l" text="登録" />
-        <ReactionBottomSheet />
-      </div>
-    </main>
-  );
+    <>
+      {/* テスト用ページ */}
+    </>
+  )
 }

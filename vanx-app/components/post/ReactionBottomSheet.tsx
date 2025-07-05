@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const navigationItems = [
   {
@@ -405,10 +405,35 @@ const reactionIcons = [
   },
 ]
 
-export function ReactionBottomSheet() {
+export function ReactionBottomSheet({ 
+  isOpen,
+  onCloseAnimationEnd,
+} : { 
+  isOpen: boolean;
+  onCloseAnimationEnd: () => void;
+}) {
   const [navClicked, setNavClicked] = useState(0);
   const [reactionCategory, setReactionCategory] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [visible, setVisible] = useState(isOpen);
+  const [animClass, setAnimClass] = useState("anim-slidein");
+
+  useEffect(() => {
+    if (isOpen) {
+      setVisible(true);
+      setAnimClass("anim-slidein");
+    } else {
+      setAnimClass("anim-slideout");
+
+      const timer = setTimeout(() => {
+        setVisible(false);
+        onCloseAnimationEnd();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, onCloseAnimationEnd]);
+
+  if (!visible) return null;
 
   const filteredIcons = reactionIcons.filter(
     (icon) => icon.category === reactionCategory || reactionCategory === ""
@@ -421,15 +446,20 @@ export function ReactionBottomSheet() {
       (item.category === reactionCategory || reactionCategory === "") &&
       item.name.toLowerCase().includes(searchValue.toLowerCase())
     );
-  }, [searchValue]);
+  }, [searchValue, reactionCategory]);
 
   return (
-    <div className="flex flex-col gap-6 w-full min-w-screen h-[377px] bg-base py-5 rounded-tr-xl rounded-tl-xl shadow-top">
-
+    <div
+      className={`
+        absolute bottom-0 flex flex-col gap-6 w-full min-w-screen bg-base pt-5 pb-10 rounded-tr-xl rounded-tl-xl shadow-top
+        ${animClass}
+      `}
+    >
+      
       <span className="block w-15 min-h-1 bg-text-gray rounded-full mx-auto"/>
-
+      
       <div className="flex w-[358px] bg-gray px-4 mx-auto rounded-lg gap-4">
-        <Image 
+        <Image
           className="cursor-pointer"
           src="/icons/search-icon.svg"
           alt="search-icon"
@@ -444,69 +474,91 @@ export function ReactionBottomSheet() {
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
-
       <nav className="border-b-[0.5px] border-text-gray py-2">
         <ul className="flex items-center justify-between px-[30px]">
           {navigationItems.map((item, i) => {
             const isClicked = navClicked === i;
-            
+
             return (
               <li key={i}>
-              <button 
-                className={`
-                  py-[2px] px-[10px] rounded cursor-pointer
-                  ${isClicked ? "bg-gray" : "bg-base"}
-                `}
-                onClick={() => {
-                  setNavClicked(i);
-                  setReactionCategory(item.category || "");
-                }}
-              >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  width={24}
-                  height={24}
-                />
-              </button>
-            </li>
-            )
+                <button
+                  className={`
+                    py-[2px] px-[10px] rounded cursor-pointer
+                    ${isClicked ? "bg-gray" : "bg-base"}
+                  `}
+                  onClick={() => {
+                    setNavClicked(i);
+                    setReactionCategory(item.category || "");
+                  }}
+                >
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    width={24}
+                    height={24}
+                  />
+                </button>
+              </li>
+            );
           })}
         </ul>
       </nav>
-      
-      <div className="grid grid-cols-8 mx-auto gap-[15px] overflow-scroll">
-        {filteredResults.length > 0 ? (
-          filteredResults.map((icon, i) => (
-            <span 
-              key={i}
-              className="w-[30px] h-[30px]"
-            >
-              <Image 
-                src={icon.src}
-                alt={icon.alt}
-                width={30}
-                height={30}
-              />
-            </span>
-          ))
+
+      <div 
+        className={`
+          mx-auto h-60 min-h-[240px] gap-[15px] overflow-y-scroll
+          ${
+            searchValue
+              ? "grid grid-cols-8 grid-rows-[30px_30px]"
+              : filteredIcons.length > 0
+                ? "grid grid-cols-8 grid-rows-[30px_30px]"
+                : "flex justify-center items-center"
+          }
+        `}>
+        {searchValue ? (
+          filteredResults.length > 0 ? (
+            filteredResults.map((icon, i) => (
+              <span
+                key={i}
+                className="w-[30px] h-[30px]"
+              >
+                <Image
+                  src={icon.src}
+                  alt={icon.alt}
+                  width={30}
+                  height={30}
+                />
+              </span>
+            ))
+          ) : (
+            <div className="col-span-8 flex flex-col justify-center items-center min-h-[240px] text-center text-text-gray">
+              <p>リアクションが見つかりませんでした🧐</p>
+              <p>他のキーワードでお試しください</p>
+            </div>
+          )
         ) : (
-          filteredIcons.map((icon, i) => (
-            <span 
-              key={i}
-              className="w-[30px] h-[30px]"
-            >
-              <Image 
-                src={icon.src}
-                alt={icon.alt}
-                width={30}
-                height={30}
-              />
-            </span>
-          ))
+          filteredIcons.length > 0 ? (
+            filteredIcons.map((icon, i) => (
+              <span
+                key={i}
+                className="w-[30px] h-[30px]"
+              >
+                <Image
+                  src={icon.src}
+                  alt={icon.alt}
+                  width={30}
+                  height={30}
+                />
+              </span>
+            ))
+          ) : (
+            <div className="col-span-8 flex justify-center items-center min-h-[240px] text-center text-text-gray">
+              リアクションが見つかりません
+            </div>
+          )
         )}
       </div>
-      
+
     </div>
   );
 }

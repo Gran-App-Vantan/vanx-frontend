@@ -5,12 +5,11 @@ import { PostingButton } from "@/components/post";
 
 export function FooterNavItem() {
   return (
-    <footer className="fixed bottom-0 z-50 w-full min-w-screen bg-base p-5 shadow-top rounded-tr-xl rounded-tl-xl">
+    <footer className="fixed bottom-0 z-40 w-full min-w-screen bg-base p-5 shadow-top rounded-tr-xl rounded-tl-xl">
       <nav>
         <ul className="flex justify-around items-center">
           <li>
             <Link href="/">
-              {/* アイコンは仮設置 */}
               <Image
                 src="/icons/reaction-icon.svg"
                 alt="HomeIcon"
@@ -18,13 +17,12 @@ export function FooterNavItem() {
                 height={30}
               />
 
-              {/* HomeIcon Component */}
+              {/* <HomeIcon /> */}
             </Link>
           </li>
 
           <li>
             <Link href="/floor-map">
-               {/* アイコンは仮設置 */}
               <Image
                 src="/icons/reaction-icon.svg"
                 alt="FloorMapIcon"
@@ -32,7 +30,7 @@ export function FooterNavItem() {
                 height={30}
               />
 
-              {/* FloorMapIcon Component */}
+              {/* <FloorMapIcon /> */}
             </Link>
           </li>
 
@@ -44,7 +42,6 @@ export function FooterNavItem() {
 
           <li>
             <Link href="/point-detail">
-              {/* アイコンは仮設置 */}
               <Image
                 src="/icons/reaction-icon.svg"
                 alt="PointIcon"
@@ -52,13 +49,12 @@ export function FooterNavItem() {
                 height={30}
               />
 
-              {/* PointIcon Component */}
+              {/* <PointIcon /> */}
             </Link>
           </li>
 
           <li>
             <Link href="/profile">
-              {/* アイコンは仮設置 */}
               <Image
                 src="/icons/reaction-icon.svg"
                 alt="ProfileIcon"
@@ -66,7 +62,7 @@ export function FooterNavItem() {
                 height={30}
               />
 
-              {/* ProfileIcon */}
+              {/* <ProfileIcon /> */}
             </Link>
           </li>
         </ul>
