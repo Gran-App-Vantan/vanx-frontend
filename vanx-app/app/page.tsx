@@ -32,10 +32,12 @@ const posts = Array.from({ length: 5 }, (_, i) => ({
 export default function Home() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const bottomSheetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isBottomSheetOpen) {
+      setIsBottomSheetVisible(true);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -44,6 +46,10 @@ export default function Home() {
       document.body.style.overflow = "";
     };
   }, [isBottomSheetOpen]);
+
+  const handleCloseAnimationEnd = () => {
+    setIsBottomSheetVisible(false);
+  };
   
   return (
     <>
@@ -78,7 +84,7 @@ export default function Home() {
             </>
           )}
 
-        {isBottomSheetOpen && (
+        {isBottomSheetVisible && (
           <div 
             className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
             onClick={() => setIsBottomSheetOpen(false)}
@@ -87,7 +93,10 @@ export default function Home() {
               ref={bottomSheetRef}
               onClick={(e) => e.stopPropagation()}
             >
-              <ReactionBottomSheet />
+              <ReactionBottomSheet 
+                isOpen={isBottomSheetOpen}
+                onCloseAnimationEnd={handleCloseAnimationEnd}
+              />
             </div>
           </div>
         )}

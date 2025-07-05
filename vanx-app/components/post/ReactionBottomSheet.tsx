@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const navigationItems = [
   {
@@ -405,10 +405,35 @@ const reactionIcons = [
   },
 ]
 
-export function ReactionBottomSheet() {
+export function ReactionBottomSheet({ 
+  isOpen,
+  onCloseAnimationEnd,
+} : { 
+  isOpen: boolean;
+  onCloseAnimationEnd: () => void;
+}) {
   const [navClicked, setNavClicked] = useState(0);
   const [reactionCategory, setReactionCategory] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [visible, setVisible] = useState(isOpen);
+  const [animClass, setAnimClass] = useState("anim-slidein");
+
+  useEffect(() => {
+    if (isOpen) {
+      setVisible(true);
+      setAnimClass("anim-slidein");
+    } else {
+      setAnimClass("anim-slideout");
+
+      const timer = setTimeout(() => {
+        setVisible(false);
+        onCloseAnimationEnd();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, onCloseAnimationEnd]);
+
+  if (!visible) return null;
 
   const filteredIcons = reactionIcons.filter(
     (icon) => icon.category === reactionCategory || reactionCategory === ""
@@ -424,7 +449,12 @@ export function ReactionBottomSheet() {
   }, [searchValue, reactionCategory]);
 
   return (
-    <div className="absolute bottom-0 flex flex-col gap-6 w-full min-w-screen bg-base pt-5 pb-10 rounded-tr-xl rounded-tl-xl shadow-top">
+    <div
+      className={`
+        absolute bottom-0 flex flex-col gap-6 w-full min-w-screen bg-base pt-5 pb-10 rounded-tr-xl rounded-tl-xl shadow-top
+        ${animClass}
+      `}
+    >
       
       <span className="block w-15 min-h-1 bg-text-gray rounded-full mx-auto"/>
       
@@ -502,7 +532,7 @@ export function ReactionBottomSheet() {
             ))
           ) : (
             <div className="col-span-8 flex flex-col justify-center items-center min-h-[240px] text-center text-text-gray">
-              <p>リアクションが見つかりませんでした🤔</p>
+              <p>リアクションが見つかりませんでした🧐</p>
               <p>他のキーワードでお試しください</p>
             </div>
           )

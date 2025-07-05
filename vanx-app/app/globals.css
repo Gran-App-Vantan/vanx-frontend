@@ -38,3 +38,31 @@
   --font-label: 14px;
   --font-small: 12px;
 }
+
+/* ========== ↓ スライドイン、スライドアウトアニメーション ↓ ========== */
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(450px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes slideOut {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(450px);
+  }
+}
+
+.anim-slidein {
+  animation: slideIn 0.5s cubic-bezier(0.1, 1, 0.2, 1) forwards;
+}
+.anim-slideout {
+  animation: slideOut 0.75s cubic-bezier(0.1, 1, 0.2, 1) forwards;
+}
+
+/* ============================================================= */
