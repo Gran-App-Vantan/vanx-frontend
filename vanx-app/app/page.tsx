@@ -1,7 +1,7 @@
 "use client";
 
 import { PostItem, ReactionBottomSheet } from "@/components/post";
-import { FooterNavItem } from "@/components/shared";
+import { FooterNavItem, Button } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 
 // 仮データ（ユーザー情報）
