@@ -4,19 +4,21 @@ import { PostItem, ReactionBottomSheet } from "@/components/post";
 import { FooterNavItem } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 
-// 仮データの皆さん
+// 仮データ（ユーザー情報）
 const commonUser = {
   userId: "junpeichan@0310",
   userName: "じゅんぺいちゃん",
   imageSrc: "/icons/user-icon.svg",
 };
 
+// 仮データ（リアクション情報）
 const commonReaction = {
   reactionName: "平常心",
   reactionImageSrc: "/icons/reaction-icon.svg",
   category: "emoji" as const,
 };
 
+// 投稿一覧（仮データで5件分作成）
 const posts = Array.from({ length: 5 }, (_, i) => ({
   id: i + 1,
   ...commonUser,
@@ -70,7 +72,7 @@ export default function Home() {
                     onClick={() => setIsBottomSheetOpen(true)}
                   />
                 </li>
-              )
+              );
             })}
           </ul>
 
@@ -104,6 +106,12 @@ export default function Home() {
       </main>
 
       <FooterNavItem />
+      <Button
+        buttonType="redButton"
+        size="l"
+        text="登録"
+        className="shadow-top"
+      />
     </>
-  )
+  );
 }
