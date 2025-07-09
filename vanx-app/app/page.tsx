@@ -1,8 +1,7 @@
 "use client";
 
-import { PostItem, ReactionBottomSheet } from "@/components/post";
-import { FooterNavItem, Button } from "@/components/shared";
-import { Modal } from "@/components/shared/Modal";
+import { PostItem, ReactionBottomSheet, PostDeleteModal } from "@/components/post";
+import { FooterNavItem, Modal } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 
 // 仮データ（ユーザー情報）
@@ -78,13 +77,12 @@ export default function Home() {
           </ul>
 
           {isDeleteModalOpen && (
-            <>
-              {/* 
-                <Modal>
-                  <PostDeleteModal />
-                </Modal> 
-              */}
-            </>
+            <Modal
+              openModal={isDeleteModalOpen}
+              onClose={() => setIsDeleteModalOpen(false)}
+            >
+              <PostDeleteModal />
+            </Modal> 
           )}
 
         {isBottomSheetVisible && (
@@ -107,20 +105,6 @@ export default function Home() {
       </main>
 
       <FooterNavItem />
-      <Button
-        buttonType="redButton"
-        size="l"
-        text="登録"
-        className="shadow-top"
-      />
-      {/* <Modal openModal={isOpen}>
-        <p>あああ</p>
-      </Modal> */}
-      {isDeleteModalOpen &&(
-        <Modal openModal={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
-          <p>あああ</p>
-        </Modal>
-        )}
     </>
   );
 }
