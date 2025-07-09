@@ -19,6 +19,8 @@
   --color-gray: var(--gray-color);
   --color-text-gray: var(--text-gray-color);
   --color-text: var(--text-color);
+  /* baseにするとtailwindのtext-baseクラスと衝突するので変更するべき */
+  /* 個人的にはwhiteで設定して、標準のwhiteをオーバーライドすると良いと思う*/
   --color-base: var(--base-color);
   --color-accent: var(--accent-color);
   --color-accent-light: var(--accent-light-color);

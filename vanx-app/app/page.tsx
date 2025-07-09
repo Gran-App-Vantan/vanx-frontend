@@ -3,6 +3,7 @@
 import { PostItem, ReactionBottomSheet } from "@/components/post";
 import { FooterNavItem, Button } from "@/components/shared";
 import { Modal } from "@/components/shared/Modal";
+import { FloorMapCard } from "@/components/shared/FloorMapCard";
 import { useState, useEffect, useRef } from "react";
 
 // 仮データ（ユーザー情報）
@@ -121,6 +122,14 @@ export default function Home() {
           <p>あああ</p>
         </Modal>
         )}
+      <FloorMapCard
+        boothName="ブース名"
+        boothText="このブースの紹介文が入ります。"
+        gradeFaculty="学年・学科"
+        boothImageText="ルールを見る→"
+        bgImg="/map-detail-image.png"
+        altText="画像説明"
+      />
     </>
   );
 }
