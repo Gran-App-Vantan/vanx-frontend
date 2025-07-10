@@ -26,7 +26,7 @@ export function Modal({
         <div className="bg-[#9A9A9A]/50 fixed inset-0 z-50 flex justify-center items-center" onClick={OutClick}>
             <dialog
                 className={`
-                    block bg-white rounded-2xl m-auto p-4
+                    flex items-center justify-center bg-white rounded-2xl m-auto p-4
                     ${size === "normal" 
                         ? "w-[350px] h-[200px]" 
                         : "w-[350px] h-[250px]"

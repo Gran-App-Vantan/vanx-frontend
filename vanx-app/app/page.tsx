@@ -82,7 +82,7 @@ export default function Home() {
               openModal={isDeleteModalOpen}
               onClose={() => setIsDeleteModalOpen(false)}
             >
-              <PostDeleteModal />
+              <PostDeleteModal onClose={() => setIsDeleteModalOpen(false)} />
             </Modal> 
           )}
 
