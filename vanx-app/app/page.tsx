@@ -78,6 +78,7 @@ export default function Home() {
 
           {isDeleteModalOpen && (
             <Modal
+              size="normal"
               openModal={isDeleteModalOpen}
               onClose={() => setIsDeleteModalOpen(false)}
             >
