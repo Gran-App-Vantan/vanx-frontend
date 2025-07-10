@@ -1,9 +1,7 @@
 "use client";
 
-import { PostItem, ReactionBottomSheet } from "@/components/post";
-import { FooterNavItem, Button } from "@/components/shared";
-import { Modal } from "@/components/shared/Modal";
-import { FloorMapCard } from "@/components/shared/FloorMapCard";
+import { PostItem, ReactionBottomSheet, PostDeleteModal } from "@/components/post";
+import { FooterNavItem, Modal } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 
 // 仮データ（ユーザー情報）
@@ -79,13 +77,13 @@ export default function Home() {
           </ul>
 
           {isDeleteModalOpen && (
-            <>
-              {/* 
-                <Modal>
-                  <PostDeleteModal />
-                </Modal> 
-              */}
-            </>
+            <Modal
+              size="normal"
+              openModal={isDeleteModalOpen}
+              onClose={() => setIsDeleteModalOpen(false)}
+            >
+              <PostDeleteModal onClose={() => setIsDeleteModalOpen(false)} />
+            </Modal> 
           )}
 
         {isBottomSheetVisible && (
@@ -108,28 +106,6 @@ export default function Home() {
       </main>
 
       <FooterNavItem />
-      <Button
-        buttonType="redButton"
-        size="l"
-        text="登録"
-        className="shadow-top"
-      />
-      {/* <Modal openModal={isOpen}>
-        <p>あああ</p>
-      </Modal> */}
-      {isDeleteModalOpen &&(
-        <Modal openModal={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
-          <p>あああ</p>
-        </Modal>
-        )}
-      <FloorMapCard
-        boothName="ブース名"
-        boothText="このブースの紹介文が入ります。"
-        gradeFaculty="学年・学科"
-        boothImageText="ルールを見る→"
-        bgImg="/map-detail-image.png"
-        altText="画像説明"
-      />
     </>
   );
 }

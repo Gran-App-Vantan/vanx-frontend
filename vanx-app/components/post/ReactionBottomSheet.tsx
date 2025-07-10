@@ -451,7 +451,7 @@ export function ReactionBottomSheet({
   return (
     <div
       className={`
-        absolute bottom-0 flex flex-col gap-6 w-full min-w-screen bg-base pt-5 pb-10 rounded-tr-xl rounded-tl-xl shadow-top
+        absolute bottom-0 flex flex-col gap-6 w-full min-w-screen bg-white pt-5 pb-10 rounded-tr-xl rounded-tl-xl shadow-top
         ${animClass}
       `}
     >
@@ -484,7 +484,7 @@ export function ReactionBottomSheet({
                 <button
                   className={`
                     py-[2px] px-[10px] rounded cursor-pointer
-                    ${isClicked ? "bg-gray" : "bg-base"}
+                    ${isClicked ? "bg-gray" : "bg-white"}
                   `}
                   onClick={() => {
                     setNavClicked(i);
