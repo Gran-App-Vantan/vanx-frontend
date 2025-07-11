@@ -4,7 +4,7 @@
   --gray-color: #EFEFEF;
   --text-gray-color: #9A9A9A;
   --text-color: #1A1A1A;
-  --base-color: #FFFFFF;
+  --white-color: #FFFFFF;
   --accent-color: #D9042B;
   --accent-light-color: #FDFAF9;
 
@@ -19,9 +19,7 @@
   --color-gray: var(--gray-color);
   --color-text-gray: var(--text-gray-color);
   --color-text: var(--text-color);
-  /* baseにするとtailwindのtext-baseクラスと衝突するので変更するべき */
-  /* 個人的にはwhiteで設定して、標準のwhiteをオーバーライドすると良いと思う*/
-  --color-base: var(--base-color);
+  --color-white: var(--white-color);
   --color-accent: var(--accent-color);
   --color-accent-light: var(--accent-light-color);
 
