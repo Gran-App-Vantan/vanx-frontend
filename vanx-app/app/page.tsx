@@ -5,6 +5,7 @@ import { FooterNavItem, Button } from "@/components/shared";
 import { Modal } from "@/components/shared/Modal";
 import { FloorMapCard } from "@/components/shared/FloorMapCard";
 import { useState, useEffect, useRef } from "react";
+import { FloorNavItem } from "@/components/shared";
 
 // 仮データ（ユーザー情報）
 const commonUser = {
@@ -117,7 +118,7 @@ export default function Home() {
       {/* <Modal openModal={isOpen}>
         <p>あああ</p>
       </Modal> */}
-      {isDeleteModalOpen &&(
+      {/* {isDeleteModalOpen &&(
         <Modal openModal={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
           <p>あああ</p>
         </Modal>
@@ -130,6 +131,7 @@ export default function Home() {
         bgImg="/map-detail-image.png"
         altText="画像説明"
       />
+      <FloorNavItem floors={[2, 3, 4, 5, 6]}/> */}
     </>
   );
 }
