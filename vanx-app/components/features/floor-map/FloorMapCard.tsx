@@ -13,7 +13,7 @@ export function FloorMapCard({ boothName, boothText, gradeFaculty, boothImageTex
     return(
         <div className="relative p-4 overflow-hidden rounded-lg bg-accent-light top-72 w-[350px] h-[279px] m-auto shadow-bottom">
             <div className="absolute top-0 left-0 flex w-full items-end justify-between pr-4">
-                <p className="text-base bg-accent w-1/2 text-center py-2 text-xl rounded-br-full">{boothName}</p>
+                <p className="text-white bg-accent w-1/2 text-center py-2 text-xl rounded-br-full">{boothName}</p>
                 <div className="w-32 py-1 text-center text-xs bg-base border border-text h-fit rounded-full">{gradeFaculty}</div>
             </div>
             <div className="flex justify-between w-full pt-12">

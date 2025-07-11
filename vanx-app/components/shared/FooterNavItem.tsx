@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { PostingButton } from "@/components/post";
+import { PostingButton } from "@/components/features/post";
 
 export function FooterNavItem() {
   return (

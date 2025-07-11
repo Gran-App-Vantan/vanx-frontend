@@ -1,6 +1,6 @@
 "use client";
 
-import { PostItem, ReactionBottomSheet, PostDeleteModal } from "@/components/post";
+import { PostItem, ReactionBottomSheet, PostDeleteModal } from "@/components/features/post";
 import { FooterNavItem, Modal } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 
