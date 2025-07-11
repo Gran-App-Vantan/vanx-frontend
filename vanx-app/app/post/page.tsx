@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/shared";
 
 export default function Post() {
   return (
@@ -31,7 +32,13 @@ export default function Post() {
         <div>
           <hr />
 
-          <button>投稿</button>
+          
+          <Button
+            buttonType="redButton"
+            text="投稿"
+            size="l"
+
+          />
         </div>
       </form>
     </main>
