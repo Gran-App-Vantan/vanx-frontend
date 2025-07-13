@@ -1,5 +1,5 @@
-name: 📝 改善
-description: 不具合などではないが、何か改善が必要な場合に使用します
+name: 📝 変更・改善
+description: 変更や改善が必要な場合に使用します
 title: "タイトルを入力してください"
 labels: ["改善"]
 body:
