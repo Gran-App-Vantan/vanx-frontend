@@ -1,6 +1,6 @@
 "use client";
 
-import { PostingButton, PostItem, ReactionAddButton, ReactionBottomSheet } from "@/components/post";
+import { PostingButton, PostItem, ReactionAddButton, ReactionBottomSheet } from "@/components/features/post";
 import { Button } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 
