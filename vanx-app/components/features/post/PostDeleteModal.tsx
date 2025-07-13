@@ -9,13 +9,13 @@ export function PostDeleteModal({ onClose }: PostDeleteModalProps) {
 
       <div className="flex justify-around gap-6">
         <button 
-          className="py-3 px-6 bg-gray text-text-gray font-label rounded-full cursor-pointer"
+          className="py-3 px-6 bg-gray text-text-gray text-label rounded-full cursor-pointer"
           onClick={onClose}
         >
           キャンセル
         </button>
 
-        <button className="w-[118px] py-3 bg-accent text-white font-label rounded-full cursor-pointer">
+        <button className="w-[118px] py-3 bg-accent text-white text-label rounded-full cursor-pointer">
           {/* 削除処理はバックエンド待ち */}
           削除
         </button>

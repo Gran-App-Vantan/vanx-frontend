@@ -28,10 +28,10 @@ export function PostItem({
         </Link>
 
         <div className="flex flex-col gap-2">
-          <p className="font-small text-text-gray">
+          <p className="text-small text-text-gray">
             {post.userId}
           </p>
-          <h2 className="font-bold">
+          <h2 className="text-bold">
             {post.userName}
           </h2>
         </div>
