@@ -3,6 +3,7 @@
 import { PostItem, ReactionBottomSheet, PostDeleteModal } from "@/components/features/post";
 import { FooterNavItem, Modal } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
+import { FloorNavItem } from "@/components/shared";
 
 // 仮データ（ユーザー情報）
 const commonUser = {
@@ -106,6 +107,29 @@ export default function Home() {
       </main>
 
       <FooterNavItem />
+      <Button
+        buttonType="redButton"
+        size="l"
+        text="登録"
+        className="shadow-top"
+      />
+      {/* <Modal openModal={isOpen}>
+        <p>あああ</p>
+      </Modal> */}
+      {/* {isDeleteModalOpen &&(
+        <Modal openModal={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
+          <p>あああ</p>
+        </Modal>
+        )}
+      <FloorMapCard
+        boothName="ブース名"
+        boothText="このブースの紹介文が入ります。"
+        gradeFaculty="学年・学科"
+        boothImageText="ルールを見る→"
+        bgImg="/map-detail-image.png"
+        altText="画像説明"
+      />
+      <FloorNavItem floors={[2, 3, 4, 5, 6]}/> */}
     </>
   );
 }
