@@ -75,6 +75,7 @@ export default function Post() {
                 />
               </button>
             </div>
+            
               {previewType?.startsWith("video") ? (
                 <video 
                   src={preview} 
