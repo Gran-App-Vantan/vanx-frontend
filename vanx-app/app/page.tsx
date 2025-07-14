@@ -1,9 +1,7 @@
 "use client";
 
-import { PostItem, ReactionBottomSheet } from "@/components/post";
-import { FooterNavItem, Button } from "@/components/shared";
-import { Modal } from "@/components/shared/Modal";
-import { FloorMapCard } from "@/components/shared/FloorMapCard";
+import { PostItem, ReactionBottomSheet, PostDeleteModal } from "@/components/post";
+import { FooterNavItem, Modal } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 import { FloorNavItem } from "@/components/shared";
 
@@ -80,13 +78,13 @@ export default function Home() {
           </ul>
 
           {isDeleteModalOpen && (
-            <>
-              {/* 
-                <Modal>
-                  <PostDeleteModal />
-                </Modal> 
-              */}
-            </>
+            <Modal
+              size="normal"
+              openModal={isDeleteModalOpen}
+              onClose={() => setIsDeleteModalOpen(false)}
+            >
+              <PostDeleteModal onClose={() => setIsDeleteModalOpen(false)} />
+            </Modal> 
           )}
 
         {isBottomSheetVisible && (
