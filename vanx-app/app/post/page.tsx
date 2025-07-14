@@ -6,18 +6,32 @@ import React, { useState } from "react";
 import { Button } from "@/components/shared";
 
 export default function Post() {
-  const [preview, setPreview] = useState<string | null>(null);
-  const [previewType, setPreviewType] = useState<string | null>(null);
+  const [previewFiles, setPreviewFiles] = useState<{ url: string, type: string }[]>([]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-      setPreviewType(file.type);
-    } else {
-      setPreview(null);
-      setPreviewType(null);
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    replaceIndex: number | null = null
+  ) => {
+    const files = e.target.files;
+
+    if (files) {
+      const newPreviews = Array.from(files).map((file) => ({
+        url: URL.createObjectURL(file),
+        type: file.type,
+      }));
+
+      if (replaceIndex !== null) {
+        setPreviewFiles((prev) =>
+          prev.map((file, i) => (i === replaceIndex ? newPreviews[0] : file))
+        );
+      } else {
+        setPreviewFiles((prev) => [...prev, ...newPreviews]);
+      }
     }
+  };
+
+  const removePreview = (index: number) => {
+    setPreviewFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -47,54 +61,83 @@ export default function Post() {
             autoComplete="off"
           />
           
-          {preview ? (
+          {previewFiles.length > 0 ? (
             <div className="w-[350px] mx-auto p-4 bg-cover bg-center bg-no-repeat border border-text-gray rounded-lg">
-              <div className="flex items-center justify-between mb-4">
-                <label className="flex items-center bg-text-gray text-white text-label h-8 py-1 px-4 cursor-pointer rounded-full">
-                  <input 
-                    type="file" 
-                    className="hidden"
-                    onChange={handleFileChange}
-                  />
-                  ファイルを変更
-                </label>
+              <ul className="flex">
+                {previewFiles.map((file, i) => (
+                  <li 
+                    key={i}
+                    className="w-[350px]"
+                  >
 
-              <button
-                className="bg-text-gray rounded-full p-1 cursor-pointer"
-                type="button"
-                onClick={() => {
-                  setPreview(null);
-                  setPreviewType(null);
-                }}
+                    <div className="flex items-center justify-between mb-4">
+                      <label className="flex items-center bg-text-gray text-white text-label h-8 py-1 px-4 cursor-pointer rounded-full">
+                        <input 
+                          type="file" 
+                          className="hidden"
+                          onChange={(e) => handleFileChange(e, i)}
+                        />
+                        ファイルを変更
+                      </label>
+
+                      <button
+                        className="bg-text-gray rounded-full p-1 cursor-pointer"
+                        type="button"
+                        onClick={() => {removePreview(i)}}
+                      >
+                        <Image
+                          src="/icons/close-icon.svg"
+                          alt="close-icon"
+                          width={24}
+                          height={24}
+                        />
+                      </button>
+                    </div>
+
+                    <div>
+                      {file.type?.startsWith("video") ? (
+                        <video
+                          src={file.url}
+                          controls width={350}
+                          className="rounded-lg"
+                        />
+                      ) : file.type?.startsWith("image") ? (
+                        <Image
+                          src={file.url}
+                          alt="画像が読み込めませんでした"
+                          width={350}
+                          height={115}
+                          className="pointer-events-none select-none rounded-lg text-label"
+                        />
+                      ) : (
+                        <div className="text-label text-center">
+                          ファイルが読み込めませんでした。
+                        </div>
+                      )}
+                    </div>
+
+                  </li>
+                ))}
+              </ul>
+              
+              <label
+                className="flex justify-center items-center mx-auto mt-4 w-full gap-2 py-2 rounded-full bg-accent cursor-pointer text-center text-label text-white"
               >
-                <Image
-                  src="/icons/close-icon.svg"
-                  alt="close-icon"
-                  width={24}
-                  height={24}
+                さらにファイルを追加
+                <Image 
+                  src="/icons/puls-icon.svg"
+                  alt="puls-icon"
+                  width={16}
+                  height={16}
                 />
-              </button>
-            </div>
-            
-              {previewType?.startsWith("video") ? (
-                <video 
-                  src={preview} 
-                  controls width={350}
-                  className="rounded-lg"
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleFileChange}
+                  accept="image/*,video/*"
+                  multiple
                 />
-              ) : previewType?.startsWith("image") ? (
-                <Image
-                  src={preview}
-                  alt="画像が読み込めませんでした"
-                  width={350}
-                  height={115}
-                  className="pointer-events-none select-none rounded-lg text-label"
-                />
-              ) : (
-                <div className="text-label text-center">
-                  ファイルが読み込めませんでした。
-                </div>
-              )}
+              </label>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-4 w-[350px] h-[115px] mx-auto text-label border-2 border-dotted border-text-gray rounded-lg">
@@ -108,6 +151,7 @@ export default function Post() {
                   className="hidden"
                   onChange={handleFileChange}
                   accept="image/*,video/*"
+                  multiple
                 />
                 ファイルをアップロード
               </label>
