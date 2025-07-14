@@ -9,8 +9,8 @@ type Props = {
     // imgSrc: string;
 }
 
-export const floorsDefault = ["w-17", "h-8", "bg-accent-light", "text", "font-normal", "shadow-bottom", "text-center", "rounded", "my-8"];
-export const floorsActive = ["w-17", "h-8", "bg-red-letters", "base", "font-normal", "shadow-bottom", "text-center", "src-[map-detail-image.png]", "rounded", "my-8"];
+ const floorsDefault = ["w-17", "h-8", "bg-accent-light", "text", "font-normal", "shadow-bottom", "text-center", "rounded", "my-8"];
+ const floorsActive = ["w-17", "h-8", "bg-accent", "base", "font-normal", "shadow-bottom", "text-center", "src-[map-detail-image.png]", "rounded", "my-8"];
 
 export function FloorNavItem({floors}: Props) {
     const [isActive, setIsActive] = useState<number | null>(null);
@@ -58,7 +58,7 @@ export function FloorNavItem({floors}: Props) {
             />
           </div>
           
-          <div className="absolute bottom-0 left-0 right-0 shadow-top bg-base">
+          <div className="absolute bottom-0 left-0 right-0 shadow-top bg-white">
             <div className="flex justify-center py-4">
               <div className="flex gap-2">
                 {floors.map((floor) => (
