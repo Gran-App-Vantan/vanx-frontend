@@ -10,7 +10,7 @@ type Props = {
 }
 
  const floorsDefault = ["w-17", "h-8", "bg-accent-light", "text", "font-normal", "shadow-bottom", "text-center", "rounded", "my-8"];
- const floorsActive = ["w-17", "h-8", "bg-accent", "base", "font-normal", "shadow-bottom", "text-center", "src-[map-detail-image.png]", "rounded", "my-8"];
+ const floorsActive = ["w-17", "h-8", "bg-accent", "text-white", "font-normal", "shadow-bottom", "text-center", "src-[map-detail-image.png]", "rounded", "my-8"];
 
 export function FloorNavItem({floors}: Props) {
     const [isActive, setIsActive] = useState<number | null>(null);
