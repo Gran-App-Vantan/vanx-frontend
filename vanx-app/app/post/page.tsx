@@ -7,6 +7,7 @@ import { Button } from "@/components/shared";
 
 export default function Post() {
   const [previewFiles, setPreviewFiles] = useState<{ url: string, type: string }[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -62,12 +63,12 @@ export default function Post() {
           />
           
           {previewFiles.length > 0 ? (
-            <div className="w-[350px] mx-auto p-4 bg-cover bg-center bg-no-repeat border border-text-gray rounded-lg">
-              <ul className="flex">
+            <div className="w-[350px] mx-auto p-4 bg-cover bg-center bg-no-repeat border border-text-gray rounded-lg overflow-hidden">
+              <ul className="flex gap-4 overflow-x-auto">
                 {previewFiles.map((file, i) => (
                   <li 
                     key={i}
-                    className="w-[350px]"
+                    className="flex-shrink-0 w-full"
                   >
 
                     <div className="flex items-center justify-between mb-4">
