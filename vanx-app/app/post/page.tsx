@@ -26,13 +26,28 @@ export default function Post() {
           prev.map((file, i) => (i === replaceIndex ? newPreviews[0] : file))
         );
       } else {
-        setPreviewFiles((prev) => [...prev, ...newPreviews]);
+        setPreviewFiles((prev) => {
+          const updated = [...prev, ...newPreviews];
+          setCurrentIndex(updated.length - 1);
+          return updated;
+        });
       }
     }
   };
 
   const removePreview = (index: number) => {
-    setPreviewFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviewFiles((prev) => {
+      const updated = prev.filter((_, i) => i !== index);
+
+      if (updated.length === 0) {
+        setCurrentIndex(0);
+      } else if (index <= currentIndex && currentIndex > 0) {
+        setCurrentIndex(currentIndex - 1);
+      } else if (currentIndex >= updated.length) {
+        setCurrentIndex(updated.length - 1);
+      }
+      return updated;
+    });
   };
 
   return (
@@ -64,62 +79,93 @@ export default function Post() {
           
           {previewFiles.length > 0 ? (
             <div className="w-[350px] mx-auto p-4 bg-cover bg-center bg-no-repeat border border-text-gray rounded-lg overflow-hidden">
-              <ul className="flex gap-4 overflow-x-auto">
-                {previewFiles.map((file, i) => (
-                  <li 
-                    key={i}
-                    className="flex-shrink-0 w-full"
+
+              <div className="relative">
+
+                <div className="flex items-center justify-between mb-4">
+                  <label className="flex items-center bg-text-gray text-white text-label h-8 py-1 px-4 cursor-pointer rounded-full">
+                    <input 
+                      type="file" 
+                      className="hidden"
+                      onChange={(e) => handleFileChange(e, currentIndex)}
+                    />
+                    ファイルを変更
+                  </label>
+
+                  <button
+                    className="bg-text-gray rounded-full p-1 cursor-pointer"
+                    type="button"
+                    onClick={() => removePreview(currentIndex)}
                   >
+                    <Image
+                      src="/icons/close-icon.svg"
+                      alt="close-icon"
+                      width={24}
+                      height={24}
+                    />
+                  </button>
+                </div>
 
-                    <div className="flex items-center justify-between mb-4">
-                      <label className="flex items-center bg-text-gray text-white text-label h-8 py-1 px-4 cursor-pointer rounded-full">
-                        <input 
-                          type="file" 
-                          className="hidden"
-                          onChange={(e) => handleFileChange(e, i)}
-                        />
-                        ファイルを変更
-                      </label>
+                <div className="relative">
 
-                      <button
-                        className="bg-text-gray rounded-full p-1 cursor-pointer"
-                        type="button"
-                        onClick={() => {removePreview(i)}}
-                      >
-                        <Image
-                          src="/icons/close-icon.svg"
-                          alt="close-icon"
-                          width={24}
-                          height={24}
+                  {previewFiles.length > 1 && currentIndex > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setCurrentIndex(currentIndex - 1)}
+                      className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70"
+                    >
+                      <span className="text-lg">‹</span>
+                    </button>
+                  )}
+
+                  {previewFiles.length > 1 && currentIndex < previewFiles.length - 1 && (
+                    <button
+                      type="button"
+                      onClick={() => setCurrentIndex(currentIndex + 1)}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70"
+                    >
+                      <span className="text-lg">›</span>
+                    </button>
+                  )}
+
+                  <div>
+                    {previewFiles[currentIndex] && previewFiles[currentIndex].type?.startsWith("video") ? (
+                      <video
+                        src={previewFiles[currentIndex].url}
+                        controls width={350}
+                        className="rounded-lg"
+                      />
+                    ) : previewFiles[currentIndex] && previewFiles[currentIndex].type?.startsWith("image") ? (
+                      <Image
+                        src={previewFiles[currentIndex].url}
+                        alt="画像が読み込めませんでした"
+                        width={350}
+                        height={115}
+                        className="pointer-events-none select-none rounded-lg text-label"
+                      />
+                    ) : (
+                      <div className="text-label text-center">
+                        ファイルが読み込めませんでした。
+                      </div>
+                    )}
+                  </div>
+
+                  {previewFiles.length > 1 && (
+                    <div className="flex justify-center mt-3 gap-2">
+                      {previewFiles.map((_, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => setCurrentIndex(index)}
+                          className={`w-2 h-2 rounded-full ${
+                            index === currentIndex ? 'bg-accent' : 'bg-text-gray'
+                          }`}
                         />
-                      </button>
+                      ))}
                     </div>
-
-                    <div>
-                      {file.type?.startsWith("video") ? (
-                        <video
-                          src={file.url}
-                          controls width={350}
-                          className="rounded-lg"
-                        />
-                      ) : file.type?.startsWith("image") ? (
-                        <Image
-                          src={file.url}
-                          alt="画像が読み込めませんでした"
-                          width={350}
-                          height={115}
-                          className="pointer-events-none select-none rounded-lg text-label"
-                        />
-                      ) : (
-                        <div className="text-label text-center">
-                          ファイルが読み込めませんでした。
-                        </div>
-                      )}
-                    </div>
-
-                  </li>
-                ))}
-              </ul>
+                  )}
+                </div>
+              </div>
               
               <label
                 className="flex justify-center items-center mx-auto mt-4 w-full gap-2 py-2 rounded-full bg-accent cursor-pointer text-center text-label text-white"
