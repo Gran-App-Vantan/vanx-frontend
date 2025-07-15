@@ -5,7 +5,7 @@ export default function FloorMap() {
     <>
       {/* フロアマップページ */}
       {/* <FooterNavItem /> */}
-      <FloorNavItem floors={[2, 3, 4, 5, 6]} />
+      <FloorNavItem floors={["2F", "3F", "4F", "5F", "6F"]} />
     </>
   );
 }

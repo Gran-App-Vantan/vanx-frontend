@@ -3,7 +3,6 @@
 import { PostItem, ReactionBottomSheet, PostDeleteModal } from "@/components/features/post";
 import { FooterNavItem, Modal } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
-import { FloorNavItem } from "@/components/shared";
 
 // 仮データ（ユーザー情報）
 const commonUser = {

@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { FloorMapCard } from "@/components/features/floor-map/FloorMapCard";
+import { FloorMapCard } from "@/components/features/floor-map";
+import { ReturnButton } from "@/components/shared";
 
 type Props = {
-    floors: number[];
+    floors: string[];
     // imgSrc: string;
 }
 
@@ -13,15 +14,17 @@ const floorsDefault = ["w-17", "h-8", "bg-accent-light", "text", "font-normal", 
 const floorsActive = ["w-17", "h-8", "bg-accent", "text-white", "font-normal", "shadow-bottom", "text-center", "src-[map-detail-image.png]", "rounded", "my-8"];
 
 export function FloorNavItem({floors}: Props) {
-    const [isActive, setIsActive] = useState<number | null>(null);
+    const [isActive, setIsActive] = useState<string | null>(floors[0]);
 
-    const handleClick = (floor: number) => {
+    const handleClick = (floor: string) => {
         setIsActive(floor);
     };
 
-    const defaultImage = (floor: number | null) => {
+    const defaultImage = (floor: string | null) => {
         if (!floor) return "/map-detail-image.png";
-    
+
+        // 末尾の "F" を除去するなど、キーを揃える
+        const floorKey = floor.replace(/[^0-9]/g, "");
         const floorImages: Record<string, string> = {
             '2': '/map-detail-image.png',
             '3': '/icon.png',
@@ -29,11 +32,13 @@ export function FloorNavItem({floors}: Props) {
             '5': '/floor-5.png',
             '6': '/floor-6.png',
         };
-    
-        return floorImages[floor.toString()] || "/map-detail-image.png";
+
+        return floorImages[floorKey] || "/map-detail-image.png";
     };
 
     return (
+      <>
+        <ReturnButton />
         <div className="relative w-full h-screen">
           <div className="w-full h-[370px]">
             <div className="h-[370px] flex-shrink-0">
@@ -58,8 +63,7 @@ export function FloorNavItem({floors}: Props) {
             />
           </div>
           
-          <div className="absolute bottom-0 left-0 right-0 shadow-top bg-white">
-            <div className="flex justify-center py-4">
+            <div className="flex justify-center fixed bottom-0 left-1/2 -translate-x-1/2  bg-white  shadow-top w-full">
               <div className="flex gap-2">
                 {floors.map((floor) => (
                   <button
@@ -75,6 +79,6 @@ export function FloorNavItem({floors}: Props) {
               </div>
             </div>
           </div>
-        </div>
+      </>
       );
 }
