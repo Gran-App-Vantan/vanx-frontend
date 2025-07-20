@@ -114,7 +114,15 @@ export default function Post() {
                       onClick={() => setCurrentIndex(currentIndex - 1)}
                       className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70"
                     >
-                      <span className="text-lg">‹</span>
+                      <span className="text-lg">
+                        {/* <Image 
+                          src="/icons/less-than-icon.svg"
+                          alt="arrow-icon"
+                          width={16}
+                          height={16}
+                        /> */}
+                        ←
+                      </span>
                     </button>
                   )}
 
@@ -124,7 +132,15 @@ export default function Post() {
                       onClick={() => setCurrentIndex(currentIndex + 1)}
                       className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70"
                     >
-                      <span className="text-lg">›</span>
+                      <span className="text-lg">
+                        {/* <Image 
+                          src="/icons/less-than-icon.svg"
+                          alt="arrow-icon"
+                          width={16}
+                          height={16}
+                        /> */}
+                        →
+                      </span>
                     </button>
                   )}
 
