@@ -22,7 +22,7 @@ export default function Test() {
 
                 <div className="font-sans ">
                 <p className="text-small not-italic font-normal text-text-gray">junpeichan@0310</p>
-                <p className="text-normal text-normal font-bold">じゅんぺいちゃん</p>
+                <p className=" text-normal font-bold">じゅんぺいちゃん</p>
                 </div>
 
             </div>
@@ -42,7 +42,7 @@ export default function Test() {
 
 
         <div className="flex justify-end gap-6 text-label">
-        <p className="pt-2">100位</p>
+        <p className="pt-2 text-h3">100位</p>
         
         <Link href="/rankings" className="p-2 flex gap-2 bg-accent text-accent-light rounded">
             <p>ランキングを見る</p>
