@@ -41,7 +41,7 @@ export default function Test() {
         </div>
 
 
-        <div className="flex justify-end gap-6 text-label">
+        <div className="flex justify-end gap-6 text-label items-center">
         <p className="pt-2 text-h3">100位</p>
         
         <Link href="/rankings" className="p-2 flex gap-2 bg-accent text-accent-light rounded">
