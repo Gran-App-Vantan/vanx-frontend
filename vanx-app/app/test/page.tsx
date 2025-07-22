@@ -5,11 +5,14 @@ import { Button } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from 'next/link';
+import { NumberOne } from "@/components/features/rankings/UsersProfile";
 
 
 
 export default function Test() {
     return (
-      <div></div>
+      <div>
+        <NumberOne rank="1st" name="じゅんPayん" image="/icon.png" score="100,000P" />
+      </div>
     )
     }
