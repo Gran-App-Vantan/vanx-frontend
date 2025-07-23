@@ -7,6 +7,8 @@ import Image from "next/image";
 import Link from 'next/link';
 import { NumberOne, NumberTwo, Number } from "@/components/features/rankings/UsersProfile";
 
+import { PointLogItem } from "@/components/features/point-detail/PointLogItem";
+
 
 
 export default function Test() {

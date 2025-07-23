@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Test() {
+export  function ProfileHead() {
     return (
         <div className="pt-6 px-6 bg-accent-light flex flex-col gap-8">
         <div className="flex justify-between">
