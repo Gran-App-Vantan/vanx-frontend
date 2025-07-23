@@ -4,11 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/shared";
+import { PreviewFile } from "@/api/post/types";
 
 export default function Post() {
-  const [previewFiles, setPreviewFiles] = useState<{ url: string, type: string }[]>([]);
+  const [previewFiles, setPreviewFiles] = useState<PreviewFile[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const urlsRef = useRef<Set<string>>(new Set());
+
+  const generateId = () => `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 
   useEffect(() => {
     return () => {
@@ -42,6 +45,7 @@ export default function Post() {
         urlsRef.current.add(url);
 
         return {
+          id: generateId(),
           url,
           type: file.type,
         };
@@ -181,14 +185,16 @@ export default function Post() {
                   )}
 
                   <div className="flex items-center justify-center h-[420px]">
-                    {previewFiles[currentIndex] && previewFiles[currentIndex].type?.startsWith("video") ? (
+                    {previewFiles[currentIndex] && previewFiles[currentIndex]?.type?.startsWith("video") ? (
                       <video
+                        key={previewFiles[currentIndex].id}
                         src={previewFiles[currentIndex].url}
                         controls
                         className="rounded-lg max-w-[350px] max-h-[400px] w-full h-auto object-contain"
                       />
-                    ) : previewFiles[currentIndex] && previewFiles[currentIndex].type?.startsWith("image") ? (
+                    ) : previewFiles[currentIndex] && previewFiles[currentIndex]?.type?.startsWith("image") ? (
                       <Image
+                        key={previewFiles[currentIndex].id}
                         src={previewFiles[currentIndex].url}
                         alt="画像が読み込めませんでした"
                         width={350}
@@ -204,9 +210,9 @@ export default function Post() {
 
                   {previewFiles.length > 1 && (
                     <div className="flex justify-center mt-3 gap-2">
-                      {previewFiles.map((_, index) => (
+                      {previewFiles.map((file, index) => (
                         <button
-                          key={index}
+                          key={file.id}
                           type="button"
                           onClick={() => setCurrentIndex(index)}
                           className={`w-2 h-2 rounded-full ${

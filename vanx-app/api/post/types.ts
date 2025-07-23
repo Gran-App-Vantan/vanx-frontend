@@ -15,3 +15,9 @@ export type Reactions = {
   reactionName: string;
   reactionImageSrc: string;
 }
+
+export type PreviewFile = {
+  id: string;
+  url: string;
+  type: string;
+}
