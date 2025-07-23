@@ -12,7 +12,151 @@
   --green-letters: #8ADF8D;
 
   /* グラデーションはまた後で */
+  --gradation-gold-color: linear-gradient(#F0C576, #D2B175, #BC9141);
+  --gradation-silver-color: linear-gradient(#C4BCBC, #948F8F, #BFBDBD);
+  --gradation-bronze-color: linear-gradient(#B48C5F, #946D40, #DEA668);
+  --gradation-blue-dark-color: linear-gradient(#7E9BF2, #4458DB, #8FB2E8);
+  --gradation-green-light-color: linear-gradient(#52B940, #62954A, #97BE85);
+  --gradation-yellow-green-light-color: linear-gradient(#C5EB87, #94B96E, #ACD27B);
+  --gradation-blue-light-color: linear-gradient(#39D9F5, #55B8C4, #ADE8EA);
+  --gradation-purple-light-color: linear-gradient(#CA7EF2, #B549DC, #E0BCFE);
+  --gradation-orange-light-color: linear-gradient(#EEA369, #E97924, #FFD0AA);
+  --gradation-punk-light-color: linear-gradient(#F59AE9, #F066DE, #F9C6F2);
 }
+
+/* グラデーション */
+.text-gold {
+  background: var(--gradation-gold-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-silver {
+  background: var(--gradation-silver-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-bronze {
+  background: var(--gradation-bronze-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-blue-dark {
+  background: var(--gradation-blue-dark-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-green-light {
+  background: var(--gradation-green-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-yellow-green-light {
+  background: var(--gradation-yellow-green-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-blue-light {
+  background: var(--gradation-blue-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-purple-light {
+  background: var(--gradation-purple-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-orange-light {
+  background: var(--gradation-orange-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-punk-light {
+  background: var(--gradation-punk-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+/* borderグラデーション */
+.border-gold {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#F0C576, #D2B175, #BC9141);
+}
+.border-silver {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#C4BCBC, #948F8F, #BFBDBD);
+}
+.border-bronze {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#B48C5F, #946D40, #DEA668);
+}
+.border-blue-dark {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#7E9BF2, #4458DB, #8FB2E8);
+}
+.border-green-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#52B940, #62954A, #97BE85);
+}
+.border-yellow-green-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#C5EB87, #94B96E, #ACD27B);
+}
+.border-blue-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#39D9F5, #55B8C4, #ADE8EA);
+}
+.border-purple-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#CA7EF2, #B549DC, #E0BCFE);
+}
+.border-orange-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#EEA369, #E97924, #FFD0AA);
+}
+.border-punk-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#F59AE9, #F066DE, #F9C6F2);
+}
+.border-gray {
+  padding: 2px;
+  border-radius: 12px;
+  background: #EFEFEF;
+}
+.inner-color {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1px;
+}
+
 
 @theme {
   /* カラー */
@@ -25,6 +169,8 @@
 
   --color-red-letters: var(--red-letters);
   --color-green-letters: var(--green-letters);
+
+
 
   /* ボックスシャドウ */
   --shadow-top: 0px -2px 5px -2px rgba(0,0,0,0.5);
@@ -66,3 +212,4 @@
 }
 
 /* ============================================================= */
+
