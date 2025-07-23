@@ -6,10 +6,14 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from 'next/link';
 
+import { PointLogItem } from "@/components/features/point-detail/PointLogItem";
+
 
 
 export default function Test() {
-    return (
-      <div></div>
+  return (
+    <div>
+        <PointLogItem isPulse={true} />
+    </div>
     )
     }
