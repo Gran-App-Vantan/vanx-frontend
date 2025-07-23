@@ -2,12 +2,22 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/shared";
 
 export default function Post() {
   const [previewFiles, setPreviewFiles] = useState<{ url: string, type: string }[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const urlsRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    return () => {
+      urlsRef.current.forEach(url => {
+        URL.revokeObjectURL(url);
+      });
+      urlsRef.current.clear();
+    };
+  }, []);
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -16,15 +26,35 @@ export default function Post() {
     const files = e.target.files;
 
     if (files) {
-      const newPreviews = Array.from(files).map((file) => ({
-        url: URL.createObjectURL(file),
-        type: file.type,
-      }));
+      const maxSize = 50 * 1024 * 1024;
+      const validFiles = Array.from(files).filter(file => {
+        if (file.size > maxSize) {
+          alert(`"${file.name}" のサイズが大きすぎます。50MB以下のファイルを選択してください。`);
+          return false;
+        }
+        return true;
+      });
+
+      if (validFiles.length === 0) return;
+
+      const newPreviews = validFiles.map((file) => {
+        const url = URL.createObjectURL(file);
+        urlsRef.current.add(url);
+
+        return {
+          url,
+          type: file.type,
+        };
+      });
 
       if (replaceIndex !== null) {
-        setPreviewFiles((prev) =>
-          prev.map((file, i) => (i === replaceIndex ? newPreviews[0] : file))
-        );
+        setPreviewFiles((prev) => {
+          const oldUrl = prev[replaceIndex].url;
+          URL.revokeObjectURL(oldUrl);
+          urlsRef.current.delete(oldUrl);
+          
+          return prev.map((file, i) => (i === replaceIndex ? newPreviews[0] : file));
+        });
       } else {
         setPreviewFiles((prev) => {
           const updated = [...prev, ...newPreviews];
@@ -37,6 +67,10 @@ export default function Post() {
 
   const removePreview = (index: number) => {
     setPreviewFiles((prev) => {
+      const urlToRevoke = prev[index].url;
+      URL.revokeObjectURL(urlToRevoke);
+      urlsRef.current.delete(urlToRevoke);
+      
       const updated = prev.filter((_, i) => i !== index);
 
       if (updated.length === 0) {
@@ -112,7 +146,8 @@ export default function Post() {
                     <button
                       type="button"
                       onClick={() => setCurrentIndex(currentIndex - 1)}
-                      className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70"
+                      aria-label="前のファイルを表示"
+                      className="absolute flex left-2 top-1/2 w-10 h-10 items-center justify-center transform -translate-y-1/2 z-10 bg-text-gray bg-opacity-50 text-white rounded-full p-2 shadow-bottom cursor-pointer hover:bg-opacity-70 transition-opacity"
                     >
                       <span className="text-lg">
                         {/* <Image 
@@ -130,7 +165,8 @@ export default function Post() {
                     <button
                       type="button"
                       onClick={() => setCurrentIndex(currentIndex + 1)}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70"
+                      aria-label="次のファイルを表示"
+                      className="absolute flex right-2 top-1/2 w-10 h-10 items-center justify-center transform -translate-y-1/2 z-10 bg-text-gray bg-opacity-50 text-white rounded-full p-2 shadow-bottom cursor-pointer hover:bg-opacity-70 transition-opacity"
                     >
                       <span className="text-lg">
                         {/* <Image 
@@ -144,20 +180,20 @@ export default function Post() {
                     </button>
                   )}
 
-                  <div>
+                  <div className="flex items-center justify-center h-[420px]">
                     {previewFiles[currentIndex] && previewFiles[currentIndex].type?.startsWith("video") ? (
                       <video
                         src={previewFiles[currentIndex].url}
-                        controls width={350}
-                        className="rounded-lg"
+                        controls
+                        className="rounded-lg max-w-[350px] max-h-[400px] w-full h-auto object-contain"
                       />
                     ) : previewFiles[currentIndex] && previewFiles[currentIndex].type?.startsWith("image") ? (
                       <Image
                         src={previewFiles[currentIndex].url}
                         alt="画像が読み込めませんでした"
                         width={350}
-                        height={115}
-                        className="pointer-events-none select-none rounded-lg text-label"
+                        height={400}
+                        className="pointer-events-none select-none rounded-lg text-label max-h-[400px] object-contain"
                       />
                     ) : (
                       <div className="text-label text-center">
