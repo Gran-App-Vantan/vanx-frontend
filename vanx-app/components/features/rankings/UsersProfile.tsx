@@ -1,10 +1,10 @@
 import Image from "next/image";
 
-const UsersProfile = [
-    {
-        style: "bg-white rounded-lg rounded-lg width-[392px] h-14"
-    }
-]
+// const UsersProfile = [
+//     {
+//         style: "bg-white rounded-lg rounded-lg width-[392px] h-14"
+//     }
+// ]
 export interface contentProps {
     rank?: number;
     name?: string;
@@ -55,5 +55,49 @@ export function NumberTwo({rank, name, image, score}: contentProps) {
             </div>
         </div>
     </div>
+    )
+}
+export function Number ({rank, name, image, score}: contentProps) {
+    // const inner = ["inner-color"]
+    // const gold = ["text-gold", "border-gold"]
+    // const silver = ["text-silver", "border-silver"]
+
+    let textColor, borderColor, innerColor, textSize;
+
+    if (rank === 1) {
+        textColor = "text-gold";
+        borderColor = "border-gold";
+        innerColor = "inner-color";
+        textSize = "text-[28px]";
+    } else if (rank === 2) {
+        textColor = "text-silver";
+        borderColor = "border-silver";
+        innerColor = "inner-color";
+        textSize = "text-[24px]";
+    } else {
+        textColor = "text-accent";
+        borderColor = "text-accent";
+        innerColor = "inner-color";
+        textSize = "text-[20px]";
+    }
+    return(
+        <div className={`${borderColor} bg-white rounded-lg w-[392px] h-14 mx-auto`}>
+            <div className={`${innerColor} flex gap-8 mx-auto justify-start items-center h-13 shadow-bottom`}>
+                <div className="ml-12 w-14">
+                    <p className={`font-[noto-sans-jp] ${textColor} ${textSize} font-bold italic`}>
+                        {rank}<span className={`${textColor} text-h3 font-bold`}>st</span>
+                    </p>
+                </div>
+                <div className="flex gap-4 h-[42px] items-center">
+                    <Image src={image ?? "/default.png"} alt="user-icon" width={42} height={42} /> {/* デフォルト画像 */}
+                    <div className="inline-flex">
+                        <div className="flex flex-col items-center justify-center w-45">
+                            <p>{name}</p>
+                            <p className="text-accent">{score}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
