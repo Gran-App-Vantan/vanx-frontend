@@ -4,3 +4,5 @@ export { FooterNavItem } from "./FooterNavItem";
 export { Button } from "./Button";
 export { Modal } from "./Modal";
 export { ReturnButton } from "./ReturnButton";
+export { MyProfile } from "../features/rankings/MyProfile";
+export { Number } from "../features/rankings/UsersProfile";
