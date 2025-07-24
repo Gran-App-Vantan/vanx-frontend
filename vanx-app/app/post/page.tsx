@@ -28,7 +28,26 @@ export default function Post() {
   ) => {
     const files = e.target.files;
 
+    const resetInput = () => {
+      if (e.target) {
+        e.target.value = '';
+      }
+    };
+
     if (files) {
+      if (replaceIndex === null && previewFiles.length >= 5) {
+        alert('ファイルは最大5つまでアップロードできます。');
+        resetInput();
+        return;
+      }
+
+      if (replaceIndex === null && previewFiles.length + files.length > 5) {
+        const remainingSlots = 5 - previewFiles.length;
+        alert(`ファイルは最大5つまでアップロードできます。あと${remainingSlots}つまで追加可能です。`);
+        resetInput();
+        return;
+      }
+
       const maxSize = 50 * 1024 * 1024;
       const validFiles = Array.from(files).filter(file => {
         if (file.size > maxSize) {
@@ -38,7 +57,10 @@ export default function Post() {
         return true;
       });
 
-      if (validFiles.length === 0) return;
+      if (validFiles.length === 0) {
+        resetInput();
+        return;
+      }
 
       const newPreviews = validFiles.map((file) => {
         const url = URL.createObjectURL(file);
@@ -62,10 +84,14 @@ export default function Post() {
       } else {
         setPreviewFiles((prev) => {
           const updated = [...prev, ...newPreviews];
-          setCurrentIndex(updated.length - 1);
-          return updated;
+          // 5つの制限を確実に守る
+          const limitedUpdated = updated.slice(0, 5);
+          setCurrentIndex(limitedUpdated.length - 1);
+          return limitedUpdated;
         });
       }
+
+      resetInput();
     }
   };
 
@@ -225,24 +251,32 @@ export default function Post() {
                 </div>
               </div>
               
-              <label
-                className="flex justify-center items-center mx-auto mt-4 w-full gap-2 py-2 rounded-full bg-accent cursor-pointer text-center text-label text-white"
-              >
-                さらにファイルを追加
-                <Image 
-                  src="/icons/puls-icon.svg"
-                  alt="puls-icon"
-                  width={16}
-                  height={16}
-                />
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={handleFileChange}
-                  accept="image/*,video/*"
-                  multiple
-                />
-              </label>
+              {previewFiles.length < 5 && (
+                <label
+                  className="flex justify-center items-center mx-auto mt-4 w-full gap-2 py-2 rounded-full bg-accent cursor-pointer text-center text-label text-white"
+                >
+                  さらにファイルを追加
+                  <Image 
+                    src="/icons/puls-icon.svg"
+                    alt="puls-icon"
+                    width={16}
+                    height={16}
+                  />
+                  <input
+                    type="file"
+                    className="hidden"
+                    onChange={handleFileChange}
+                    accept="image/*,video/*"
+                    multiple
+                  />
+                </label>
+              )}
+
+              {previewFiles.length >= 5 && (
+                <div className="flex justify-center items-center mx-auto mt-4 w-full py-2 rounded-full bg-text-gray text-center text-label text-white">
+                  ファイルは最大5つまでです
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-4 w-[350px] h-[115px] mx-auto text-label border-2 border-dotted border-text-gray rounded-lg">
