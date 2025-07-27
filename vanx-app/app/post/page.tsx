@@ -48,9 +48,9 @@ export default function Post() {
         return;
       }
 
-      const maxSize = 50 * 1024 * 1024;
+      const MAX_FILE_SIZE = 50 * 1024 * 1024;
       const validFiles = Array.from(files).filter(file => {
-        if (file.size > maxSize) {
+        if (file.size > MAX_FILE_SIZE) {
           alert(`"${file.name}" のサイズが大きすぎます。50MB以下のファイルを選択してください。`);
           return false;
         }
@@ -84,8 +84,8 @@ export default function Post() {
       } else {
         setPreviewFiles((prev) => {
           const updated = [...prev, ...newPreviews];
-          // 5つの制限を確実に守る
           const limitedUpdated = updated.slice(0, 5);
+
           setCurrentIndex(limitedUpdated.length - 1);
           return limitedUpdated;
         });
