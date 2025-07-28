@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ReactionAddButton } from "./ReactionAddButton";
-import { Post } from "@/api/posts/types";
+import { Post } from "@/api/post/types";
 
 type PostItemProps = {
   post: Post["post"];

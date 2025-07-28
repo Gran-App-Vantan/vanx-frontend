@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Reactions } from "@/api/posts/types"
+import { Reactions } from "@/api/post/types"
 
 type ReactionAddButtonProps = {
   postReactions: Reactions[]
