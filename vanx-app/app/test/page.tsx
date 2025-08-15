@@ -11,6 +11,7 @@ import { Input } from "@/components/shared";
 
 export default function Test() {
   return (
-    <main></main>
+    <main>
+    </main>
   );
 }

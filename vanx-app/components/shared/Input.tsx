@@ -2,7 +2,7 @@ import Image from "next/image"
 
 type InputProps = {
   id: string
-  size: "normal" | "large"
+  size: "small" | "normal"
   type: "text" | "password"
   value?: string;
   placeholder: string
