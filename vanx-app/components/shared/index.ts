@@ -4,3 +4,4 @@ export { FooterNavItem } from "./FooterNavItem";
 export { Button } from "./Button";
 export { Modal } from "./Modal";
 export { ReturnButton } from "./ReturnButton";
+export { Input } from "./Input";
