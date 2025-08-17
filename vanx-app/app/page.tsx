@@ -9,7 +9,7 @@ const posts = [
     id: 1,
     userId: "junpeichan@0310",
     userName: "じゅんぺいちゃん",
-    imageSrc: "/icons/user-icon.svg",
+    imageSrc: "/icons/default-user-icon.svg",
     contents: "実はGran App Vantanの「Gran」はグランアレグリアから取ったんです。ご存じでしたか？",
     postReactions: {
       reactionName: "平常心",
@@ -21,7 +21,7 @@ const posts = [
     id: 2,
     userId: "junpeichan@0310",
     userName: "じゅんぺいちゃん",
-    imageSrc: "/icons/user-icon.svg",
+    imageSrc: "/icons/default-user-icon.svg",
     contents: "実はGran App Vantanの「Gran」はグランアレグリアから取ったんです。ご存じでしたか？",
     postReactions: {
       reactionName: "平常心",
@@ -33,7 +33,7 @@ const posts = [
     id: 3,
     userId: "junpeichan@0310",
     userName: "じゅんぺいちゃん",
-    imageSrc: "/icons/user-icon.svg",
+    imageSrc: "/icons/default-user-icon.svg",
     contents: "実はGran App Vantanの「Gran」はグランアレグリアから取ったんです。ご存じでしたか？",
     postReactions: {
       reactionName: "平常心",
@@ -45,7 +45,7 @@ const posts = [
     id: 4,
     userId: "junpeichan@0310",
     userName: "じゅんぺいちゃん",
-    imageSrc: "/icons/user-icon.svg",
+    imageSrc: "/icons/default-user-icon.svg",
     postContents: "実はGran App Vantanの「Gran」はグランアレグリアから取ったんです。ご存じでしたか？",
     postReactions: {
       reactionName: "平常心",
@@ -57,7 +57,7 @@ const posts = [
     id: 5,
     userId: "junpeichan@0310",
     userName: "じゅんぺいちゃん",
-    imageSrc: "/icons/user-icon.svg",
+    imageSrc: "/icons/default-user-icon.svg",
     postContents: "実はGran App Vantanの「Gran」はグランアレグリアから取ったんです。ご存じでしたか？",
     postReactions: {
       reactionName: "平常心",
