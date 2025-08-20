@@ -1,6 +1,6 @@
-type LeftArrowIconPrps = {
-  className: string;
-  size: string | number; // 文字列と数字どちらでも受け取れるように
+type LeftArrowIconProps = {
+  className?: string;
+  size?: string | number; // 文字列と数字どちらでも受け取れるように
   color: "black" | "white";
 }
 
@@ -9,23 +9,23 @@ export function LeftArrowIcon({
   className = "",
   size = 24, 
   color
-}: LeftArrowIconPrps) {
+}: LeftArrowIconProps) {
   return (
-    <svg
+    <svg 
       className={className}
       width={size}
       height={size}
-      viewBox="0 0 30 30"
-      fill="none"
+      viewBox="0 0 20 20" 
+      fill="none" 
       xmlns="http://www.w3.org/2000/svg"
-      
     >
-          <path
-    style={{
-      stroke: color === "black" ? "var(--color-text)" : "var(--color-white)"
-    }}
-   />
-      {/* pathは長いので省略 */}
+      <path
+        stroke={color === "black" ? "#1A1A1A" : "#FFFFFF"}
+        d="M9.53125 15.625L3.90625 10L9.53125 4.375M4.6875 10H16.0938" 
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
