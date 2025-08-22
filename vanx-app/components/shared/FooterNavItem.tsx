@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 
 import { PostingButton } from "@/components/features/post";
+import { HomeIcon, FloorMapIcon, PointIcon, ProfileIcon } from "./icons";
 
 export function FooterNavItem() {
   return (
@@ -10,27 +10,13 @@ export function FooterNavItem() {
         <ul className="flex justify-around items-center">
           <li>
             <Link href="/">
-              <Image
-                src="/icons/reaction-icon.svg"
-                alt="HomeIcon"
-                width={30}
-                height={30}
-              />
-
-              {/* <HomeIcon /> */}
+              <HomeIcon />
             </Link>
           </li>
 
           <li>
             <Link href="/floor-map">
-              <Image
-                src="/icons/reaction-icon.svg"
-                alt="FloorMapIcon"
-                width={30}
-                height={30}
-              />
-
-              {/* <FloorMapIcon /> */}
+              <FloorMapIcon />
             </Link>
           </li>
 
@@ -41,28 +27,14 @@ export function FooterNavItem() {
           </li>
 
           <li>
-            <Link href="/point-detail">
-              <Image
-                src="/icons/reaction-icon.svg"
-                alt="PointIcon"
-                width={30}
-                height={30}
-              />
-
-              {/* <PointIcon /> */}
+            <Link href="/wallet">
+              <PointIcon />
             </Link>
           </li>
 
           <li>
             <Link href="/profile">
-              <Image
-                src="/icons/reaction-icon.svg"
-                alt="ProfileIcon"
-                width={30}
-                height={30}
-              />
-
-              {/* <ProfileIcon /> */}
+              <ProfileIcon />
             </Link>
           </li>
         </ul>

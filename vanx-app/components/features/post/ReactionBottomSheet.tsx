@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect, useMemo } from "react";
+import { SearchIcon } from "@/components/shared/icons";
 
 const navigationItems = [
   {
@@ -458,14 +459,8 @@ export function ReactionBottomSheet({
       
       <span className="block w-15 min-h-1 bg-text-gray rounded-full mx-auto"/>
       
-      <div className="flex w-[358px] bg-gray px-4 mx-auto rounded-lg gap-4">
-        <Image
-          className="cursor-pointer"
-          src="/icons/search-icon.svg"
-          alt="search-icon"
-          width={24}
-          height={24}
-        />
+      <div className="flex items-center w-[358px] bg-gray px-4 mx-auto rounded-lg gap-4">
+        <SearchIcon className="cursor-pointer" />
         <input
           className="w-full h-10 text-text outline-none"
           type="text"
