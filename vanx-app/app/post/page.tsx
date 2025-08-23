@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/shared";
 import { PreviewFile } from "@/api/post/types";
+import { LeftArrowIcon, CloseIcon, LessThanIcon } from "@/components/shared/icons";
 
 export default function Post() {
   const [previewFiles, setPreviewFiles] = useState<PreviewFile[]>([]);
@@ -116,16 +117,12 @@ export default function Post() {
 
   return (
     <main>
-      <div className="w-screen flex items-center bg-accent text-white p-3 h-16">
-
-        {/* <Image 
-          src="/icons/arrow-white-icon.svg"
-          alt="戻るアイコン"
-          width={20}
-          height={20}
-        /> */}
-
-        <Link href={"/"}>
+      <div className="flex items-center w-screen bg-accent text-white p-3 h-16">
+        <Link 
+          className="flex items-center gap-2.5"
+          href={"/"}
+        >
+          <LeftArrowIcon color="white" />
           戻る
         </Link>
       </div>
@@ -161,12 +158,7 @@ export default function Post() {
                     type="button"
                     onClick={() => removePreview(currentIndex)}
                   >
-                    <Image
-                      src="/icons/close-icon.svg"
-                      alt="close-icon"
-                      width={24}
-                      height={24}
-                    />
+                    <CloseIcon />
                   </button>
                 </div>
 
@@ -180,13 +172,7 @@ export default function Post() {
                       className="absolute flex left-2 top-1/2 w-10 h-10 items-center justify-center transform -translate-y-1/2 z-10 bg-text-gray bg-opacity-50 text-white rounded-full p-2 shadow-bottom cursor-pointer hover:bg-opacity-70 transition-opacity"
                     >
                       <span className="text-lg">
-                        {/* <Image 
-                          src="/icons/less-than-icon.svg"
-                          alt="arrow-icon"
-                          width={16}
-                          height={16}
-                        /> */}
-                        ←
+                        <LessThanIcon className="transform rotate-180" />
                       </span>
                     </button>
                   )}
@@ -199,13 +185,7 @@ export default function Post() {
                       className="absolute flex right-2 top-1/2 w-10 h-10 items-center justify-center transform -translate-y-1/2 z-10 bg-text-gray bg-opacity-50 text-white rounded-full p-2 shadow-bottom cursor-pointer hover:bg-opacity-70 transition-opacity"
                     >
                       <span className="text-lg">
-                        {/* <Image 
-                          src="/icons/less-than-icon.svg"
-                          alt="arrow-icon"
-                          width={16}
-                          height={16}
-                        /> */}
-                        →
+                        <LessThanIcon />
                       </span>
                     </button>
                   )}

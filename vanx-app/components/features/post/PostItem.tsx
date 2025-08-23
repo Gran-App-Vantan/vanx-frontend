@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { ReactionAddButton } from "./ReactionAddButton";
 import { Post } from "@/api/post/types";
+import { DeleteIcon } from "@/components/shared/icons";
 
 type PostItemProps = {
   post: Post["post"];
@@ -41,12 +42,7 @@ export function PostItem({
             className="cursor-pointer"
             onClick={onDelete}
           >
-            <Image
-              src="/icons/delete-icon.svg"
-              alt="delete-icon"
-              width={24}
-              height={24}
-            />
+            <DeleteIcon />
           </button>
         </div>
       </div>

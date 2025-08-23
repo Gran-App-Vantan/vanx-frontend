@@ -1,20 +1,20 @@
 "use client";
 
 import { PostItem, ReactionBottomSheet, PostDeleteModal } from "@/components/features/post";
-import { FooterNavItem, Modal } from "@/components/shared";
+import { Modal } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 
 // 仮データ（ユーザー情報）
 const commonUser = {
   userId: "junpeichan@0310",
   userName: "じゅんぺいちゃん",
-  imageSrc: "/icons/user-icon.svg",
+  imageSrc: "/icons/default-user-icon.svg",
 };
 
 // 仮データ（リアクション情報）
 const commonReaction = {
   reactionName: "平常心",
-  reactionImageSrc: "/icons/reaction-icon.svg",
+  reactionImageSrc: "/icons/reaction-add-icon.svg",
   category: "emoji" as const,
 };
 
@@ -56,7 +56,7 @@ export default function Home() {
   return (
     <>
       <main>
-        <div className="absolute top-24">
+        <div className="mt-24 mb-20">
           <ul>
             {posts.map((post) => {
               const normalizedPost = {
@@ -104,8 +104,6 @@ export default function Home() {
         )}
         </div>
       </main>
-
-      <FooterNavItem />
     </>
   );
 }
