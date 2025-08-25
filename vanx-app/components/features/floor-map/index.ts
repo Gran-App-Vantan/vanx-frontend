@@ -1,2 +1,2 @@
-export { FloorMapCard } from "./FloorMapCard";
-export { FloorNavItem } from "./FloorNavItem";
+export * from "./FloorMapCard";
+export * from "./FloorNavItem";
