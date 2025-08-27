@@ -6,7 +6,7 @@ import { Post } from "@/api/post/types";
 import { DeleteIcon } from "@/components/shared/icons";
 
 type PostItemProps = {
-  post: Post["post"];
+  post: Post;
   onDelete: () => void;
   onClick: () => void;
 }
