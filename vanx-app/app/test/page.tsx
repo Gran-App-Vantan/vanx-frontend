@@ -1,12 +1,21 @@
 "use client";
 
-import { PostingButton, PostItem, ReactionAddButton, ReactionBottomSheet } from "@/components/features/post";
-import { Button } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from 'next/link';
-import {  Number } from "@/components/features/rankings/UsersProfile";
-import { MyProfile } from "@/components/features/rankings/MyProfile";
-import { ReturnButton } from "@/components/shared/ReturnButton";
 
+import { PostingButton, PostItem, ReactionAddButton, ReactionBottomSheet, Reaction } from "@/components/features/post";
+import { Number } from "@/components/features/rankings/UsersProfile";
+import { PointLogItem } from "@/components/features/wallet/PointLogItem";
+import { Button, Input } from "@/components/shared";
+import { TravelIcon } from "@/components/shared/icons";
 
+export default function Test() {
+  return (
+    <main>
+      <Reaction>
+        <TravelIcon />
+      </Reaction>
+    </main>
+  );
+}

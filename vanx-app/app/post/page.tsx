@@ -2,36 +2,127 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/shared";
+import { PreviewFile } from "@/api/post/types";
+import { LeftArrowIcon, CloseIcon, LessThanIcon } from "@/components/shared/icons";
 
 export default function Post() {
-  const [preview, setPreview] = useState<string | null>(null);
-  const [previewType, setPreviewType] = useState<string | null>(null);
+  const [previewFiles, setPreviewFiles] = useState<PreviewFile[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const urlsRef = useRef<Set<string>>(new Set());
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-      setPreviewType(file.type);
-    } else {
-      setPreview(null);
-      setPreviewType(null);
+  const generateId = () => `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+
+  useEffect(() => {
+    return () => {
+      urlsRef.current.forEach(url => {
+        URL.revokeObjectURL(url);
+      });
+      urlsRef.current.clear();
+    };
+  }, []);
+
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    replaceIndex: number | null = null
+  ) => {
+    const files = e.target.files;
+
+    const resetInput = () => {
+      if (e.target) {
+        e.target.value = '';
+      }
+    };
+
+    if (files) {
+      if (replaceIndex === null && previewFiles.length >= 5) {
+        alert('ファイルは最大5つまでアップロードできます。');
+        resetInput();
+        return;
+      }
+
+      if (replaceIndex === null && previewFiles.length + files.length > 5) {
+        const remainingSlots = 5 - previewFiles.length;
+        alert(`ファイルは最大5つまでアップロードできます。あと${remainingSlots}つまで追加可能です。`);
+        resetInput();
+        return;
+      }
+
+      const MAX_FILE_SIZE = 50 * 1024 * 1024;
+      const validFiles = Array.from(files).filter(file => {
+        if (file.size > MAX_FILE_SIZE) {
+          alert(`"${file.name}" のサイズが大きすぎます。50MB以下のファイルを選択してください。`);
+          return false;
+        }
+        return true;
+      });
+
+      if (validFiles.length === 0) {
+        resetInput();
+        return;
+      }
+
+      const newPreviews = validFiles.map((file) => {
+        const url = URL.createObjectURL(file);
+        urlsRef.current.add(url);
+
+        return {
+          id: generateId(),
+          url,
+          type: file.type,
+        };
+      });
+
+      if (replaceIndex !== null) {
+        setPreviewFiles((prev) => {
+          const oldUrl = prev[replaceIndex].url;
+          URL.revokeObjectURL(oldUrl);
+          urlsRef.current.delete(oldUrl);
+          
+          return prev.map((file, i) => (i === replaceIndex ? newPreviews[0] : file));
+        });
+      } else {
+        setPreviewFiles((prev) => {
+          const updated = [...prev, ...newPreviews];
+          const limitedUpdated = updated.slice(0, 5);
+
+          setCurrentIndex(limitedUpdated.length - 1);
+          return limitedUpdated;
+        });
+      }
+
+      resetInput();
     }
+  };
+
+  const removePreview = (index: number) => {
+    setPreviewFiles((prev) => {
+      const urlToRevoke = prev[index].url;
+      URL.revokeObjectURL(urlToRevoke);
+      urlsRef.current.delete(urlToRevoke);
+      
+      const updated = prev.filter((_, i) => i !== index);
+
+      if (updated.length === 0) {
+        setCurrentIndex(0);
+      } else if (index <= currentIndex && currentIndex > 0) {
+        setCurrentIndex(currentIndex - 1);
+      } else if (currentIndex >= updated.length) {
+        setCurrentIndex(updated.length - 1);
+      }
+      return updated;
+    });
   };
 
   return (
     <main>
-      <div className="w-screen flex items-center bg-accent text-white p-3 h-16">
-
-        {/* <Image 
-          src="/icons/arrow-white-icon.svg"
-          alt="戻るアイコン"
-          width={20}
-          height={20}
-        /> */}
-
-        <Link href={"/"}>
+      <div className="flex items-center w-screen bg-accent text-white p-3 h-16">
+        <Link 
+          className="flex items-center gap-2.5"
+          href={"/"}
+        >
+          <LeftArrowIcon color="white" />
           戻る
         </Link>
       </div>
@@ -47,51 +138,123 @@ export default function Post() {
             autoComplete="off"
           />
           
-          {preview ? (
-            <div className="w-[350px] mx-auto p-4 bg-cover bg-center bg-no-repeat border border-text-gray rounded-lg">
-              <div className="flex items-center justify-between mb-4">
-                <label className="flex items-center bg-text-gray text-white text-label h-8 py-1 px-4 cursor-pointer rounded-full">
-                  <input 
-                    type="file" 
+          {previewFiles.length > 0 ? (
+            <div className="w-[350px] mx-auto p-4 bg-cover bg-center bg-no-repeat border border-text-gray rounded-lg overflow-hidden">
+
+              <div className="relative">
+
+                <div className="flex items-center justify-between mb-4">
+                  <label className="flex items-center bg-text-gray text-white text-label h-8 py-1 px-4 cursor-pointer rounded-full">
+                    <input 
+                      type="file" 
+                      className="hidden"
+                      onChange={(e) => handleFileChange(e, currentIndex)}
+                    />
+                    ファイルを変更
+                  </label>
+
+                  <button
+                    className="bg-text-gray rounded-full p-1 cursor-pointer"
+                    type="button"
+                    onClick={() => removePreview(currentIndex)}
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
+
+                <div className="relative">
+
+                  {previewFiles.length > 1 && currentIndex > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setCurrentIndex(currentIndex - 1)}
+                      aria-label="前のファイルを表示"
+                      className="absolute flex left-2 top-1/2 w-10 h-10 items-center justify-center transform -translate-y-1/2 z-10 bg-text-gray bg-opacity-50 text-white rounded-full p-2 shadow-bottom cursor-pointer hover:bg-opacity-70 transition-opacity"
+                    >
+                      <span className="text-lg">
+                        <LessThanIcon className="transform rotate-180" />
+                      </span>
+                    </button>
+                  )}
+
+                  {previewFiles.length > 1 && currentIndex < previewFiles.length - 1 && (
+                    <button
+                      type="button"
+                      onClick={() => setCurrentIndex(currentIndex + 1)}
+                      aria-label="次のファイルを表示"
+                      className="absolute flex right-2 top-1/2 w-10 h-10 items-center justify-center transform -translate-y-1/2 z-10 bg-text-gray bg-opacity-50 text-white rounded-full p-2 shadow-bottom cursor-pointer hover:bg-opacity-70 transition-opacity"
+                    >
+                      <span className="text-lg">
+                        <LessThanIcon />
+                      </span>
+                    </button>
+                  )}
+
+                  <div className="flex items-center justify-center h-[420px]">
+                    {previewFiles[currentIndex] && previewFiles[currentIndex]?.type?.startsWith("video") ? (
+                      <video
+                        key={previewFiles[currentIndex].id}
+                        src={previewFiles[currentIndex].url}
+                        controls
+                        className="rounded-lg max-w-[350px] max-h-[400px] w-full h-auto object-contain"
+                      />
+                    ) : previewFiles[currentIndex] && previewFiles[currentIndex]?.type?.startsWith("image") ? (
+                      <Image
+                        key={previewFiles[currentIndex].id}
+                        src={previewFiles[currentIndex].url}
+                        alt="画像が読み込めませんでした"
+                        width={350}
+                        height={400}
+                        className="pointer-events-none select-none rounded-lg text-label max-h-[400px] object-contain"
+                      />
+                    ) : (
+                      <div className="text-label text-center">
+                        ファイルが読み込めませんでした。
+                      </div>
+                    )}
+                  </div>
+
+                  {previewFiles.length > 1 && (
+                    <div className="flex justify-center mt-3 gap-2">
+                      {previewFiles.map((file, index) => (
+                        <button
+                          key={file.id}
+                          type="button"
+                          onClick={() => setCurrentIndex(index)}
+                          className={`w-2 h-2 rounded-full ${
+                            index === currentIndex ? 'bg-accent' : 'bg-text-gray'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {previewFiles.length < 5 && (
+                <label
+                  className="flex justify-center items-center mx-auto mt-4 w-full gap-2 py-2 rounded-full bg-accent cursor-pointer text-center text-label text-white"
+                >
+                  さらにファイルを追加
+                  <Image 
+                    src="/icons/puls-icon.svg"
+                    alt="puls-icon"
+                    width={16}
+                    height={16}
+                  />
+                  <input
+                    type="file"
                     className="hidden"
                     onChange={handleFileChange}
+                    accept="image/*,video/*"
+                    multiple
                   />
-                  ファイルを変更
                 </label>
+              )}
 
-              <button
-                className="bg-text-gray rounded-full p-1 cursor-pointer"
-                type="button"
-                onClick={() => {
-                  setPreview(null);
-                  setPreviewType(null);
-                }}
-              >
-                <Image
-                  src="/icons/close-icon.svg"
-                  alt="close-icon"
-                  width={24}
-                  height={24}
-                />
-              </button>
-            </div>
-              {previewType?.startsWith("video") ? (
-                <video 
-                  src={preview} 
-                  controls width={350}
-                  className="rounded-lg"
-                />
-              ) : previewType?.startsWith("image") ? (
-                <Image
-                  src={preview}
-                  alt="画像が読み込めませんでした"
-                  width={350}
-                  height={115}
-                  className="pointer-events-none select-none rounded-lg text-label"
-                />
-              ) : (
-                <div className="text-label text-center">
-                  ファイルが読み込めませんでした。
+              {previewFiles.length >= 5 && (
+                <div className="flex justify-center items-center mx-auto mt-4 w-full py-2 rounded-full bg-text-gray text-center text-label text-white">
+                  ファイルは最大5つまでです
                 </div>
               )}
             </div>
@@ -107,6 +270,7 @@ export default function Post() {
                   className="hidden"
                   onChange={handleFileChange}
                   accept="image/*,video/*"
+                  multiple
                 />
                 ファイルをアップロード
               </label>

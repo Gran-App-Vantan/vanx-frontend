@@ -3,7 +3,7 @@
 import "./globals.css";
 
 import { usePathname } from "next/navigation";
-import { Header } from "@/components/shared/Header";
+import { Header, FooterNavItem } from "@/components/shared/";
 
 export default function RootLayout({
   children,
@@ -20,6 +20,7 @@ export default function RootLayout({
       <body>
         {pathName === "/" ? <Header />: ""}
         {children}
+        {pathName === "/" ? <FooterNavItem />: ""}
       </body>
     </html>
   );

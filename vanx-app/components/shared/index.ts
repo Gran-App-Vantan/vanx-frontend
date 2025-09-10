@@ -6,3 +6,4 @@ export { Modal } from "./Modal";
 export { ReturnButton } from "./ReturnButton";
 export { MyProfile } from "../features/rankings/MyProfile";
 export { Number } from "../features/rankings/UsersProfile";
+export { Input } from "./Input";

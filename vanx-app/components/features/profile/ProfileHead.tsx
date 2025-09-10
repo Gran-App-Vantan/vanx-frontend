@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { EditIcon } from '@/components/shared/icons';
 
-export default function Test() {
+export  function ProfileHead() {
     return (
         <div className="pt-6 px-6 bg-accent-light flex flex-col gap-8">
         <div className="flex justify-between">
@@ -30,12 +31,7 @@ export default function Test() {
             <div>
                 <Link  href="/edit" className="flex text-text-gray bg-gray rounded-full py-2 px-4  gap-2">
                     <p>編集</p>
-                    <Image
-                    src="/icons/user-icon.svg"
-                    alt="edit-icon"
-                    width={16}
-                    height={16}
-                    />
+                    <EditIcon />
                 </Link>
             </div>
         </div>

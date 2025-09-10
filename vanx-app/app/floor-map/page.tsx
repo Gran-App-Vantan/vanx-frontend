@@ -1,11 +1,9 @@
-import { FloorMapCard, FloorNavItem } from "@/components/shared";
-
+import { FloorNavItem } from "@/components/features/floor-map";
+1
 export default function FloorMap() {
   return (
-    <>
-      {/* フロアマップページ */}
-      {/* <FooterNavItem /> */}
+    <main>
       <FloorNavItem floors={["2F", "3F", "4F", "5F", "6F"]} />
-    </>
+    </main>
   );
 }

@@ -6,8 +6,8 @@ import { FloorMapCard } from "@/components/features/floor-map";
 import { ReturnButton } from "@/components/shared";
 
 type Props = {
-    floors: string[];
-    // imgSrc: string;
+  floors: string[];
+  // imgSrc: string;
 }
 
 const floorsDefault = ["w-17", "h-8", "bg-accent-light", "text", "font-normal", "shadow-bottom", "text-center", "rounded", "my-8"];
