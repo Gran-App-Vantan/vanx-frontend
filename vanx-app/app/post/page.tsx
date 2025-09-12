@@ -6,13 +6,45 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/shared";
 import { PreviewFile } from "@/api/post/types";
 import { LeftArrowIcon, CloseIcon, LessThanIcon } from "@/components/shared/icons";
+import { postStore } from "@/api/post/postStore";
 
 export default function Post() {
   const [previewFiles, setPreviewFiles] = useState<PreviewFile[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const urlsRef = useRef<Set<string>>(new Set());
+  const [postContent, setPostContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const urlsRef = useRef<Set<string>>(new Set());
   const generateId = () => `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (isSubmitting) return;
+
+    try {
+      setIsSubmitting(true);
+
+      const response = await postStore({
+        content: postContent,
+        files: [], // ここにBase64エンコードしたファイルを入れる
+      });
+      console.log("投稿成功:", response);
+    } catch (error) {
+      console.log("投稿エラー:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   useEffect(() => {
     return () => {
@@ -127,7 +159,7 @@ export default function Post() {
         </Link>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col justify-center gap-6 mt-20">
           <h1 className="text-center text-h3">あなたのことを知らせてあげましょう！</h1>
 
@@ -136,6 +168,8 @@ export default function Post() {
             className="w-[350px] h-[150px] p-5 mt-5 mx-auto bg-white text-normal text-text border border-text-gray rounded-lg resize-none"
             placeholder="今、何してる？"
             autoComplete="off"
+            value={postContent}
+            onChange={(e) => setPostContent(e.target.value)}
           />
           
           {previewFiles.length > 0 ? (
@@ -281,8 +315,10 @@ export default function Post() {
         <div className="flex items-center justify-center my-24">
           <Button
             buttonType="redButton"
-            text="投稿"
+            text={isSubmitting ? "投稿中..." : "投稿"}
             size="l"
+            type="submit"
+            disabled={isSubmitting}
           />
         </div>
       </form>
