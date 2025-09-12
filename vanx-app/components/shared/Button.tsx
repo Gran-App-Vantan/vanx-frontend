@@ -6,9 +6,18 @@ export interface ButtonProps {
   text?: string;
   size?: "s" | "m" | "l" | "custom";
   className?: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
-export function Button({ buttonType, text = "", size = "m", className = "" }: ButtonProps) {
+export function Button({ 
+  buttonType, 
+  text = "", 
+  size = "m", 
+  className = "",
+  type = "button",
+  disabled = false,
+}: ButtonProps) {
   const sizeClass = {
     s: "w-[44px] h-[44px]",
     m: "w-[300px] h-[43px]",
@@ -35,6 +44,8 @@ export function Button({ buttonType, text = "", size = "m", className = "" }: Bu
         cursor-pointer
         ${baseButton} ${sizeClass} ${className}
       `}
+      type={type}
+      disabled={disabled}
     >
       {text}
     </button>
