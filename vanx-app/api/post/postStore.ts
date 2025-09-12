@@ -35,7 +35,8 @@ export async function postStore(req: postStoreRequest) {
   return axios
     .post<postStoreRequest>(apiUrl, req, {
       // headers: {
-      //   Authorization: `Bearer ${authToken}`
+      //   Authorization: `Bearer ${authToken}`,
+      //   Accept: "application/json",
       // }
     })
     .then((res) => res.data)
@@ -44,7 +45,8 @@ export async function postStore(req: postStoreRequest) {
 
       return {
         success: false,
-        message: err.response?.data.message || [],
+        message: "投稿に失敗しました",
+        errors: {err,}
       }
     });
 }
