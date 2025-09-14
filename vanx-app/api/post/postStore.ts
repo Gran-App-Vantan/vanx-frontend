@@ -26,18 +26,16 @@ export type postStoreResponse = {
   } 
 }
 
-// トークンはregister関連の処理ができてから
-
 export async function postStore(req: postStoreRequest) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/post/posts`;
-  // const authToken = Cookies.get("authToken");
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/post`;
+  const authToken = Cookies.get("authToken");
 
   return axios
     .post<postStoreRequest>(apiUrl, req, {
-      // headers: {
-      //   Authorization: `Bearer ${authToken}`,
-      //   Accept: "application/json",
-      // }
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        Accept: "application/json",
+      }
     })
     .then((res) => res.data)
     .catch((err) => {

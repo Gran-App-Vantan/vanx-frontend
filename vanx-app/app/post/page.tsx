@@ -8,8 +8,12 @@ import { PreviewFile } from "@/api/post/types";
 import { LeftArrowIcon, CloseIcon, LessThanIcon } from "@/components/shared/icons";
 import { postStore } from "@/api/post/postStore";
 
+type ExtendedPreviewFile = PreviewFile & {
+  base64Data?: string;
+};
+
 export default function Post() {
-  const [previewFiles, setPreviewFiles] = useState<PreviewFile[]>([]);
+  const [previewFiles, setPreviewFiles] = useState<ExtendedPreviewFile[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [postContent, setPostContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,13 +38,27 @@ export default function Post() {
     try {
       setIsSubmitting(true);
 
+      // Base64エンコードされたファイルを取得
+      const files = previewFiles
+        .map(file => file.base64Data)
+        .filter(Boolean) as string[];
+
       const response = await postStore({
         content: postContent,
-        files: [], // ここにBase64エンコードしたファイルを入れる
+        files: files,
       });
-      console.log("投稿成功:", response);
+      
+      if (response.success) {
+        console.log("投稿成功:", response);
+        alert('投稿が完了しました');
+        window.location.href = '/';
+      } else {
+        console.error("投稿失敗:", response);
+        alert(`投稿に失敗しました: ${response.message}`);
+      }
     } catch (error) {
-      console.log("投稿エラー:", error);
+      console.error("投稿エラー:", error);
+      alert('投稿処理中にエラーが発生しました');
     } finally {
       setIsSubmitting(false);
     }
@@ -55,7 +73,7 @@ export default function Post() {
     };
   }, []);
 
-  const handleFileChange = (
+  const handleFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     replaceIndex: number | null = null
   ) => {
@@ -95,16 +113,21 @@ export default function Post() {
         return;
       }
 
-      const newPreviews = validFiles.map((file) => {
-        const url = URL.createObjectURL(file);
-        urlsRef.current.add(url);
+      const newPreviews = await Promise.all(
+        validFiles.map(async (file) => {
+          const url = URL.createObjectURL(file);
+          urlsRef.current.add(url);
+          
+          const base64Data = await fileToBase64(file);
 
-        return {
-          id: generateId(),
-          url,
-          type: file.type,
-        };
-      });
+          return {
+            id: generateId(),
+            url,
+            type: file.type,
+            base64Data, // Base64データを保存
+          };
+        })
+      );
 
       if (replaceIndex !== null) {
         setPreviewFiles((prev) => {
