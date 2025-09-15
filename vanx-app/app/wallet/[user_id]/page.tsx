@@ -12,6 +12,7 @@ const switchButtons = [
   "損失ポイント"
 ];
 
+// テスト用データ
 const testItems = [
   {
     time: "06/05 10:01",
@@ -26,6 +27,10 @@ const testItems = [
     isPuls: true,
   },
 ]
+
+//
+// ユーザーの情報の取得ができていないので、一旦仮データを配置してUIを作成しています
+//
 
 export default function Wallet() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -50,7 +55,7 @@ export default function Wallet() {
               alt="default-user-icon"
               width={50}
               height={50}
-            />
+            /> {/* userIcon */}
             <p>じゅんぺいちゃん</p> {/* name */}
           </div>
         </div>
