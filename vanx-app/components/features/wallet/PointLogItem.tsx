@@ -12,9 +12,9 @@ export function PointLogItem({
     isPuls
 }: PointLogItemProps) {
     return (
-        <div className="flex justify-center items-center gap-4 px-2 py-5 border-b-[0.5px] border-b-text-gray w-[408px] font-medium bg-white text-normal"> 
+        <div className="flex justify-start items-center gap-4 px-4 py-5 border-b-[0.5px] border-b-text-gray w-[408px] font-medium bg-white text-normal"> 
             <p className="text-label">{time}</p>
-            <p>{boothName}</p>
+            <p className="w-48">{boothName}</p>
             <p className={`
                 ${isPuls 
                     ? "text-green-letters" 
