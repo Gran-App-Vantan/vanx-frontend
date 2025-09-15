@@ -12,7 +12,7 @@ export function PointLogItem({
     isPuls
 }: PointLogItemProps) {
     return (
-        <div className="flex justify-start items-center gap-4 px-4 py-5 border-b-[0.5px] border-b-text-gray w-[408px] font-medium bg-white text-normal"> 
+        <div className="flex justify-start items-center gap-4 px-4 py-5 border-b-[0.5px] border-b-text-gray w-full font-medium bg-white text-normal"> 
             <p className="text-label">{time}</p>
             <p className="w-48">{boothName}</p>
             <p className={`
