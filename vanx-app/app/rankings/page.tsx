@@ -1,7 +1,3 @@
 export default function Rankings() {
-  return (
-    <>
-      {/* ランキングページ */}
-    </>
-  );
+  return <>{/* ランキングページ */}</>;
 }

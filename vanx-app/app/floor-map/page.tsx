@@ -1,5 +1,5 @@
 import { FloorNavItem } from "@/components/features/floor-map";
-1
+1;
 export default function FloorMap() {
   return (
     <main>

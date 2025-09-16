@@ -5,18 +5,23 @@ import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/shared";
 import { PreviewFile } from "@/api/post/types";
-import { LeftArrowIcon, CloseIcon, LessThanIcon } from "@/components/shared/icons";
+import {
+  LeftArrowIcon,
+  CloseIcon,
+  LessThanIcon,
+} from "@/components/shared/icons";
 
 export default function Post() {
   const [previewFiles, setPreviewFiles] = useState<PreviewFile[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const urlsRef = useRef<Set<string>>(new Set());
 
-  const generateId = () => `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+  const generateId = () =>
+    `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 
   useEffect(() => {
     return () => {
-      urlsRef.current.forEach(url => {
+      urlsRef.current.forEach((url) => {
         URL.revokeObjectURL(url);
       });
       urlsRef.current.clear();
@@ -31,28 +36,32 @@ export default function Post() {
 
     const resetInput = () => {
       if (e.target) {
-        e.target.value = '';
+        e.target.value = "";
       }
     };
 
     if (files) {
       if (replaceIndex === null && previewFiles.length >= 5) {
-        alert('ファイルは最大5つまでアップロードできます。');
+        alert("ファイルは最大5つまでアップロードできます。");
         resetInput();
         return;
       }
 
       if (replaceIndex === null && previewFiles.length + files.length > 5) {
         const remainingSlots = 5 - previewFiles.length;
-        alert(`ファイルは最大5つまでアップロードできます。あと${remainingSlots}つまで追加可能です。`);
+        alert(
+          `ファイルは最大5つまでアップロードできます。あと${remainingSlots}つまで追加可能です。`
+        );
         resetInput();
         return;
       }
 
       const MAX_FILE_SIZE = 50 * 1024 * 1024;
-      const validFiles = Array.from(files).filter(file => {
+      const validFiles = Array.from(files).filter((file) => {
         if (file.size > MAX_FILE_SIZE) {
-          alert(`"${file.name}" のサイズが大きすぎます。50MB以下のファイルを選択してください。`);
+          alert(
+            `"${file.name}" のサイズが大きすぎます。50MB以下のファイルを選択してください。`
+          );
           return false;
         }
         return true;
@@ -79,8 +88,10 @@ export default function Post() {
           const oldUrl = prev[replaceIndex].url;
           URL.revokeObjectURL(oldUrl);
           urlsRef.current.delete(oldUrl);
-          
-          return prev.map((file, i) => (i === replaceIndex ? newPreviews[0] : file));
+
+          return prev.map((file, i) =>
+            i === replaceIndex ? newPreviews[0] : file
+          );
         });
       } else {
         setPreviewFiles((prev) => {
@@ -101,7 +112,7 @@ export default function Post() {
       const urlToRevoke = prev[index].url;
       URL.revokeObjectURL(urlToRevoke);
       urlsRef.current.delete(urlToRevoke);
-      
+
       const updated = prev.filter((_, i) => i !== index);
 
       if (updated.length === 0) {
@@ -118,10 +129,7 @@ export default function Post() {
   return (
     <main>
       <div className="flex items-center w-screen bg-accent text-white p-3 h-16">
-        <Link 
-          className="flex items-center gap-2.5"
-          href={"/"}
-        >
+        <Link className="flex items-center gap-2.5" href={"/"}>
           <LeftArrowIcon color="white" />
           戻る
         </Link>
@@ -129,7 +137,9 @@ export default function Post() {
 
       <form>
         <div className="flex flex-col justify-center gap-6 mt-20">
-          <h1 className="text-center text-h3">あなたのことを知らせてあげましょう！</h1>
+          <h1 className="text-center text-h3">
+            あなたのことを知らせてあげましょう！
+          </h1>
 
           <textarea
             name="postContent"
@@ -137,16 +147,14 @@ export default function Post() {
             placeholder="今、何してる？"
             autoComplete="off"
           />
-          
+
           {previewFiles.length > 0 ? (
             <div className="w-[350px] mx-auto p-4 bg-cover bg-center bg-no-repeat border border-text-gray rounded-lg overflow-hidden">
-
               <div className="relative">
-
                 <div className="flex items-center justify-between mb-4">
                   <label className="flex items-center bg-text-gray text-white text-label h-8 py-1 px-4 cursor-pointer rounded-full">
-                    <input 
-                      type="file" 
+                    <input
+                      type="file"
                       className="hidden"
                       onChange={(e) => handleFileChange(e, currentIndex)}
                     />
@@ -163,7 +171,6 @@ export default function Post() {
                 </div>
 
                 <div className="relative">
-
                   {previewFiles.length > 1 && currentIndex > 0 && (
                     <button
                       type="button"
@@ -177,28 +184,31 @@ export default function Post() {
                     </button>
                   )}
 
-                  {previewFiles.length > 1 && currentIndex < previewFiles.length - 1 && (
-                    <button
-                      type="button"
-                      onClick={() => setCurrentIndex(currentIndex + 1)}
-                      aria-label="次のファイルを表示"
-                      className="absolute flex right-2 top-1/2 w-10 h-10 items-center justify-center transform -translate-y-1/2 z-10 bg-text-gray bg-opacity-50 text-white rounded-full p-2 shadow-bottom cursor-pointer hover:bg-opacity-70 transition-opacity"
-                    >
-                      <span className="text-lg">
-                        <LessThanIcon />
-                      </span>
-                    </button>
-                  )}
+                  {previewFiles.length > 1 &&
+                    currentIndex < previewFiles.length - 1 && (
+                      <button
+                        type="button"
+                        onClick={() => setCurrentIndex(currentIndex + 1)}
+                        aria-label="次のファイルを表示"
+                        className="absolute flex right-2 top-1/2 w-10 h-10 items-center justify-center transform -translate-y-1/2 z-10 bg-text-gray bg-opacity-50 text-white rounded-full p-2 shadow-bottom cursor-pointer hover:bg-opacity-70 transition-opacity"
+                      >
+                        <span className="text-lg">
+                          <LessThanIcon />
+                        </span>
+                      </button>
+                    )}
 
                   <div className="flex items-center justify-center h-[420px]">
-                    {previewFiles[currentIndex] && previewFiles[currentIndex]?.type?.startsWith("video") ? (
+                    {previewFiles[currentIndex] &&
+                    previewFiles[currentIndex]?.type?.startsWith("video") ? (
                       <video
                         key={previewFiles[currentIndex].id}
                         src={previewFiles[currentIndex].url}
                         controls
                         className="rounded-lg max-w-[350px] max-h-[400px] w-full h-auto object-contain"
                       />
-                    ) : previewFiles[currentIndex] && previewFiles[currentIndex]?.type?.startsWith("image") ? (
+                    ) : previewFiles[currentIndex] &&
+                      previewFiles[currentIndex]?.type?.startsWith("image") ? (
                       <Image
                         key={previewFiles[currentIndex].id}
                         src={previewFiles[currentIndex].url}
@@ -222,7 +232,9 @@ export default function Post() {
                           type="button"
                           onClick={() => setCurrentIndex(index)}
                           className={`w-2 h-2 rounded-full ${
-                            index === currentIndex ? 'bg-accent' : 'bg-text-gray'
+                            index === currentIndex
+                              ? "bg-accent"
+                              : "bg-text-gray"
                           }`}
                         />
                       ))}
@@ -230,13 +242,11 @@ export default function Post() {
                   )}
                 </div>
               </div>
-              
+
               {previewFiles.length < 5 && (
-                <label
-                  className="flex justify-center items-center mx-auto mt-4 w-full gap-2 py-2 rounded-full bg-accent cursor-pointer text-center text-label text-white"
-                >
+                <label className="flex justify-center items-center mx-auto mt-4 w-full gap-2 py-2 rounded-full bg-accent cursor-pointer text-center text-label text-white">
                   さらにファイルを追加
-                  <Image 
+                  <Image
                     src="/icons/puls-icon.svg"
                     alt="puls-icon"
                     width={16}
@@ -260,11 +270,11 @@ export default function Post() {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-4 w-[350px] h-[115px] mx-auto text-label border-2 border-dotted border-text-gray rounded-lg">
-              <label className="text-text-gray">写真や動画を追加したいですか？</label>
+              <label className="text-text-gray">
+                写真や動画を追加したいですか？
+              </label>
 
-              <label
-                className="text-white bg-accent py-2 px-8 rounded-full cursor-pointer"
-              >
+              <label className="text-white bg-accent py-2 px-8 rounded-full cursor-pointer">
                 <input
                   type="file"
                   className="hidden"
@@ -279,11 +289,7 @@ export default function Post() {
         </div>
 
         <div className="flex items-center justify-center my-24">
-          <Button
-            buttonType="redButton"
-            text="投稿"
-            size="l"
-          />
+          <Button buttonType="redButton" text="投稿" size="l" />
         </div>
       </form>
     </main>

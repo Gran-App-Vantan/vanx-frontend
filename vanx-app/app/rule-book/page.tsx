@@ -1,7 +1,3 @@
 export default function RuleBook() {
-  return (
-    <>
-      {/* ルールブックページ */}
-    </>
-  );
+  return <>{/* ルールブックページ */}</>;
 }

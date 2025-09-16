@@ -6,7 +6,7 @@ import { SearchIcon } from "@/components/shared/icons";
 
 const navigationItems = [
   {
-    src: "./icons/all-icon.svg", 
+    src: "./icons/all-icon.svg",
     alt: "all-icon",
     category: "",
   },
@@ -40,7 +40,7 @@ const navigationItems = [
     alt: "symbols-icon",
     category: "symbols",
   },
-]
+];
 
 // 仮データの皆さん
 const reactionIcons = [
@@ -404,12 +404,12 @@ const reactionIcons = [
     category: "symbols",
     name: "ハート",
   },
-]
+];
 
-export function ReactionBottomSheet({ 
+export function ReactionBottomSheet({
   isOpen,
   onCloseAnimationEnd,
-} : { 
+}: {
   isOpen: boolean;
   onCloseAnimationEnd: () => void;
 }) {
@@ -443,9 +443,10 @@ export function ReactionBottomSheet({
   const filteredResults = useMemo(() => {
     if (!searchValue) return [];
 
-    return reactionIcons.filter(item => 
-      (item.category === reactionCategory || reactionCategory === "") &&
-      item.name.toLowerCase().includes(searchValue.toLowerCase())
+    return reactionIcons.filter(
+      (item) =>
+        (item.category === reactionCategory || reactionCategory === "") &&
+        item.name.toLowerCase().includes(searchValue.toLowerCase())
     );
   }, [searchValue, reactionCategory]);
 
@@ -456,9 +457,8 @@ export function ReactionBottomSheet({
         ${animClass}
       `}
     >
-      
-      <span className="block w-15 min-h-1 bg-text-gray rounded-full mx-auto"/>
-      
+      <span className="block w-15 min-h-1 bg-text-gray rounded-full mx-auto" />
+
       <div className="flex items-center w-[358px] bg-gray px-4 mx-auto rounded-lg gap-4">
         <SearchIcon className="cursor-pointer" />
         <input
@@ -486,12 +486,7 @@ export function ReactionBottomSheet({
                     setReactionCategory(item.category || "");
                   }}
                 >
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    width={24}
-                    height={24}
-                  />
+                  <Image src={item.src} alt={item.alt} width={24} height={24} />
                 </button>
               </li>
             );
@@ -499,7 +494,7 @@ export function ReactionBottomSheet({
         </ul>
       </nav>
 
-      <div 
+      <div
         className={`
           mx-auto h-60 min-h-[240px] gap-[15px] overflow-y-scroll
           ${
@@ -509,20 +504,13 @@ export function ReactionBottomSheet({
                 ? "grid grid-cols-8 grid-rows-[30px_30px]"
                 : "flex justify-center items-center"
           }
-        `}>
+        `}
+      >
         {searchValue ? (
           filteredResults.length > 0 ? (
             filteredResults.map((icon, i) => (
-              <span
-                key={i}
-                className="w-[30px] h-[30px]"
-              >
-                <Image
-                  src={icon.src}
-                  alt={icon.alt}
-                  width={30}
-                  height={30}
-                />
+              <span key={i} className="w-[30px] h-[30px]">
+                <Image src={icon.src} alt={icon.alt} width={30} height={30} />
               </span>
             ))
           ) : (
@@ -531,29 +519,18 @@ export function ReactionBottomSheet({
               <p>他のキーワードでお試しください</p>
             </div>
           )
+        ) : filteredIcons.length > 0 ? (
+          filteredIcons.map((icon, i) => (
+            <span key={i} className="w-[30px] h-[30px]">
+              <Image src={icon.src} alt={icon.alt} width={30} height={30} />
+            </span>
+          ))
         ) : (
-          filteredIcons.length > 0 ? (
-            filteredIcons.map((icon, i) => (
-              <span
-                key={i}
-                className="w-[30px] h-[30px]"
-              >
-                <Image
-                  src={icon.src}
-                  alt={icon.alt}
-                  width={30}
-                  height={30}
-                />
-              </span>
-            ))
-          ) : (
-            <div className="col-span-8 flex justify-center items-center min-h-[240px] text-center text-text-gray">
-              リアクションが見つかりません
-            </div>
-          )
+          <div className="col-span-8 flex justify-center items-center min-h-[240px] text-center text-text-gray">
+            リアクションが見つかりません
+          </div>
         )}
       </div>
-
     </div>
   );
 }
