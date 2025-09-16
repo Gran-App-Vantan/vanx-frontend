@@ -15,12 +15,15 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+          rel="stylesheet"
+        />
       </head>
       <body>
-        {pathName === "/" ? <Header />: ""}
+        {pathName === "/" ? <Header /> : ""}
         {children}
-        {pathName === "/" ? <FooterNavItem />: ""}
+        {pathName === "/" ? <FooterNavItem /> : ""}
       </body>
     </html>
   );

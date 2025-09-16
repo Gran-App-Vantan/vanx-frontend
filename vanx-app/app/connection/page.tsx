@@ -1,7 +1,3 @@
 export default function Connection() {
-  return (
-    <>
-      {/* 接続ページ */}
-    </>
-  );
+  return <>{/* 接続ページ */}</>;
 }

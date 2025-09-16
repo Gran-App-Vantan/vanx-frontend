@@ -1,6 +1,6 @@
 type PostDeleteModalProps = {
   onClose: () => void;
-}
+};
 
 export function PostDeleteModal({ onClose }: PostDeleteModalProps) {
   return (
@@ -8,7 +8,7 @@ export function PostDeleteModal({ onClose }: PostDeleteModalProps) {
       <p className="text-center">投稿を削除しますか？</p>
 
       <div className="flex justify-around gap-6">
-        <button 
+        <button
           className="py-3 px-6 bg-gray text-text-gray text-label rounded-full cursor-pointer"
           onClick={onClose}
         >
@@ -21,5 +21,5 @@ export function PostDeleteModal({ onClose }: PostDeleteModalProps) {
         </button>
       </div>
     </div>
-  )
+  );
 }
