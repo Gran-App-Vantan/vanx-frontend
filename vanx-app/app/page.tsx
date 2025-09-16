@@ -23,7 +23,7 @@ const commonReaction = {
 };
 
 // 投稿一覧（仮データで5件分作成）
-const posts = Array.from({ length: 5 }, (_, i) => ({
+export const posts = Array.from({ length: 5 }, (_, i) => ({
   id: i + 1,
   ...commonUser,
   contents:
