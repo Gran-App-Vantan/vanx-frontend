@@ -13,6 +13,10 @@ export default function SignUp() {
     confirmPassword: "",
   });
 
+  //
+  // TODO : エラーメッセージはバックエンド側から取得
+  //
+
   const [passwordError, setPasswordError] = useState<
     | "必須項目です"
     | "ユーザーIDとパスワードが一致しません"
@@ -51,18 +55,33 @@ export default function SignUp() {
     }
   };
 
+  const isAllFilled =
+    formValues.userName.length > 0 &&
+    formValues.password.length > 0 &&
+    formValues.confirmPassword.length > 0;
+
   return (
-    <main>
-      <div>
+    <main className="flex flex-col items-center justify-center gap-9 min-h-screen">
+      <div className="flex flex-col items-center gap-9">
         <Logo />
-        <h1>アカウント新規作成</h1>
+        <h1 className="text-h1 text-text">
+          アカウント新規作成
+        </h1>
       </div>
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form 
+        className="flex flex-col gap-10 border-y border-y-text-gray py-16"
+        onSubmit={handleSubmit}
+      >
+        <div className="flex flex-col gap-3">
           <div>
-            <label htmlFor="userName">
+            <label 
+              className="flex items-center gap-3 text-label text-text px-3"
+              htmlFor="userName"
+            >
               ユーザー名
-              <span>必須</span>
+              <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
+                必須
+              </span>
             </label>
           </div>
           <Input
@@ -71,14 +90,19 @@ export default function SignUp() {
             type="text"
             placeholder="ユーザー名"
             onChange={(value) => setValue("userName", value)}
-            error={passwordError}
+            error={formValues.userName.length === 0 && passwordError === "必須項目です" ? passwordError : undefined}
           />
         </div>
-        <div>
+        <div className="flex flex-col gap-3">
           <div>
-            <label htmlFor="password">
+            <label 
+              className="flex items-center gap-3 text-label text-text px-3"
+              htmlFor="password"
+            >
               パスワード
-              <span>必須</span>
+              <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
+                必須
+              </span>
             </label>
           </div>
           <Input
@@ -93,11 +117,16 @@ export default function SignUp() {
             error={passwordError}
           />
         </div>
-        <div>
+        <div className="flex flex-col gap-3">
           <div>
-            <label htmlFor="confirmPassword">
+            <label 
+              className="flex items-center gap-3 text-label text-text px-3"
+              htmlFor="confirmPassword"
+            >
               パスワードの確認
-              <span>必須</span>
+              <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
+                必須
+              </span>
             </label>
           </div>
           <Input
@@ -112,11 +141,25 @@ export default function SignUp() {
             error={passwordError}
           />
         </div>
-        <div>
-          <input type="checkbox" />
-          <label htmlFor="">文化祭を楽しみ尽くす</label>
+        <div className="flex gap-2.5">
+          <input 
+            className="
+              appearance-none outline-none w-5 h-5 rounded-sm border border-text-gray bg-white
+              checked:bg-accent checked:border-accent checked:bg-[url('/icons/check-icon.svg')] checked:bg-no-repeat checked:bg-center
+            "
+            type="checkbox"
+          />
+          <label 
+            htmlFor=""
+          >
+            文化祭を楽しみ尽くす
+          </label>
         </div>
-        <Button buttonType="grayButton" text="確認" size="l" />
+        <Button 
+          buttonType={isAllFilled ? "redButton" : "grayButton"} 
+          text="確認" 
+          size="l" 
+        />
       </form>
     </main>
   );
