@@ -10,6 +10,7 @@ type InputProps = {
   onClick?: () => void;
   isPasswordVisible?: boolean;
   error?:
+    | "必須項目です"
     | "ユーザーIDとパスワードが一致しません"
     | "パスワードが一致しません"
     | "既に存在しているユーザーIDです";
