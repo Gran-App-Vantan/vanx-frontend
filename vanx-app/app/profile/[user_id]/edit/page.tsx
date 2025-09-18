@@ -1,5 +1,5 @@
-import { ReturnButton } from "@/components/shared"
-import Image from "next/image"
+import { ReturnButton } from "@/components/shared";
+import Image from "next/image";
 
 export default function ProfileEdit() {
   return (
@@ -20,13 +20,10 @@ export default function ProfileEdit() {
         </div>
         <div className="flex flex-col items-center mt-8 gap-6">
           <div className="flex flex-col gap-3">
-            <label 
-              htmlFor="userId"
-              className="ml-2 text-text text-label"
-            >
+            <label htmlFor="userId" className="ml-2 text-text text-label">
               ユーザーIDを編集
             </label>
-            <input 
+            <input
               id="userId"
               type="text"
               className="w-72 h-11 border border-text-gray rounded-lg px-4 text-label outline-none"
@@ -35,24 +32,19 @@ export default function ProfileEdit() {
             />
           </div>
           <div className="flex flex-col gap-3">
-            <label 
-              htmlFor="userName"
-              className="ml-2 text-text text-label"
-            >
+            <label htmlFor="userName" className="ml-2 text-text text-label">
               ユーザー名を編集
             </label>
-            <input 
+            <input
               id="userName"
-              type="text" 
+              type="text"
               className="w-72 h-11 border border-text-gray rounded-lg px-4 text-label outline-none"
               placeholder="新しいユーザー名を入力"
               autoComplete="off"
             />
           </div>
         </div>
-        <button
-          className="flex justify-center items-center w-80 h-11 mt-30 mx-auto bg-accent text-white text-normal rounded-full"
-        >
+        <button className="flex justify-center items-center w-80 h-11 mt-30 mx-auto bg-accent text-white text-normal rounded-full">
           保存
         </button>
       </form>

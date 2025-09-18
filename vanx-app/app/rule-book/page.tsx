@@ -17,24 +17,21 @@ export default function RuleBook() {
         <ReturnButton />
       </div>
       <div>
-        <Modal 
+        <Modal
           size="rule-book"
           openModal={isOpen}
           onClose={() => setIsOpen(true)} // モーダルを閉じないようにする
         >
           <div className="relative w-full h-full flex flex-col justify-center items-center">
             <h1>{page}ページ目です</h1>
-            <div 
+            <div
               className={`
                 absolute bottom-0 flex w-full
-                ${page === 1
-                  ? "justify-end"
-                  : "justify-between"
-                }
+                ${page === 1 ? "justify-end" : "justify-between"}
               `}
             >
               {page > 1 && (
-                <button 
+                <button
                   className="flex justify-center items-center w-11 h-11 bg-accent rounded-full"
                   onClick={() => setPage(page - 1)}
                 >
@@ -42,7 +39,7 @@ export default function RuleBook() {
                 </button>
               )}
               {page < 4 && ( // ここでページ数の上限を設定
-                <button 
+                <button
                   className="flex justify-center items-center w-11 h-11 bg-accent rounded-full"
                   onClick={() => setPage(page + 1)}
                 >

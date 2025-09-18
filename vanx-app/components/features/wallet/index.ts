@@ -1,1 +1,1 @@
-export * from "./PointLogItem"
+export * from "./PointLogItem";

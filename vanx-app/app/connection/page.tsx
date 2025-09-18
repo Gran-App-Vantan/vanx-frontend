@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { Logo, Modal } from "@/components/shared";
-import { LoadingIcon, LargeCheckIcon, FailureIcon } from "@/components/shared/icons";
+import {
+  LoadingIcon,
+  LargeCheckIcon,
+  FailureIcon,
+} from "@/components/shared/icons";
 
 type isConnecting = "connecting" | "connected" | "failed";
 
 export default function Connection() {
-  const [connectionState, setConnectionState] = useState<isConnecting>("failed");
+  const [connectionState, setConnectionState] =
+    useState<isConnecting>("failed");
 
   return (
     <main>
@@ -21,7 +26,7 @@ export default function Connection() {
       >
         {connectionState === "connecting" ? (
           <div className="flex flex-col items-center gap-4">
-            <LoadingIcon className="animate-spin"/>
+            <LoadingIcon className="animate-spin" />
             <p className="text-text text-normal">接続中...</p>
           </div>
         ) : connectionState === "connected" ? (
