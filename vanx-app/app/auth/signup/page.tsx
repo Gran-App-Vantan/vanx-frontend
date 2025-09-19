@@ -7,6 +7,7 @@ import { Logo, Input, Button } from "@/components/shared";
 export default function SignUp() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
   const [formValues, setFormValues] = useState<SignUpParams>({
     userName: "",
     password: "",
@@ -19,15 +20,14 @@ export default function SignUp() {
 
   const [passwordError, setPasswordError] = useState<
     | "必須項目です"
-    | "ユーザーIDとパスワードが一致しません"
+    | "ユーザー名とパスワードが一致しません"
     | "パスワードが一致しません"
-    | "既に存在しているユーザーIDです"
+    | "既に存在しているユーザー名です"
     | undefined
   >(undefined);
 
   const setValue = (field: keyof SignUpParams, value: string) => {
     const trimmedValue = value.trim();
-    
     setFormValues({ ...formValues, [field]: trimmedValue });
 
     if (
@@ -55,6 +55,8 @@ export default function SignUp() {
       setPasswordError("パスワードが一致しません");
       return;
     }
+
+    setIsConfirmed(true);
   };
 
   const isAllFilled =
@@ -63,11 +65,19 @@ export default function SignUp() {
     formValues.confirmPassword.length > 0;
 
   return (
-    <main className="flex flex-col items-center justify-center gap-9 min-h-screen">
+    <main className="flex flex-col items-center justify-center gap-9 min-h-screen py-20">
+      {isConfirmed && (
+        <button
+          className="absolute top-0 left-0 mt-6 ml-6 text-label text-text"
+          onClick={() => setIsConfirmed(false)}
+        >
+          ← 戻る
+        </button>
+      )}
       <div className="flex flex-col items-center gap-9">
         <Logo />
         <h1 className="text-h1 text-text">
-          アカウント新規作成
+          {isConfirmed ? "入力内容の確認" : "アカウント新規作成"}
         </h1>
       </div>
       <form 
@@ -81,9 +91,11 @@ export default function SignUp() {
               htmlFor="userName"
             >
               ユーザー名
-              <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
-                必須
-              </span>
+              {!isConfirmed && (
+                <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
+                  必須
+                </span>
+              )}
             </label>
           </div>
           <Input
@@ -91,6 +103,7 @@ export default function SignUp() {
             size="normal"
             type="text"
             placeholder="ユーザー名"
+            readonly={isConfirmed}
             onChange={(value) => setValue("userName", value)}
           />
         </div>
@@ -101,9 +114,11 @@ export default function SignUp() {
               htmlFor="password"
             >
               パスワード
-              <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
-                必須
-              </span>
+              {!isConfirmed && (
+                <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
+                  必須
+                </span>
+              )}
             </label>
           </div>
           <Input
@@ -111,6 +126,7 @@ export default function SignUp() {
             size="normal"
             type="password"
             placeholder="パスワードを入力"
+            readonly={isConfirmed}
             value={formValues.password}
             onChange={(value) => setValue("password", value)}
             onClick={() => setPasswordVisible(!passwordVisible)}
@@ -125,9 +141,11 @@ export default function SignUp() {
               htmlFor="confirmPassword"
             >
               パスワードの確認
-              <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
-                必須
-              </span>
+              {!isConfirmed && (
+                <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
+                  必須
+                </span>
+              )}
             </label>
           </div>
           <Input
@@ -135,6 +153,7 @@ export default function SignUp() {
             size="normal"
             type="password"
             placeholder="パスワードを再入力"
+            readonly={isConfirmed}
             value={formValues.confirmPassword}
             onChange={(value) => setValue("confirmPassword", value)}
             onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
@@ -160,7 +179,7 @@ export default function SignUp() {
         </div>
         <Button 
           buttonType={isAllFilled ? "redButton" : "grayButton"} 
-          text="確認" 
+          text={isConfirmed ? "登録" : "確認"}
           size="l" 
           disabled={!isAllFilled}
         />
