@@ -3,3 +3,8 @@ export type SignUpParams = {
   password: string;
   confirmPassword: string;
 };
+
+export type LoginParams = {
+  userName: string;
+  password: string;
+};
