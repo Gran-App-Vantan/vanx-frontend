@@ -8,12 +8,7 @@ export type ModalProps = {
   onClose: () => void;
 };
 
-export function Modal({ 
-  size, 
-  openModal, 
-  onClose, 
-  children 
-}: ModalProps) {
+export function Modal({ size, openModal, onClose, children }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
 
   const OutClick = (e: React.MouseEvent<HTMLDivElement>) => {

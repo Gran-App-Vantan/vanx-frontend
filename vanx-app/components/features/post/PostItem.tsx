@@ -19,8 +19,7 @@ export function PostItem({ post, onDelete, onClick }: PostItemProps) {
           <Image src={post.imageSrc} alt="user-icon" width={50} height={50} />
         </Link>
 
-        <div className="flex flex-col gap-2">
-          <p className="text-small text-text-gray">{post.userId}</p>
+        <div className="flex items-center gap-2">
           <h2 className="text-bold">{post.userName}</h2>
         </div>
 

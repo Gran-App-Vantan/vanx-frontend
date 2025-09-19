@@ -9,10 +9,12 @@ type InputProps = {
   onChange: (value: string) => void;
   onClick?: () => void;
   isPasswordVisible?: boolean;
+  readonly?: boolean;
   error?:
-    | "ユーザーIDとパスワードが一致しません"
+    | "必須項目です"
+    | "ユーザー名とパスワードが一致しません"
     | "パスワードが一致しません"
-    | "既に存在しているユーザーIDです";
+    | "既に存在しているユーザー名です";
 };
 
 export function Input({
@@ -24,6 +26,7 @@ export function Input({
   onChange,
   onClick,
   isPasswordVisible,
+  readonly = false,
   error,
 }: InputProps) {
   return (
@@ -50,6 +53,7 @@ export function Input({
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
           autoComplete="off"
+          readOnly={readonly}
         />
         {type === "password" && value.length > 0 && (
           <Image
