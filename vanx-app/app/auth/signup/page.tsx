@@ -26,7 +26,9 @@ export default function SignUp() {
   >(undefined);
 
   const setValue = (field: keyof SignUpParams, value: string) => {
-    setFormValues({ ...formValues, [field]: value });
+    const trimmedValue = value.trim();
+    
+    setFormValues({ ...formValues, [field]: trimmedValue });
 
     if (
       field === "userName" ||
@@ -75,7 +77,7 @@ export default function SignUp() {
         <div className="flex flex-col gap-3">
           <div>
             <label 
-              className="flex items-center gap-3 text-label text-text px-3"
+              className="flex items-center gap-3 text-label text-text px-3.5"
               htmlFor="userName"
             >
               ユーザー名
@@ -90,13 +92,12 @@ export default function SignUp() {
             type="text"
             placeholder="ユーザー名"
             onChange={(value) => setValue("userName", value)}
-            error={formValues.userName.length === 0 && passwordError === "必須項目です" ? passwordError : undefined}
           />
         </div>
         <div className="flex flex-col gap-3">
           <div>
             <label 
-              className="flex items-center gap-3 text-label text-text px-3"
+              className="flex items-center gap-3 text-label text-text px-3.5"
               htmlFor="password"
             >
               パスワード
@@ -120,7 +121,7 @@ export default function SignUp() {
         <div className="flex flex-col gap-3">
           <div>
             <label 
-              className="flex items-center gap-3 text-label text-text px-3"
+              className="flex items-center gap-3 text-label text-text px-3.5"
               htmlFor="confirmPassword"
             >
               パスワードの確認
@@ -141,8 +142,9 @@ export default function SignUp() {
             error={passwordError}
           />
         </div>
-        <div className="flex gap-2.5">
+        <div className="flex gap-2.5 pl-2">
           <input 
+            id="check"
             className="
               appearance-none outline-none w-5 h-5 rounded-sm border border-text-gray bg-white
               checked:bg-accent checked:border-accent checked:bg-[url('/icons/check-icon.svg')] checked:bg-no-repeat checked:bg-center
@@ -150,7 +152,8 @@ export default function SignUp() {
             type="checkbox"
           />
           <label 
-            htmlFor=""
+            htmlFor="check"
+            className="text-label text-text"
           >
             文化祭を楽しみ尽くす
           </label>
@@ -159,6 +162,7 @@ export default function SignUp() {
           buttonType={isAllFilled ? "redButton" : "grayButton"} 
           text="確認" 
           size="l" 
+          disabled={!isAllFilled}
         />
       </form>
     </main>
