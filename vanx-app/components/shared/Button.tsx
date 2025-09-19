@@ -6,6 +6,7 @@ export interface ButtonProps {
   text?: string;
   size?: "s" | "m" | "l" | "custom";
   className?: string;
+  disabled?: boolean;
 }
 
 export function Button({
@@ -13,6 +14,7 @@ export function Button({
   text = "",
   size = "m",
   className = "",
+  disabled = false,
 }: ButtonProps) {
   const sizeClass = {
     s: "w-[44px] h-[44px]",
@@ -42,6 +44,7 @@ export function Button({
         cursor-pointer
         ${baseButton} ${sizeClass} ${className}
       `}
+      disabled={disabled}
     >
       {text}
     </button>
