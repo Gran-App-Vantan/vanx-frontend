@@ -1,6 +1,10 @@
 "use client";
 
-import { PostItem, ReactionBottomSheet, PostDeleteModal } from "@/components/features/post";
+import {
+  PostItem,
+  ReactionBottomSheet,
+  PostDeleteModal,
+} from "@/components/features/post";
 import { Modal } from "@/components/shared";
 import { useState, useEffect, useRef } from "react";
 
@@ -19,10 +23,11 @@ const commonReaction = {
 };
 
 // 投稿一覧（仮データで5件分作成）
-const posts = Array.from({ length: 5 }, (_, i) => ({
+export const posts = Array.from({ length: 5 }, (_, i) => ({
   id: i + 1,
   ...commonUser,
-  contents: "実はGran App Vantanの「Gran」はグランアレグリアから取ったんです。ご存じでしたか？",
+  contents:
+    "実はGran App Vantanの「Gran」はグランアレグリアから取ったんです。ご存じでしたか？",
   postReactions: [
     {
       id: i + 1,
@@ -52,7 +57,7 @@ export default function Home() {
   const handleCloseAnimationEnd = () => {
     setIsBottomSheetVisible(false);
   };
-  
+
   return (
     <>
       <main>
@@ -66,7 +71,7 @@ export default function Home() {
 
               return (
                 <li key={post.id}>
-                  <PostItem 
+                  <PostItem
                     post={normalizedPost}
                     onDelete={() => setIsDeleteModalOpen(true)}
                     onClick={() => setIsBottomSheetOpen(true)}
@@ -83,25 +88,22 @@ export default function Home() {
               onClose={() => setIsDeleteModalOpen(false)}
             >
               <PostDeleteModal onClose={() => setIsDeleteModalOpen(false)} />
-            </Modal> 
+            </Modal>
           )}
 
-        {isBottomSheetVisible && (
-          <div 
-            className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
-            onClick={() => setIsBottomSheetOpen(false)}
-          >
+          {isBottomSheetVisible && (
             <div
-              ref={bottomSheetRef}
-              onClick={(e) => e.stopPropagation()}
+              className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
+              onClick={() => setIsBottomSheetOpen(false)}
             >
-              <ReactionBottomSheet 
-                isOpen={isBottomSheetOpen}
-                onCloseAnimationEnd={handleCloseAnimationEnd}
-              />
+              <div ref={bottomSheetRef} onClick={(e) => e.stopPropagation()}>
+                <ReactionBottomSheet
+                  isOpen={isBottomSheetOpen}
+                  onCloseAnimationEnd={handleCloseAnimationEnd}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
         </div>
       </main>
     </>

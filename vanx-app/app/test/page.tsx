@@ -2,10 +2,16 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from 'next/link';
+import Link from "next/link";
 
-import { PostingButton, PostItem, ReactionAddButton, ReactionBottomSheet, Reaction } from "@/components/features/post";
-import { Number } from "@/components/features/rankings/UsersProfile";
+import {
+  PostingButton,
+  PostItem,
+  ReactionAddButton,
+  ReactionBottomSheet,
+  Reaction,
+} from "@/components/features/post";
+import { Number } from "@/components/features/rankings/RankingsItem";
 import { PointLogItem } from "@/components/features/wallet/PointLogItem";
 import { Button, Input } from "@/components/shared";
 import { TravelIcon } from "@/components/shared/icons";

@@ -1,21 +1,19 @@
 "use client";
-import React from 'react';
+import React from "react";
 
 export interface ButtonProps {
   buttonType: "redButton" | "grayButton" | "arrowButton";
   text?: string;
   size?: "s" | "m" | "l" | "custom";
   className?: string;
-  type?: "button" | "submit" | "reset";
   disabled?: boolean;
 }
 
-export function Button({ 
-  buttonType, 
-  text = "", 
-  size = "m", 
+export function Button({
+  buttonType,
+  text = "",
+  size = "m",
   className = "",
-  type = "button",
   disabled = false,
 }: ButtonProps) {
   const sizeClass = {
@@ -27,7 +25,9 @@ export function Button({
 
   if (buttonType === "arrowButton") {
     return (
-      <button className={`rounded-full bg-accent flex items-center justify-center shadow-md ${sizeClass} ${className}`}>
+      <button
+        className={`rounded-full bg-accent flex items-center justify-center shadow-md ${sizeClass} ${className}`}
+      >
         <div className="w-3 h-3 border-t-2 border-r-2 border-white rotate-45"></div>
       </button>
     );
@@ -39,12 +39,11 @@ export function Button({
   }[buttonType];
 
   return (
-    <button 
+    <button
       className={`
         cursor-pointer
         ${baseButton} ${sizeClass} ${className}
       `}
-      type={type}
       disabled={disabled}
     >
       {text}
