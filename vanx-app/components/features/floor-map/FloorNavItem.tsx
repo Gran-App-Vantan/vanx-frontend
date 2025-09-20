@@ -35,7 +35,7 @@ export function FloorNavItem({
   onClick: handleClick,
 }: FloorNavItemProps) {
   return (
-    <div className="flex justify-center fixed bottom-0 left-1/2 -translate-x-1/2  bg-white  shadow-top w-full">
+    <div className="flex justify-center fixed bottom-0 left-1/2 -translate-x-1/2 bg-white shadow-top w-full">
       <div className="flex gap-2">
         {floors.map((floor) => (
           <button

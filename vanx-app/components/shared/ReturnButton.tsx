@@ -7,8 +7,8 @@ export function ReturnButton() {
     router.back();
   };
   return (
-    <div className="fixed top-0 left-0 bg-accent w-screen z-50 text-white p-3 flex justify-start items-center">
-      <button onClick={handleClick}>←戻る</button>
+    <div className="fixed top-0 left-0 bg-accent w-screen h-16 z-50 text-white px-4 flex justify-start items-center">
+      <button onClick={handleClick}>← 戻る</button>
     </div>
   );
 }
