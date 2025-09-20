@@ -7,7 +7,7 @@ export function ReturnButton() {
     router.back();
   };
   return (
-    <div className="bg-accent text-white p-3 flex justify-start items-center">
+    <div className="fixed top-0 left-0 bg-accent w-screen z-50 text-white p-3 flex justify-start items-center">
       <button onClick={handleClick}>←戻る</button>
     </div>
   );
