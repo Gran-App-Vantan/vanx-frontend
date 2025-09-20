@@ -1,0 +1,23 @@
+# node_modulesやNext.jsのビルド成果物
+node_modules
+.next
+dist
+build
+
+# 環境ファイルやログ
+.env*
+*.log
+
+# バージョン管理やIDE関連
+.git
+.vscode
+
+# カバレッジやテスト成果物
+coverage
+
+# Docker関連
+Dockerfile
+docker-compose.yml
+
+# その他不要なもの
+.DS_Store

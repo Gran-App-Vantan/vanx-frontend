@@ -1,9 +1,7 @@
-export { Header } from "./Header";
-export { Logo } from "./Logo";
-export { FooterNavItem } from "./FooterNavItem";
-export { Button } from "./Button";
-export { Modal } from "./Modal";
-export { ReturnButton } from "./ReturnButton";
-export { MyProfile } from "../features/rankings/MyProfile";
-export { Number } from "../features/rankings/UsersProfile";
-export { Input } from "./Input";
+export * from "./Header";
+export * from "./Logo";
+export * from "./FooterNavItem";
+export * from "./Button";
+export * from "./Modal";
+export * from "./ReturnButton";
+export * from "./Input";
