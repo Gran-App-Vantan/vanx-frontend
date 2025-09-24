@@ -24,7 +24,7 @@ export type SignupResponse =
       messages: string[];
     };
 
-export async function signup(req: SignupRequest) {
+export async function Signup(req: SignupRequest) {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/sign-up`;
 
   return axios

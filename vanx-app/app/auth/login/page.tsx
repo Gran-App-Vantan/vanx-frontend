@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 import { LoginParams } from "@/api/auth/types";
 import { Logo, Input, Button } from "@/components/shared";
+import { Login as loginApi } from "@/api/auth/login";
 
 export default function Login() {
+  const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [formValues, setFormValues] = useState<LoginParams>({
     userName: "",
@@ -28,11 +32,22 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("ログインの処理を行います");
 
-    // ここでログインの処理を行います
+    const response = await loginApi({
+      user: {
+        name: formValues.userName,
+        password: formValues.password,
+      }
+    });
+
+    if (response.success && "authToken" in response) {
+      Cookies.set("authToken", response.authToken as string);
+      router.push("/");
+    } else {
+      console.log("Error:", response.messages);
+    }
   };
 
   const isAllFilled =
@@ -102,6 +117,7 @@ export default function Login() {
           text="ログイン"
           size="l"
           disabled={!isAllFilled}
+          type="submit"
         />
       </form>
     </main>
