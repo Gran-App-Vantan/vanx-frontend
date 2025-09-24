@@ -1,6 +1,6 @@
 export type Post = {
   id: number;
-  userId: string;
+  userId: number;
   userName: string;
   imageSrc: string;
   contents: string;
