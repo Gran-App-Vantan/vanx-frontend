@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { SignUpParams } from "@/api/auth/types";
 import { Logo, Input, Button } from "@/components/shared";
-import { signup } from "@/api/auth/signup";
+import { Signup } from "@/api/auth/signup";
 
 export default function SignUp() {
   const router = useRouter();
@@ -42,7 +42,7 @@ export default function SignUp() {
     e.preventDefault();
 
     if (isConfirmed) {
-      const response = await signup({
+      const response = await Signup({
         user: {
           name: formValues.userName,
           password: formValues.password,
