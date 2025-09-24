@@ -4,11 +4,6 @@ import Cookies from "js-cookie";
 import { User } from "../auth/types";
 import { Reaction, PreviewFile } from "./types";
 
-export type postStoreRequest = {
-  content: string;
-  files?: string[];
-}
-
 export type postStoreResponse = {
   success: boolean;
   message: string;
@@ -26,15 +21,16 @@ export type postStoreResponse = {
   } 
 }
 
-export async function postStore(req: postStoreRequest) {
+export async function postStore(formData: FormData) {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/post`;
   const authToken = Cookies.get("authToken");
 
   return axios
-    .post<postStoreRequest>(apiUrl, req, {
+    .post<postStoreResponse>(apiUrl, formData, {
       headers: {
         Authorization: `Bearer ${authToken}`,
         Accept: "application/json",
+        "Content-Type": "multipart/form-data",
       }
     })
     .then((res) => res.data)
