@@ -15,8 +15,21 @@ export function PostItem({ post, onDelete, onClick }: PostItemProps) {
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
-        <Link href={`/users/${post.userId}`}>
-          <Image src={post.imageSrc} alt="user-icon" width={50} height={50} />
+        <Link href={`/profile/${post.userId}`}>
+          {post.imageSrc ? (
+            <Image 
+              src={post.imageSrc} 
+              alt="user-icon" 
+              width={50} 
+              height={50} 
+            />
+          ) : (
+            <Image 
+              src="/icons/default-user-icon.svg" 
+              alt="user-icon" 
+              width={50} 
+              height={50} />
+          )}
         </Link>
 
         <div className="flex items-center gap-2">
