@@ -6,41 +6,44 @@ import {
   PostDeleteModal,
 } from "@/components/features/post";
 import { Modal } from "@/components/shared";
+import { PostIndex } from "@/api/post/postIndex";
+import { Post } from "@/api/post/types";
 import { useState, useEffect, useRef } from "react";
 
-// 仮データ（ユーザー情報）
-const commonUser = {
-  userId: "junpeichan@0310",
-  userName: "じゅんぺいちゃん",
-  imageSrc: "/icons/default-user-icon.svg",
-};
-
-// 仮データ（リアクション情報）
-const commonReaction = {
-  reactionName: "平常心",
-  reactionImageSrc: "/icons/reaction-add-icon.svg",
-  category: "emoji" as const,
-};
-
-// 投稿一覧（仮データで5件分作成）
-export const posts = Array.from({ length: 5 }, (_, i) => ({
-  id: i + 1,
-  ...commonUser,
-  contents:
-    "実はGran App Vantanの「Gran」はグランアレグリアから取ったんです。ご存じでしたか？",
-  postReactions: [
-    {
-      id: i + 1,
-      ...commonReaction,
-    },
-  ],
-}));
-
 export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const bottomSheetRef = useRef<HTMLDivElement>(null);
+
+  const mapApiPostToPost = (apiPost: any): Post => ({
+    id: apiPost.id,
+    userId: apiPost.user_id,
+    userName: apiPost.user?.name || "不明なユーザー",
+    imageSrc: apiPost.postfile?.[0] || "/icons/default-user-icon.svg", // デフォルト画像を設定
+    contents: apiPost.post_content || "",
+    postReactions: apiPost.post_reactions || []
+  });
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await PostIndex();
+
+        if (response.success && "data" in response) {
+          const apiData = response.data as any;
+          const mappedPosts: Post[] = apiData.posts.map(mapApiPostToPost);
+          setPosts(mappedPosts);
+        } else {
+          console.log("Error:", response.message);
+        }
+      } catch (error) {
+        console.log("Error", error);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   useEffect(() => {
     if (isBottomSheetOpen) {
