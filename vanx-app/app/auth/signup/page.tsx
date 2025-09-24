@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 import { SignUpParams } from "@/api/auth/types";
 import { Logo, Input, Button } from "@/components/shared";
+import { signup } from "@/api/auth/signup";
 
 export default function SignUp() {
+  const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -14,15 +18,10 @@ export default function SignUp() {
     confirmPassword: "",
   });
 
-  //
-  // TODO : エラーメッセージはバックエンド側から取得
-  //
-
   const [passwordError, setPasswordError] = useState<
     | "必須項目です"
     | "ユーザー名とパスワードが一致しません"
     | "パスワードが一致しません"
-    | "既に存在しているユーザー名です"
     | undefined
   >(undefined);
 
@@ -39,8 +38,26 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isConfirmed) {
+      const response = await signup({
+        user: {
+          name: formValues.userName,
+          password: formValues.password,
+        }
+      });
+
+      if (response.success && "authToken" in response) {
+        Cookies.set("authToken", response.authToken as string);
+        router.push("/");
+      } else {
+        console.log("Error:", response.messages);
+        setIsConfirmed(false);
+      }
+      return;
+    }
 
     if (
       formValues.userName.length === 0 ||
@@ -60,9 +77,9 @@ export default function SignUp() {
   };
 
   const isAllFilled =
-    formValues.userName.length > 0 &&
-    formValues.password.length > 0 &&
-    formValues.confirmPassword.length > 0;
+    formValues.userName.trim().length > 0 &&
+    formValues.password.trim().length > 0 &&
+    formValues.confirmPassword.trim().length > 0;
 
   return (
     <main className="flex flex-col items-center justify-center gap-9 min-h-screen py-20">
@@ -92,7 +109,7 @@ export default function SignUp() {
             >
               ユーザー名
               {!isConfirmed && (
-                <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
+                <span className="bg-red-letters text-white text-small py-1 px-2 rounded-sm">
                   必須
                 </span>
               )}
@@ -104,6 +121,7 @@ export default function SignUp() {
             type="text"
             placeholder="ユーザー名"
             readonly={isConfirmed}
+            value={formValues.userName}
             onChange={(value) => setValue("userName", value)}
           />
         </div>
@@ -115,7 +133,7 @@ export default function SignUp() {
             >
               パスワード
               {!isConfirmed && (
-                <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
+                <span className="bg-red-letters text-white text-small py-1 px-2 rounded-sm">
                   必須
                 </span>
               )}
@@ -142,7 +160,7 @@ export default function SignUp() {
             >
               パスワードの確認
               {!isConfirmed && (
-                <span className="bg-red-letters text-white py-1 px-2 rounded-sm">
+                <span className="bg-red-letters text-white text-small py-1 px-2 rounded-sm">
                   必須
                 </span>
               )}
@@ -182,6 +200,7 @@ export default function SignUp() {
           text={isConfirmed ? "登録" : "確認"}
           size="l" 
           disabled={!isAllFilled}
+          type="submit"
         />
       </form>
     </main>
