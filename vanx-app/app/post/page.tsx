@@ -15,6 +15,7 @@ import { postStore } from "@/api/post/postStore";
 
 type ExtendedPreviewFile = PreviewFile & {
   base64Data?: string;
+  file?: File;
 };
 
 export default function Post() {
@@ -45,15 +46,20 @@ export default function Post() {
     try {
       setIsSubmitting(true);
 
-      // Base64エンコードされたファイルを取得
-      const files = previewFiles
-        .map(file => file.base64Data)
-        .filter(Boolean) as string[];
+      const formData = new FormData();
+      formData.append("content", postContent);
 
-      const response = await postStore({
-        content: postContent,
-        files: files,
+      previewFiles.forEach((previewFile, index) => {
+        if (previewFile.file) {
+          formData.append('files', previewFile.file);
+        }
       });
+
+      const response = await postStore(formData);
+
+      //
+      // TODO: alert()はローディング画面を実装後に削除
+      //
       
       if (response.success) {
         console.log("投稿成功:", response);
@@ -135,7 +141,8 @@ export default function Post() {
             id: generateId(),
             url,
             type: file.type,
-            base64Data, // Base64データを保存
+            base64Data,
+            file,
           };
         })
       );
