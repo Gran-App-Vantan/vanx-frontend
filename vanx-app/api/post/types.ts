@@ -4,10 +4,10 @@ export type Post = {
   userName: string;
   imageSrc: string;
   contents: string;
-  postReactions: Reactions[];
+  postReactions: Reaction[];
 };
 
-export type Reactions = {
+export type Reaction = {
   id: number;
   category: "emoji" | "nature" | "food" | "activity" | "travel" | "symbols";
   reactionName: string;

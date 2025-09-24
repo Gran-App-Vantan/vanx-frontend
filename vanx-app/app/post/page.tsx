@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/shared";
 import { PreviewFile } from "@/api/post/types";
 import {
@@ -10,14 +11,71 @@ import {
   CloseIcon,
   LessThanIcon,
 } from "@/components/shared/icons";
+import { postStore } from "@/api/post/postStore";
+
+type ExtendedPreviewFile = PreviewFile & {
+  base64Data?: string;
+  file?: File;
+};
 
 export default function Post() {
-  const [previewFiles, setPreviewFiles] = useState<PreviewFile[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const router = useRouter();
   const urlsRef = useRef<Set<string>>(new Set());
+  const [previewFiles, setPreviewFiles] = useState<ExtendedPreviewFile[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [postContent, setPostContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const generateId = () =>
     `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (isSubmitting) return;
+
+    try {
+      setIsSubmitting(true);
+
+      const formData = new FormData();
+      formData.append("content", postContent);
+
+      previewFiles.forEach((previewFile, index) => {
+        if (previewFile.file) {
+          formData.append('files', previewFile.file);
+        }
+      });
+
+      const response = await postStore(formData);
+
+      //
+      // TODO: alert()はローディング画面を実装後に削除
+      //
+      
+      if (response.success) {
+        console.log("投稿成功:", response);
+        alert('投稿が完了しました');
+        router.push('/');
+      } else {
+        console.error("投稿失敗:", response);
+        alert(`投稿に失敗しました: ${response.message}`);
+      }
+    } catch (error) {
+      console.error("投稿エラー:", error);
+      alert('投稿処理中にエラーが発生しました');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   useEffect(() => {
     return () => {
@@ -28,7 +86,7 @@ export default function Post() {
     };
   }, []);
 
-  const handleFileChange = (
+  const handleFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     replaceIndex: number | null = null
   ) => {
@@ -72,16 +130,22 @@ export default function Post() {
         return;
       }
 
-      const newPreviews = validFiles.map((file) => {
-        const url = URL.createObjectURL(file);
-        urlsRef.current.add(url);
+      const newPreviews = await Promise.all(
+        validFiles.map(async (file) => {
+          const url = URL.createObjectURL(file);
+          urlsRef.current.add(url);
+          
+          const base64Data = await fileToBase64(file);
 
-        return {
-          id: generateId(),
-          url,
-          type: file.type,
-        };
-      });
+          return {
+            id: generateId(),
+            url,
+            type: file.type,
+            base64Data,
+            file,
+          };
+        })
+      );
 
       if (replaceIndex !== null) {
         setPreviewFiles((prev) => {
@@ -135,7 +199,7 @@ export default function Post() {
         </Link>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col justify-center gap-6 mt-20">
           <h1 className="text-center text-h3">
             あなたのことを知らせてあげましょう！
@@ -146,6 +210,8 @@ export default function Post() {
             className="w-[350px] h-[150px] p-5 mt-5 mx-auto bg-white text-normal text-text border border-text-gray rounded-lg resize-none"
             placeholder="今、何してる？"
             autoComplete="off"
+            value={postContent}
+            onChange={(e) => setPostContent(e.target.value)}
           />
 
           {previewFiles.length > 0 ? (
@@ -289,7 +355,12 @@ export default function Post() {
         </div>
 
         <div className="flex items-center justify-center my-24">
-          <Button buttonType="redButton" text="投稿" size="l" />
+          <Button 
+            buttonType="redButton" 
+            text="投稿" 
+            size="l" 
+            type="submit"
+          />
         </div>
       </form>
     </main>
