@@ -7,6 +7,7 @@ export interface ButtonProps {
   size?: "s" | "m" | "l" | "custom";
   className?: string;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 
 export function Button({
@@ -15,6 +16,7 @@ export function Button({
   size = "m",
   className = "",
   disabled = false,
+  type = "button",
 }: ButtonProps) {
   const sizeClass = {
     s: "w-[44px] h-[44px]",
@@ -26,6 +28,7 @@ export function Button({
   if (buttonType === "arrowButton") {
     return (
       <button
+        type={type}
         className={`rounded-full bg-accent flex items-center justify-center shadow-md ${sizeClass} ${className}`}
       >
         <div className="w-3 h-3 border-t-2 border-r-2 border-white rotate-45"></div>
@@ -45,6 +48,7 @@ export function Button({
         ${baseButton} ${sizeClass} ${className}
       `}
       disabled={disabled}
+      type={type}
     >
       {text}
     </button>
