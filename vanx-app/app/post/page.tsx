@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/shared";
 import { PreviewFile } from "@/api/post/types";
 import {
@@ -17,6 +18,7 @@ type ExtendedPreviewFile = PreviewFile & {
 };
 
 export default function Post() {
+  const router = useRouter();
   const urlsRef = useRef<Set<string>>(new Set());
   const [previewFiles, setPreviewFiles] = useState<ExtendedPreviewFile[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -56,7 +58,7 @@ export default function Post() {
       if (response.success) {
         console.log("投稿成功:", response);
         alert('投稿が完了しました');
-        window.location.href = '/';
+        router.push('/');
       } else {
         console.error("投稿失敗:", response);
         alert(`投稿に失敗しました: ${response.message}`);
@@ -346,7 +348,12 @@ export default function Post() {
         </div>
 
         <div className="flex items-center justify-center my-24">
-          <Button buttonType="redButton" text="投稿" size="l" />
+          <Button 
+            buttonType="redButton" 
+            text="投稿" 
+            size="l" 
+            type="submit"
+          />
         </div>
       </form>
     </main>
