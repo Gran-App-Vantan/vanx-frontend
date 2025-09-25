@@ -4,6 +4,7 @@ export type Post = {
   userName: string;
   imageSrc: string;
   contents: string;
+  files?: PreviewFile[];
   postReactions: Reaction[];
 };
 
