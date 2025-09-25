@@ -30,7 +30,6 @@ export async function postStore(formData: FormData) {
       headers: {
         Authorization: `Bearer ${authToken}`,
         Accept: "application/json",
-        "Content-Type": "multipart/form-data",
       }
     })
     .then((res) => res.data)

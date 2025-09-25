@@ -62,7 +62,6 @@ export default function Post() {
       //
       
       if (response.success) {
-        console.log("投稿成功:", response);
         alert('投稿が完了しました');
         router.push('/');
       } else {
