@@ -6,11 +6,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/shared";
 import { PreviewFile } from "@/api/post/types";
-import {
-  LeftArrowIcon,
-  CloseIcon,
-  LessThanIcon,
-} from "@/components/shared/icons";
+import { LeftArrowIcon, CloseIcon, LessThanIcon, } from "@/components/shared/icons";
 import { postStore } from "@/api/post/postStore";
 
 type ExtendedPreviewFile = PreviewFile & {
@@ -45,13 +41,13 @@ export default function Post() {
 
     try {
       setIsSubmitting(true);
-
+    
       const formData = new FormData();
       formData.append("content", postContent);
-
-      previewFiles.forEach((previewFile, index) => {
+      
+      previewFiles.forEach((previewFile) => {
         if (previewFile.file) {
-          formData.append('files', previewFile.file);
+          formData.append('files[]', previewFile.file);
         }
       });
 
