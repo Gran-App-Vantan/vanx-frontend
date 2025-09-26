@@ -12,11 +12,11 @@ export type postStoreResponse = {
       id: number;
       userId: number;
       postContent: string;
-      createdAt: string;
-      updatedAt: string;
+      created_at: string;
+      updated_at: string;
       user: User;
-      files?: PreviewFile[]; // 空配列で返す
-      reactions?: Reaction[]; // 空配列で返す
+      files: PreviewFile[];
+      reactions: Reaction[];
     }
   } 
 }
@@ -32,7 +32,9 @@ export async function postStore(formData: FormData) {
         Accept: "application/json",
       }
     })
-    .then((res) => res.data)
+    .then((res) => {
+      return res.data;
+    })
     .catch((err) => {
       console.warn(err);
 
