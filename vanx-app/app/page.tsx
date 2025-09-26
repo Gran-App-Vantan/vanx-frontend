@@ -17,14 +17,28 @@ export default function Home() {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const bottomSheetRef = useRef<HTMLDivElement>(null);
 
-  const mapApiPostToPost = (apiPost: any): Post => ({
-    id: apiPost.id,
-    userId: apiPost.user_id,
-    userName: apiPost.user?.name || "不明なユーザー",
-    imageSrc: apiPost.postfile?.[0] || "/icons/default-user-icon.svg", // デフォルト画像を設定
-    contents: apiPost.post_content || "",
-    postReactions: apiPost.post_reactions || []
-  });
+  const mapApiPostToPost = (apiPost: any): Post => {
+    const userIcon = apiPost.user?.user_icon && apiPost.user.user_icon !== "default_icon.png" 
+      ? `/uploads/user_icons/${apiPost.user.user_icon}` 
+      : "/icons/default-user-icon.svg";
+
+    const files = (apiPost.postfile || []).map((file: any) => ({
+      id: file.id.toString(),
+      url: `${process.env.NEXT_PUBLIC_API_URL}/storage/${file.post_file_path}`,
+      type: file.post_file_type || "image",
+      name: file.post_file_path?.split('/').pop() || `file_${file.id}`
+    }));
+
+    return {
+      id: apiPost.id,
+      userId: apiPost.user_id,
+      userName: apiPost.user?.name || "不明なユーザー",
+      imageSrc: userIcon,
+      contents: apiPost.post_content || "",
+      files: files,
+      postReactions: apiPost.post_reactions || []
+    };
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -33,13 +47,17 @@ export default function Home() {
 
         if (response.success && "data" in response) {
           const apiData = response.data as any;
-          const mappedPosts: Post[] = apiData.posts.map(mapApiPostToPost);
+          
+          const mappedPosts: Post[] = apiData.posts.map((post: any) => {
+            const mapped = mapApiPostToPost(post);
+            return mapped;
+          });
           setPosts(mappedPosts);
         } else {
-          console.log("Error:", response.message);
+          console.error("Error:", response.message);
         }
       } catch (error) {
-        console.log("Error", error);
+        console.error("Error", error);
       }
     };
     fetchPosts();
