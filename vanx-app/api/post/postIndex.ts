@@ -1,22 +1,22 @@
 import axios from "axios";
 import { User } from "../auth/types";
-import { Reaction } from "./types";
+import { Reaction, PostFiles } from "./types";
 
 export type PostIndexResponse = 
   | {
     success: true;
-    messages: string;
+    message: string;
     data: {
       posts: [
         {
           id: number;
           userId: number;
-          content: string;
+          postContent: string;
           createdAt: string;
           updatedAt: string;
           user: User;
-          files: string;
-          reaction: Reaction[];
+          postFiles: PostFiles[];
+          postReactions: Reaction[];
         }
       ]
     }
