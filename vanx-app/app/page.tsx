@@ -6,41 +6,62 @@ import {
   PostDeleteModal,
 } from "@/components/features/post";
 import { Modal } from "@/components/shared";
+import { PostIndex } from "@/api/post/postIndex";
+import { Post } from "@/api/post/types";
 import { useState, useEffect, useRef } from "react";
 
-// 仮データ（ユーザー情報）
-const commonUser = {
-  userId: "junpeichan@0310",
-  userName: "じゅんぺいちゃん",
-  imageSrc: "/icons/default-user-icon.svg",
-};
-
-// 仮データ（リアクション情報）
-const commonReaction = {
-  reactionName: "平常心",
-  reactionImageSrc: "/icons/reaction-add-icon.svg",
-  category: "emoji" as const,
-};
-
-// 投稿一覧（仮データで5件分作成）
-export const posts = Array.from({ length: 5 }, (_, i) => ({
-  id: i + 1,
-  ...commonUser,
-  contents:
-    "実はGran App Vantanの「Gran」はグランアレグリアから取ったんです。ご存じでしたか？",
-  postReactions: [
-    {
-      id: i + 1,
-      ...commonReaction,
-    },
-  ],
-}));
-
 export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const bottomSheetRef = useRef<HTMLDivElement>(null);
+
+  const mapApiPostToPost = (apiPost: any): Post => {
+    const userIcon = apiPost.user?.user_icon && apiPost.user.user_icon !== "default_icon.png" 
+      ? `/uploads/user_icons/${apiPost.user.user_icon}` 
+      : "/icons/default-user-icon.svg";
+
+    const files = (apiPost.postfile || []).map((file: any) => ({
+      id: file.id.toString(),
+      url: `${process.env.NEXT_PUBLIC_API_URL}/storage/${file.post_file_path}`,
+      type: file.post_file_type || "image",
+      name: file.post_file_path?.split('/').pop() || `file_${file.id}`
+    }));
+
+    return {
+      id: apiPost.id,
+      userId: apiPost.user_id,
+      userName: apiPost.user?.name || "不明なユーザー",
+      imageSrc: userIcon,
+      contents: apiPost.post_content || "",
+      files: files,
+      postReactions: apiPost.post_reactions || []
+    };
+  };
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await PostIndex();
+
+        if (response.success && "data" in response) {
+          const apiData = response.data as any;
+          
+          const mappedPosts: Post[] = apiData.posts.map((post: any) => {
+            const mapped = mapApiPostToPost(post);
+            return mapped;
+          });
+          setPosts(mappedPosts);
+        } else {
+          console.error("Error:", response.message);
+        }
+      } catch (error) {
+        console.error("Error", error);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   useEffect(() => {
     if (isBottomSheetOpen) {

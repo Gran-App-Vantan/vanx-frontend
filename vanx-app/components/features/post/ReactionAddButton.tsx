@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { Reactions } from "@/api/post/types";
+import { Reaction } from "@/api/post/types";
 
 type ReactionAddButtonProps = {
-  postReactions: Reactions[];
+  postReactions: Reaction[];
   onClick: () => void;
 };
 
@@ -11,7 +11,7 @@ export function ReactionAddButton({
   onClick,
 }: ReactionAddButtonProps) {
   return (
-    <>
+    <div>
       {postReactions.map((reaction) => (
         <button
           key={reaction.id}
@@ -27,6 +27,6 @@ export function ReactionAddButton({
           />
         </button>
       ))}
-    </>
+    </div>
   );
 }

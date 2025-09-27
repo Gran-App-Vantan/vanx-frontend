@@ -1,9 +1,10 @@
 export type Post = {
   id: number;
-  userId: string;
+  userId: number;
   userName: string;
   imageSrc: string;
   contents: string;
+  files?: PreviewFile[];
   postReactions: Reaction[];
 };
 
@@ -19,3 +20,12 @@ export type PreviewFile = {
   url: string;
   type: string;
 };
+
+export type PostFiles = {
+  id: number;
+  postId: number;
+  postFilePath: string;
+  postFileType: string;
+  createdAt: string;
+  updatedAt: string;
+}
