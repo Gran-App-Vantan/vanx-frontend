@@ -21,7 +21,7 @@ export function Modal({ size, openModal, onClose, children }: ModalProps) {
 
   return (
     <div
-      className="bg-[#9A9A9A]/50 fixed inset-0 z-40 flex justify-center items-center"
+      className="bg-[#9A9A9A]/50 fixed inset-0 z-50 flex justify-center items-center"
       onClick={OutClick}
     >
       <dialog
