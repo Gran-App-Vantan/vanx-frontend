@@ -6,8 +6,7 @@ import {
   PostDeleteModal,
 } from "@/components/features/post";
 import { Modal } from "@/components/shared";
-import { PostIndex } from "@/api/post/postIndex";
-import { Post } from "@/api/post/types";
+import { Post, PostIndex, PostDelete } from "@/api/post/";
 import { useState, useEffect, useRef } from "react";
 
 export default function Home() {
@@ -15,7 +14,26 @@ export default function Home() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [postId, setPostId] = useState<number | null>(null);  
   const bottomSheetRef = useRef<HTMLDivElement>(null);
+
+  const handlePostDelete = async (postId: number) => {
+    try {
+      const response = await PostDelete({postId});
+      
+      if (response.success) {
+        setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+        alert("投稿を削除しました");
+        setIsDeleteModalOpen(false);
+      } else {
+        console.error("削除に失敗しました:", response.message);
+        alert("削除に失敗しました");
+      }
+    } catch (err) {
+      console.error("削除エラー:", err);
+      alert("削除処理中にエラーが発生しました");
+    }
+  }
 
   const mapApiPostToPost = (apiPost: any): Post => {
     const userIcon = apiPost.user?.user_icon && apiPost.user.user_icon !== "default_icon.png" 
@@ -94,7 +112,10 @@ export default function Home() {
                 <li key={post.id}>
                   <PostItem
                     post={normalizedPost}
-                    onDelete={() => setIsDeleteModalOpen(true)}
+                    onDelete={() => {
+                      setIsDeleteModalOpen(true);
+                      setPostId(post.id);
+                    }}
                     onClick={() => setIsBottomSheetOpen(true)}
                   />
                 </li>
@@ -108,7 +129,10 @@ export default function Home() {
               openModal={isDeleteModalOpen}
               onClose={() => setIsDeleteModalOpen(false)}
             >
-              <PostDeleteModal onClose={() => setIsDeleteModalOpen(false)} />
+              <PostDeleteModal 
+                onDelete={() => handlePostDelete(postId!)}
+                onClose={() => setIsDeleteModalOpen(false)} 
+              />
             </Modal>
           )}
 
