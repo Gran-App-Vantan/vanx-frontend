@@ -12,10 +12,23 @@ export function ReactionAddButton({
 }: ReactionAddButtonProps) {
   return (
     <div>
+      {postReactions.length === 0 &&
+        <button
+          className="flex justify-center items-center w-12 h-8 bg-gray rounded-full cursor-pointer"
+          onClick={() => onClick()}
+        >
+          <Image 
+            src="/icons/reaction-add-icon.svg"
+            alt="reaction-add-icon"
+            width={20}
+            height={20}
+          />
+        </button>
+      }
       {postReactions.map((reaction) => (
         <button
           key={reaction.id}
-          onClick={onClick}
+          onClick={() => onClick()}
           className="flex justify-center items-center w-[50px] h-[30px] bg-gray rounded-full cursor-pointer"
         >
           <Image
