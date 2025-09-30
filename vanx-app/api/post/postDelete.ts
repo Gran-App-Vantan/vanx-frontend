@@ -17,7 +17,7 @@ export type PostDeleteResponse =
   }
 
 export async function PostDelete({ postId }: { postId: number }) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/post/${postId}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/delete/${postId}`;
   const authToken = Cookies.get("authToken");
 
   return axios
