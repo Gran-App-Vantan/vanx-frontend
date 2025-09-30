@@ -1,15 +1,42 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 
 export type ModalProps = {
   size: "normal" | "large" | "rule-book";
   openModal: boolean;
   children: React.ReactNode;
+  isOpen?: boolean;
   onClose: () => void;
 };
 
-export function Modal({ size, openModal, onClose, children }: ModalProps) {
+export function Modal({ 
+  size, 
+  openModal, 
+  children,
+  isOpen,
+  onClose
+}: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
+  const [visible, setVisible] = useState(openModal);
+  const [animClass, setAnimClass] = useState("");
+
+  useEffect(() => {
+    if (openModal) {
+      setVisible(true);
+      setAnimClass("opacity-0");
+
+      requestAnimationFrame(() => {
+        setAnimClass("opacity-100");
+      });
+    } else {
+      setAnimClass("opacity-0");
+
+      const timer = setTimeout(() => {
+        setVisible(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [openModal]);
 
   const OutClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -17,16 +44,23 @@ export function Modal({ size, openModal, onClose, children }: ModalProps) {
     }
   };
 
-  if (!openModal) return null;
+  if (!visible) return null;
 
   return (
     <div
-      className="bg-[#9A9A9A]/50 fixed inset-0 z-40 flex justify-center items-center"
+      className={`
+        fixed inset-0 z-50 flex justify-center items-center
+        transition-all duration-300 ease-out
+        ${animClass === "opacity-100" ? "bg-[#9A9A9A]/50" : "bg-[#9A9A9A]/0"}
+      `}
       onClick={OutClick}
     >
       <dialog
         className={`
-          flex items-center justify-center bg-white rounded-2xl m-auto p-4
+          flex items-center justify-center bg-white rounded-2xl m-auto p-4 
+          transition-all duration-300 ease-out transform
+          ${animClass}
+          ${animClass === "opacity-100" ? "scale-100" : "scale-95"}
           ${
             size === "normal"
               ? "w-[350px] h-[200px]"

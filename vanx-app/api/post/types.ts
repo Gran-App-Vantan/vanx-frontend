@@ -19,6 +19,7 @@ export type PreviewFile = {
   id: string;
   url: string;
   type: string;
+  name?: string;
 };
 
 export type PostFiles = {
