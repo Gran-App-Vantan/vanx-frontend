@@ -42,9 +42,18 @@ export default function Post() {
     try {
       setIsSubmitting(true);
     
+      const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB制限
+      const oversizedFiles = previewFiles.filter(file => file.file && file.file.size > MAX_FILE_SIZE);
+      
+      if (oversizedFiles.length > 0) {
+        const fileNames = oversizedFiles.map(f => f.file?.name).join(', ');
+        alert(`以下のファイルがサイズ制限（2MB）を超えています: ${fileNames}`);
+        return;
+      }
+
       const formData = new FormData();
       formData.append("content", postContent);
-      
+
       previewFiles.forEach((previewFile) => {
         if (previewFile.file) {
           formData.append('files[]', previewFile.file);
@@ -109,11 +118,12 @@ export default function Post() {
         return;
       }
 
-      const MAX_FILE_SIZE = 50 * 1024 * 1024;
+      const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB制限
       const validFiles = Array.from(files).filter((file) => {
         if (file.size > MAX_FILE_SIZE) {
+          const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
           alert(
-            `"${file.name}" のサイズが大きすぎます。50MB以下のファイルを選択してください。`
+            `"${file.name}" のサイズが大きすぎます。\nファイルサイズ: ${fileSizeMB}MB\n制限: 2MB以下のファイルを選択してください。`
           );
           return false;
         }
@@ -305,22 +315,27 @@ export default function Post() {
               </div>
 
               {previewFiles.length < 5 && (
-                <label className="flex justify-center items-center mx-auto mt-4 w-full gap-2 py-2 rounded-full bg-accent cursor-pointer text-center text-label text-white">
-                  さらにファイルを追加
-                  <Image
-                    src="/icons/puls-icon.svg"
-                    alt="puls-icon"
-                    width={16}
-                    height={16}
-                  />
-                  <input
-                    type="file"
-                    className="hidden"
-                    onChange={handleFileChange}
-                    accept="image/*,video/*"
-                    multiple
-                  />
-                </label>
+                <div className="flex flex-col items-center gap-2 mt-4">
+                  <label className="flex justify-center items-center mx-auto w-full gap-2 py-2 rounded-full bg-accent cursor-pointer text-center text-label text-white">
+                    さらにファイルを追加
+                    <Image
+                      src="/icons/puls-icon.svg"
+                      alt="puls-icon"
+                      width={16}
+                      height={16}
+                    />
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={handleFileChange}
+                      accept="image/*,video/*"
+                      multiple
+                    />
+                  </label>
+                  <div className="text-xs text-text-gray text-center">
+                    1ファイル2MB以下
+                  </div>
+                </div>
               )}
 
               {previewFiles.length >= 5 && (
@@ -330,7 +345,7 @@ export default function Post() {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center gap-4 w-[350px] h-[115px] mx-auto text-label border-2 border-dotted border-text-gray rounded-lg">
+            <div className="flex flex-col items-center justify-center gap-4 w-[350px] h-[140px] mx-auto text-label border-2 border-dotted border-text-gray rounded-lg">
               <label className="text-text-gray">
                 写真や動画を追加したいですか？
               </label>
@@ -345,6 +360,10 @@ export default function Post() {
                 />
                 ファイルをアップロード
               </label>
+              
+              <div className="text-xs text-text-gray text-center">
+                最大5ファイル / 1ファイル2MB以下
+              </div>
             </div>
           )}
         </div>
