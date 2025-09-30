@@ -36,8 +36,8 @@ export default function Home() {
   }
 
   const mapApiPostToPost = (apiPost: any): Post => {
-    const userIcon = apiPost.user?.user_icon && apiPost.user.user_icon !== "default_icon.png" 
-      ? `/uploads/user_icons/${apiPost.user.user_icon}` 
+    const userIcon = apiPost.user?.user_icon && apiPost.user.user_icon !== "default_icon.png"
+      ? `/uploads/user_icons/${apiPost.user.user_icon}`
       : "/icons/default-user-icon.svg";
 
     const files = (apiPost.postfile || []).map((file: any) => ({
@@ -65,8 +65,20 @@ export default function Home() {
 
         if (response.success && "data" in response) {
           const apiData = response.data as any;
+
+          let postsArray: any[] = [];
           
-          const mappedPosts: Post[] = apiData.posts.map((post: any) => {
+          if (Array.isArray(apiData.posts)) {
+            postsArray = apiData.posts;
+          } else if (apiData.posts && apiData.posts.data && Array.isArray(apiData.posts.data)) {
+            postsArray = apiData.posts.data;
+          } else {
+            console.error("Unexpected posts data structure:", apiData.posts);
+            setPosts([]);
+            return;
+          }
+          
+          const mappedPosts: Post[] = postsArray.map((post: any) => {
             const mapped = mapApiPostToPost(post);
             return mapped;
           });
@@ -98,59 +110,58 @@ export default function Home() {
   };
 
   return (
-    <>
-      <main>
-        <div className="mt-24 mb-20">
-          <ul>
-            {posts.map((post) => {
-              const normalizedPost = {
-                ...post,
-                contents: post.contents ?? "",
-              };
+    <main>
+      <div className="mt-24 mb-20">
+        <ul>
+          {posts.map((post) => {
+            const normalizedPost = {
+              ...post,
+              contents: post.contents ?? "",
+            };
 
-              return (
-                <li key={post.id}>
-                  <PostItem
-                    post={normalizedPost}
-                    onDelete={() => {
-                      setIsDeleteModalOpen(true);
-                      setPostId(post.id);
-                    }}
-                    onClick={() => setIsBottomSheetOpen(true)}
-                  />
-                </li>
-              );
-            })}
-          </ul>
-
-          {isDeleteModalOpen && (
-            <Modal
-              size="normal"
-              openModal={isDeleteModalOpen}
-              onClose={() => setIsDeleteModalOpen(false)}
-            >
-              <PostDeleteModal 
-                onDelete={() => handlePostDelete(postId!)}
-                onClose={() => setIsDeleteModalOpen(false)} 
-              />
-            </Modal>
-          )}
-
-          {isBottomSheetVisible && (
-            <div
-              className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
-              onClick={() => setIsBottomSheetOpen(false)}
-            >
-              <div ref={bottomSheetRef} onClick={(e) => e.stopPropagation()}>
-                <ReactionBottomSheet
-                  isOpen={isBottomSheetOpen}
-                  onCloseAnimationEnd={handleCloseAnimationEnd}
+            return (
+              <li key={post.id}>
+                <PostItem
+                  post={normalizedPost}
+                  onDelete={() => {
+                    setIsDeleteModalOpen(true);
+                    setPostId(post.id);
+                  }}
+                  onClick={() => setIsBottomSheetOpen(true)}
                 />
-              </div>
+              </li>
+            );
+          })}
+        </ul>
+
+        {isDeleteModalOpen && (
+          <Modal
+            size="normal"
+            openModal={isDeleteModalOpen}
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+          >
+            <PostDeleteModal 
+              onDelete={() => handlePostDelete(postId!)}
+              onClose={() => setIsDeleteModalOpen(false)} 
+            />
+          </Modal>
+        )}
+
+        {isBottomSheetVisible && (
+          <div
+            className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
+            onClick={() => setIsBottomSheetOpen(false)}
+          >
+            <div ref={bottomSheetRef} onClick={(e) => e.stopPropagation()}>
+              <ReactionBottomSheet
+                isOpen={isBottomSheetOpen}
+                onCloseAnimationEnd={handleCloseAnimationEnd}
+              />
             </div>
-          )}
-        </div>
-      </main>
-    </>
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
