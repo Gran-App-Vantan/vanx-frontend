@@ -6,12 +6,15 @@ import {
   PostDeleteModal,
 } from "@/components/features/post";
 import { Modal } from "@/components/shared";
+import { Header, FooterNavItem } from "@/components/shared/";
 import { Post, PostIndex, PostDelete } from "@/api/post/";
+import { useUser } from "@/contexts/UserContext";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
+  const { user } = useUser();
   const [posts, setPosts] = useState<Post[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
@@ -130,58 +133,59 @@ export default function Home() {
   };
 
   return (
-    <main>
-      <div className="mt-24 mb-20">
-        <ul>
-          {posts.map((post) => {
-            const normalizedPost = {
-              ...post,
-              contents: post.contents ?? "",
-            };
-
-            return (
-              <li key={post.id}>
-                <PostItem
-                  post={normalizedPost}
-                  onDelete={() => {
-                    setIsDeleteModalOpen(true);
-                    setPostId(post.id);
-                  }}
-                  onClick={() => setIsBottomSheetOpen(true)}
-                />
-              </li>
-            );
-          })}
-        </ul>
-
-        {isDeleteModalOpen && (
-          <Modal
-            size="normal"
-            openModal={isDeleteModalOpen}
-            isOpen={isDeleteModalOpen}
-            onClose={() => setIsDeleteModalOpen(false)}
-          >
-            <PostDeleteModal 
-              onDelete={() => handlePostDelete(postId!)}
-              onClose={() => setIsDeleteModalOpen(false)} 
-            />
-          </Modal>
-        )}
-
-        {isBottomSheetVisible && (
-          <div
-            className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
-            onClick={() => setIsBottomSheetOpen(false)}
-          >
-            <div ref={bottomSheetRef} onClick={(e) => e.stopPropagation()}>
-              <ReactionBottomSheet
-                isOpen={isBottomSheetOpen}
-                onCloseAnimationEnd={handleCloseAnimationEnd}
+    <>
+      <Header />
+      <main>
+        <div className="mt-24 mb-20">
+          <ul>
+            {posts.map((post) => {
+              const normalizedPost = {
+                ...post,
+                contents: post.contents ?? "",
+              };
+              return (
+                <li key={post.id}>
+                  <PostItem
+                    post={normalizedPost}
+                    onDelete={() => {
+                      setIsDeleteModalOpen(true);
+                      setPostId(post.id);
+                    }}
+                    onClick={() => setIsBottomSheetOpen(true)}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+          {isDeleteModalOpen && (
+            <Modal
+              size="normal"
+              openModal={isDeleteModalOpen}
+              isOpen={isDeleteModalOpen}
+              onClose={() => setIsDeleteModalOpen(false)}
+            >
+              <PostDeleteModal
+                onDelete={() => handlePostDelete(postId!)}
+                onClose={() => setIsDeleteModalOpen(false)}
               />
+            </Modal>
+          )}
+          {isBottomSheetVisible && (
+            <div
+              className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
+              onClick={() => setIsBottomSheetOpen(false)}
+            >
+              <div ref={bottomSheetRef} onClick={(e) => e.stopPropagation()}>
+                <ReactionBottomSheet
+                  isOpen={isBottomSheetOpen}
+                  onCloseAnimationEnd={handleCloseAnimationEnd}
+                />
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    </main>
+          )}
+        </div>
+      </main>
+      <FooterNavItem userId={user?.id} />
+    </>
   );
 }

@@ -6,9 +6,11 @@ import Cookies from "js-cookie";
 import { SignUpParams } from "@/api/auth/types";
 import { Logo, Input, Button } from "@/components/shared";
 import { Signup } from "@/api/auth/signup";
+import { useUser } from "@/contexts/UserContext";
 
 export default function SignUp() {
   const router = useRouter();
+  const { fetchUser } = useUser();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -51,6 +53,7 @@ export default function SignUp() {
 
       if (response.success && "authToken" in response) {
         Cookies.set("authToken", response.authToken as string);
+        await fetchUser();
         router.push("/");
       } else {
         console.log("Error:", response.messages);
