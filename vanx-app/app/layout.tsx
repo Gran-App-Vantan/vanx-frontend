@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { usePathname } from "next/navigation";
 import { Header, FooterNavItem } from "@/components/shared/";
+import { UserProvider } from "@/contexts/UserContext"
 
 export default function RootLayout({
   children,
@@ -21,9 +22,11 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {pathName === "/" ? <Header /> : ""}
-        {children}
-        {pathName === "/" ? <FooterNavItem /> : ""}
+        <UserProvider>
+          {pathName === "/" ? <Header /> : ""}
+          {children}
+          {pathName === "/" ? <FooterNavItem /> : ""}
+        </UserProvider>
       </body>
     </html>
   );
