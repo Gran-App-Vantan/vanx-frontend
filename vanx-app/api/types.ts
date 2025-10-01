@@ -1,7 +1,7 @@
 import { User } from "./auth"
 
-export type UserContext = {
-  user: User;
-  setUser: (user: User) => void;
+export type UserContextType = {
+  user: User | null;
+  setUser: (user: User | null) => void;
   fetchUser: () => Promise<void>;
-}
+};
