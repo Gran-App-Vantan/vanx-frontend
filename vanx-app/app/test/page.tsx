@@ -11,7 +11,6 @@ import {
   ReactionBottomSheet,
   Reaction,
 } from "@/components/features/post";
-import { Number } from "@/components/features/rankings/RankingsItem";
 import { PointLogItem } from "@/components/features/wallet/PointLogItem";
 import { Button, Input } from "@/components/shared";
 import { TravelIcon } from "@/components/shared/icons";
