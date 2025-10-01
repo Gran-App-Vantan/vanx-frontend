@@ -17,7 +17,7 @@ export type VerifiedUserResponse =
   };
 
 export async function VerifiedUserIndex() {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/account/me`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/me`;
   const authToken = Cookies.get("authToken");
 
   return axios
