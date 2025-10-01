@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Modal } from "@/components/shared";
 import { ReturnButton } from "@/components/shared";
 import { ProfileHead } from "@/components/features/profile/ProfileHead";
-import { posts } from "@/app/page";
+import { useUser } from "@/contexts/UserContext";
 import {
   PostItem,
   ReactionBottomSheet,
@@ -16,6 +16,7 @@ import {
 //
 
 export default function Profile() {
+  const { user } = useUser();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -43,7 +44,8 @@ export default function Profile() {
         <ReturnButton />
         <ProfileHead />
       </div>
-      <ul className="mt-56">
+
+      {/* <ul className="mt-56">
         {posts.map((post) => {
           const normalizedPost = {
             ...post,
@@ -60,9 +62,9 @@ export default function Profile() {
             </li>
           );
         })}
-      </ul>
+      </ul> */}
 
-      {isDeleteModalOpen && (
+      {/* {isDeleteModalOpen && (
         <Modal
           size="normal"
           openModal={isDeleteModalOpen}
@@ -70,9 +72,9 @@ export default function Profile() {
         >
           <PostDeleteModal onClose={() => setIsDeleteModalOpen(false)} />
         </Modal>
-      )}
+      )} */}
 
-      {isBottomSheetVisible && (
+      {/* {isBottomSheetVisible && (
         <div
           className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
           onClick={() => setIsBottomSheetOpen(false)}
@@ -84,7 +86,7 @@ export default function Profile() {
             />
           </div>
         </div>
-      )}
+      )} */}
     </main>
   );
 }

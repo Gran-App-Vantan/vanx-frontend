@@ -19,7 +19,7 @@ export function UserProvider({ children }: { children: React.ReactNode}) {
       const response = await VerifiedUserIndex();
 
       if (response.success) {
-        setUser((response as any).user);
+        setUser((response as any).data.user);
       }
     } catch {
       setUser(null);
