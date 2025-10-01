@@ -2,16 +2,14 @@
 
 import "./globals.css";
 
-import { usePathname } from "next/navigation";
-import { Header, FooterNavItem } from "@/components/shared/";
+import { UserProvider } from "@/contexts/UserContext"
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathName = usePathname();
-
+  
   return (
     <html lang="ja">
       <head>
@@ -21,9 +19,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {pathName === "/" ? <Header /> : ""}
-        {children}
-        {pathName === "/" ? <FooterNavItem /> : ""}
+        <UserProvider>
+          {children}
+        </UserProvider>
       </body>
     </html>
   );
