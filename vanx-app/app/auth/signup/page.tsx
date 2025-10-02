@@ -26,6 +26,9 @@ export default function SignUp() {
     | "パスワードが一致しません"
     | undefined
   >(undefined);
+  const [usernameError, setUsernameError] = useState<
+    "名前は既に使用されています" | undefined
+  >(undefined);
 
   const setValue = (field: keyof SignUpParams, value: string) => {
     const trimmedValue = value.trim();
@@ -37,6 +40,7 @@ export default function SignUp() {
       field === "confirmPassword"
     ) {
       setPasswordError(undefined);
+      setUsernameError(undefined);
     }
   };
 
@@ -48,7 +52,7 @@ export default function SignUp() {
         user: {
           name: formValues.userName,
           password: formValues.password,
-        }
+        },
       });
 
       if (response.success && "authToken" in response) {
@@ -57,6 +61,14 @@ export default function SignUp() {
         router.push("/");
       } else {
         console.log("Error:", response.messages);
+        // Check if the error message indicates username already exists
+        if (
+          response.messages.some((msg: string) =>
+            msg.includes("名前は既に使用されています")
+          )
+        ) {
+          setUsernameError("名前は既に使用されています");
+        }
         setIsConfirmed(false);
       }
       return;
@@ -100,13 +112,13 @@ export default function SignUp() {
           {isConfirmed ? "入力内容の確認" : "アカウント新規作成"}
         </h1>
       </div>
-      <form 
+      <form
         className="flex flex-col gap-10 border-y border-y-text-gray py-16"
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col gap-3">
           <div>
-            <label 
+            <label
               className="flex items-center gap-3 text-label text-text px-3.5"
               htmlFor="userName"
             >
@@ -126,11 +138,12 @@ export default function SignUp() {
             readonly={isConfirmed}
             value={formValues.userName}
             onChange={(value) => setValue("userName", value)}
+            error={usernameError}
           />
         </div>
         <div className="flex flex-col gap-3">
           <div>
-            <label 
+            <label
               className="flex items-center gap-3 text-label text-text px-3.5"
               htmlFor="password"
             >
@@ -157,7 +170,7 @@ export default function SignUp() {
         </div>
         <div className="flex flex-col gap-3">
           <div>
-            <label 
+            <label
               className="flex items-center gap-3 text-label text-text px-3.5"
               htmlFor="confirmPassword"
             >
@@ -183,7 +196,7 @@ export default function SignUp() {
           />
         </div>
         <div className="flex gap-2.5 pl-2">
-          <input 
+          <input
             id="check"
             className="
               appearance-none outline-none w-5 h-5 rounded-sm border border-text-gray bg-white
@@ -191,17 +204,14 @@ export default function SignUp() {
             "
             type="checkbox"
           />
-          <label 
-            htmlFor="check"
-            className="text-label text-text"
-          >
+          <label htmlFor="check" className="text-label text-text">
             文化祭を楽しみ尽くす
           </label>
         </div>
-        <Button 
-          buttonType={isAllFilled ? "redButton" : "grayButton"} 
+        <Button
+          buttonType={isAllFilled ? "redButton" : "grayButton"}
           text={isConfirmed ? "登録" : "確認"}
-          size="l" 
+          size="l"
           disabled={!isAllFilled}
           type="submit"
         />
