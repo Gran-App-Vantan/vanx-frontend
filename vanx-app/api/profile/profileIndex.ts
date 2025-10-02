@@ -21,12 +21,6 @@ export type ProfileIndexResponse =
 export async function ProfileIndex({ userId }: { userId: string | number; }) {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/profile/${userId}`;
   const authToken = Cookies.get("authToken");
-  
-  console.log("=== ProfileIndex Debug ===");
-  console.log("環境変数 NEXT_PUBLIC_API_URL:", process.env.NEXT_PUBLIC_API_URL);
-  console.log("完全なAPI URL:", apiUrl);
-  console.log("User ID:", userId);
-  console.log("Auth Token:", authToken?.substring(0, 20) + "...");
 
   return axios
     .get<ProfileIndexResponse>(apiUrl, {
@@ -40,12 +34,12 @@ export async function ProfileIndex({ userId }: { userId: string | number; }) {
       return res.data;
     })
     .catch(err => {
-      console.error("=== ProfileIndex Error Details ===");
-      console.error("Status:", err.response?.status);
-      console.error("Status Text:", err.response?.statusText);
-      console.error("Response Data:", err.response?.data);
-      console.error("Request URL:", err.config?.url);
-      console.error("Request Headers:", err.config?.headers);
-      throw err;
+      console.error("ERROR: ", err);
+
+      return {
+        success: false,
+        message: "プロフィール取得に失敗しました",
+        errors: [{ err: err.message || "プロフィールの取得に失敗しました" }]
+      }
     });
 }
