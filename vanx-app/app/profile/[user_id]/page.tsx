@@ -21,7 +21,7 @@ export default function Profile() {
         <ProfileHead />
       </div>
 
-      <div className="mt-40">
+      <div className="mt-56">
         {loading ? (
           <div>読み込み中...</div>
         ) : error ? (
