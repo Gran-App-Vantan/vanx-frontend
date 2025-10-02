@@ -1,26 +1,215 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --gray-color: #efefef;
+  --text-gray-color: #9a9a9a;
+  --text-color: #1a1a1a;
+  --white-color: #ffffff;
+  --accent-color: #d9042b;
+  --accent-light-color: #fdfaf9;
+
+  --red-letters: #f74d4d;
+  --green-letters: #8adf8d;
+
+  /* グラデーションはまた後で */
+  --gradation-gold-color: linear-gradient(#f0c576, #d2b175, #bc9141);
+  --gradation-silver-color: linear-gradient(#c4bcbc, #948f8f, #bfbdbd);
+  --gradation-bronze-color: linear-gradient(#b48c5f, #946d40, #dea668);
+  --gradation-blue-dark-color: linear-gradient(#7e9bf2, #4458db, #8fb2e8);
+  --gradation-green-light-color: linear-gradient(#52b940, #62954a, #97be85);
+  --gradation-yellow-green-light-color: linear-gradient(
+    #c5eb87,
+    #94b96e,
+    #acd27b
+  );
+  --gradation-blue-light-color: linear-gradient(#39d9f5, #55b8c4, #ade8ea);
+  --gradation-purple-light-color: linear-gradient(#ca7ef2, #b549dc, #e0bcfe);
+  --gradation-orange-light-color: linear-gradient(#eea369, #e97924, #ffd0aa);
+  --gradation-punk-light-color: linear-gradient(#f59ae9, #f066de, #f9c6f2);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* グラデーション */
+.text-gold {
+  background: var(--gradation-gold-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-silver {
+  background: var(--gradation-silver-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-bronze {
+  background: var(--gradation-bronze-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-blue-dark {
+  background: var(--gradation-blue-dark-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-green-light {
+  background: var(--gradation-green-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-yellow-green-light {
+  background: var(--gradation-yellow-green-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-blue-light {
+  background: var(--gradation-blue-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-purple-light {
+  background: var(--gradation-purple-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-orange-light {
+  background: var(--gradation-orange-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-punk-light {
+  background: var(--gradation-punk-light-color);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+/* borderグラデーション */
+.border-gold {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#f0c576, #d2b175, #bc9141);
+}
+.border-silver {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#c4bcbc, #948f8f, #bfbdbd);
+}
+.border-bronze {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#b48c5f, #946d40, #dea668);
+}
+.border-blue-dark {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#7e9bf2, #4458db, #8fb2e8);
+}
+.border-green-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#52b940, #62954a, #97be85);
+}
+.border-yellow-green-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#c5eb87, #94b96e, #acd27b);
+}
+.border-blue-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#39d9f5, #55b8c4, #ade8ea);
+}
+.border-purple-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#ca7ef2, #b549dc, #e0bcfe);
+}
+.border-orange-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#eea369, #e97924, #ffd0aa);
+}
+.border-punk-light {
+  padding: 2px;
+  border-radius: 12px;
+  background: linear-gradient(#f59ae9, #f066de, #f9c6f2);
+}
+.border-gray {
+  padding: 2px;
+  border-radius: 12px;
+  background: #efefef;
+}
+.inner-color {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  /* カラー */
+  --color-gray: var(--gray-color);
+  --color-text-gray: var(--text-gray-color);
+  --color-text: var(--text-color);
+  --color-white: var(--white-color);
+  --color-accent: var(--accent-color);
+  --color-accent-light: var(--accent-light-color);
+
+  --color-red-letters: var(--red-letters);
+  --color-green-letters: var(--green-letters);
+
+  /* ボックスシャドウ */
+  --shadow-top: 0px -2px 5px -2px rgba(0, 0, 0, 0.5);
+  --shadow-bottom: 0px 2px 5px -2px rgba(0, 0, 0, 0.5);
+
+  /* フォントサイズ */
+  --text-h1: 24px;
+  --text-h2: 20px;
+  --text-h3: 18px;
+  --text-normal: 16px;
+  --text-label: 14px;
+  --text-small: 12px;
+}
+
+/* ========== ↓ スライドイン、スライドアウトアニメーション ↓ ========== */
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(450px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes slideOut {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(450px);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.anim-slidein {
+  animation: slideIn 0.5s cubic-bezier(0.1, 1, 0.2, 1) forwards;
 }
+.anim-slideout {
+  animation: slideOut 0.75s cubic-bezier(0.1, 1, 0.2, 1) forwards;
+}
+
+/* ============================================================= */

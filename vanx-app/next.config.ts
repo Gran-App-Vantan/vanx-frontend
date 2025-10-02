@@ -1,7 +1,25 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+const nextConfig = {
+  experimental: {
+    turbo: false,
+  },
+  images: {
+    domains: ["localhost"],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8777',
+        pathname: '/storage/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8777',
+        pathname: '/api/storage/**',
+      },
+    ],
+    unoptimized: true,
+  }
 };
 
-export default nextConfig;
+module.exports = nextConfig;

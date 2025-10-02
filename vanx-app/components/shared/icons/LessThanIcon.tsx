@@ -1,0 +1,26 @@
+type LessThanIconProps = {
+  className?: string;
+  size?: string | number; // 文字列と数字どちらでも受け取れるように
+};
+
+export function LessThanIcon({
+  // デフォルトの値を設定
+  className = "",
+  size = 24,
+}: LessThanIconProps) {
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 12 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M2.452 6.57999L3.513 5.51999L9.292 11.297C9.38515 11.3896 9.45908 11.4996 9.50953 11.6209C9.55998 11.7421 9.58595 11.8722 9.58595 12.0035C9.58595 12.1348 9.55998 12.2648 9.50953 12.3861C9.45908 12.5073 9.38515 12.6174 9.292 12.71L3.513 18.49L2.453 17.43L7.877 12.005L2.452 6.57999Z"
+        fill="white"
+      />
+    </svg>
+  );
+}
