@@ -27,7 +27,7 @@ export function FooterNavItem({ userId }: { userId: number | undefined }) {
           </li>
 
           <li>
-            <Link href="/wallet">
+            <Link href={`wallet/${userId}`}>
               <PointIcon />
             </Link>
           </li>

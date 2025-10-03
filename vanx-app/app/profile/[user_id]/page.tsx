@@ -3,10 +3,12 @@
 import { ReturnButton } from "@/components/shared";
 import { ProfileHead } from "@/components/features/profile/ProfileHead";
 import { PostList } from "@/components/features/post";
+import { useUser } from "@/contexts/UserContext";
 import { usePosts } from "@/hooks/usePosts";
 import { usePostDelete } from "@/hooks/usePostDelete";
 
 export default function Profile() {
+  const { user } = useUser();
   const { posts, setPosts, loading, error } = usePosts();
   const { handlePostDelete } = usePostDelete();
 
@@ -18,7 +20,7 @@ export default function Profile() {
     <main>
       <div className="fixed top-0 left-0 w-full">
         <ReturnButton />
-        <ProfileHead />
+        {user && <ProfileHead user={user} />}
       </div>
 
       <div className="mt-56">
