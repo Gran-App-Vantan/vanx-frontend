@@ -6,7 +6,7 @@ import { EditIcon, LessThanIcon } from "@/components/shared/icons";
 
 export function ProfileHead() {
   return (
-    <div className="pt-6 pb-4 px-6 bg-accent-light flex flex-col gap-8 shadow-bottom">
+    <div className="pt-22 pb-4 px-6 bg-accent-light flex flex-col gap-8 shadow-bottom">
       <div className="flex justify-between">
         <div className="flex gap-6">
           <div className="size-12">
