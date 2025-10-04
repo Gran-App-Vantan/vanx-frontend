@@ -5,7 +5,15 @@ export type Post = {
   imageSrc: string;
   contents: string;
   files?: PreviewFile[];
-  postReactions: Reaction[];
+  postReactions: PostReaction[];
+};
+
+export type PostReaction = {
+  id: number;
+  userId: number;
+  postId: number;
+  reactionId: number;
+  reaction: Reaction;
 };
 
 export type Reaction = {
