@@ -1,7 +1,9 @@
+import { User } from "../auth";
+
 export type Post = {
   id: number;
   userId: number;
-  userName: string;
+  user: User;
   imageSrc: string;
   postContent: string;
   postfile?: PostFile[];

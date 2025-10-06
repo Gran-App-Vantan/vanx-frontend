@@ -38,7 +38,7 @@ export function PostItem({
         </Link>
 
         <div className="flex items-center gap-2">
-          <h2 className="text-bold">{post.userName}</h2>
+          <h2 className="text-bold">{post.user.name}</h2>
         </div>
 
         <div className="justify-self-end ml-auto">
@@ -60,7 +60,12 @@ export function PostItem({
                   alt={`post-image-${file.id}`} 
                   width={300} 
                   height={200} 
-                  className="object-cover rounded-md"
+                  className={`
+                    ${file.postFileUrl.slice(-3) === "png" // png画像の時にborderをつけてみてるけど正直微妙
+                      && "border-[0.5px] border-text-gray"
+                    }
+                    object-cover rounded-md
+                  `}
                   unoptimized
                 />
               </div>

@@ -43,8 +43,6 @@ export function PostList({ posts, onPostDelete }: PostListProps) {
     }
   };
 
-  console.log(posts);
-
   return (
     <>
       <ul>
