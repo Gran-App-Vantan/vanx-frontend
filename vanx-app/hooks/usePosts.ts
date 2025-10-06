@@ -9,10 +9,18 @@ export const usePosts = () => {
       const response: PostIndexResponse = await PostIndex();
 
       if (response.success) {
-        setPosts(response.data.posts);
+        const postsData = response.data.posts.data;
+        const postsArray = Array.isArray(postsData) ? postsData : [];
+
+        console.log(postsData);
+        setPosts(postsArray);
+      } else {
+        console.log("API Response failed:", response);
+        setPosts([]);
       }
     } catch (error) {
       console.error("ERROR: ", error);
+      setPosts([]);
     }
   };
 

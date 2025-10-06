@@ -43,15 +43,15 @@ export function PostItem({ post, onDelete, onClick }: PostItemProps) {
         </div>
       </div>
 
-      <div>{post.contents}</div>
+      <div>{post.postContent}</div>
 
       <div>
         {post.files && post.files.length > 0 ? (
           post.files.map((file, index) => (
-            file.url ? (
+            file.postFilePath ? (
               <div key={file.id || index} className="my-2">
                 <Image 
-                  src={file.url} 
+                  src={file.postFilePath} 
                   alt={`post-image-${index}`} 
                   width={300} 
                   height={200} 
@@ -66,7 +66,7 @@ export function PostItem({ post, onDelete, onClick }: PostItemProps) {
 
       <div className="flex justify-end">
         <ReactionAddButton
-          postReactions={post.postReactions}
+          postReactions={post.postReactions || []}
           onClick={onClick}
         />
       </div>
