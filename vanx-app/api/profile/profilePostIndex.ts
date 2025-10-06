@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import humps from "humps";
 import { User } from "../auth";
 import { Post } from "../post";
 
@@ -30,6 +31,7 @@ export async function ProfilePostIndex({ userId }: { userId: number | undefined 
       }
     })
     .then(res => {
+      res.data = humps.camelizeKeys(res.data) as ProfilePostIndexResponse;
       return res.data;
     })
     .catch(err => {

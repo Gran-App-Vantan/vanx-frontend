@@ -12,7 +12,6 @@ export const usePosts = () => {
         const postsData = response.data.posts.data;
         const postsArray = Array.isArray(postsData) ? postsData : [];
 
-        console.log(postsData);
         setPosts(postsArray);
       } else {
         console.log("API Response failed:", response);

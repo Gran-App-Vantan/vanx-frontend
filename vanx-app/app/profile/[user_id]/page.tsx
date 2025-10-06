@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { ReturnButton } from "@/components/shared";
 import { ProfileHead } from "@/components/features/profile/";
 import { PostList } from "@/components/features/post";
@@ -11,6 +12,7 @@ import { Post } from "@/api/post";
 
 export default function Profile() {
   const { user } = useUser();
+  const { user_id: userId } = useParams();
   const [posts, setPosts] = useState<Post[]>([]);
   const { handlePostDelete } = usePostDelete();
 
@@ -20,20 +22,24 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      try {
-        const response = await ProfilePostIndex({ userId: user?.id });
+      if (userId) {
+        try {
+          const response = await ProfilePostIndex({ userId: Number(userId) });
 
-        if (response.success && "data" in response) {
-          const data = response.data as { posts: Post[] };
-          setPosts(data.posts);
+          if (response.success && "data" in response) {
+            const data = response.data as { posts: Post[] };
+            setPosts(data.posts);
+          }
+        } catch (error) {
+          console.error("ERROR", error);
         }
-      } catch (error) {
-        console.error("ERROR", error);
       }
     };
 
     fetchPosts();
-  }, [user?.id]);
+  }, [userId]);
+
+  console.log(posts);
 
   return (
     <main>

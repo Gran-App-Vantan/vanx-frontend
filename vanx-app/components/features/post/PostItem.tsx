@@ -61,8 +61,8 @@ export function PostItem({
                   width={300} 
                   height={200} 
                   className={`
-                    ${file.postFileUrl.slice(-3) === "png" // png画像の時にborderをつけてみてるけど正直微妙
-                      && "border-[0.5px] border-text-gray"
+                    ${file.postFileUrl.slice(-3) === "png"  // postFileTypeで判別できたら良いのになあ
+                      && "border-[0.5px] border-text-gray"  // png画像の時にborderをつけてみてるけど正直微妙
                     }
                     object-cover rounded-md
                   `}
