@@ -11,7 +11,11 @@ type PostItemProps = {
   onClick: () => void;
 };
 
-export function PostItem({ post, onDelete, onClick }: PostItemProps) {
+export function PostItem({ 
+  post, 
+  onDelete, 
+  onClick 
+}: PostItemProps) {
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
@@ -28,7 +32,8 @@ export function PostItem({ post, onDelete, onClick }: PostItemProps) {
               src="/icons/default-user-icon.svg" 
               alt="user-icon" 
               width={50} 
-              height={50} />
+              height={50} 
+            />
           )}
         </Link>
 
@@ -46,13 +51,13 @@ export function PostItem({ post, onDelete, onClick }: PostItemProps) {
       <div>{post.postContent}</div>
 
       <div>
-        {post.files && post.files.length > 0 ? (
-          post.files.map((file, index) => (
-            file.postFilePath ? (
-              <div key={file.id || index} className="my-2">
+        {post.postfile && post.postfile.length > 0 ? (
+          post.postfile.map((file) => (
+            file.postFileUrl ? (
+              <div key={file.id} className="my-2">
                 <Image 
-                  src={file.postFilePath} 
-                  alt={`post-image-${index}`} 
+                  src={file.postFileUrl} 
+                  alt={`post-image-${file.id}`} 
                   width={300} 
                   height={200} 
                   className="object-cover rounded-md"

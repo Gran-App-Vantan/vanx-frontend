@@ -4,7 +4,7 @@ export type Post = {
   userName: string;
   imageSrc: string;
   postContent: string;
-  files?: PostFile[];
+  postfile?: PostFile[];
   postReactions: PostReaction[];
 };
 
@@ -35,6 +35,5 @@ export type PostFile = {
   postId: number;
   postFilePath: string;
   postFileType: string;
-  createdAt: string;
-  updatedAt: string;
+  postFileUrl: string;
 }

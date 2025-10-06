@@ -1,4 +1,5 @@
 import axios from "axios";
+import humps from "humps";
 import { Post } from "./types";
 
 export type PostIndexResponse = 
@@ -21,6 +22,7 @@ export async function PostIndex(): Promise<PostIndexResponse> {
 
   try {
     const res = await axios.get<PostIndexResponse>(apiUrl);
+    res.data = humps.camelizeKeys(res.data) as PostIndexResponse;
     return res.data;
   } catch (err: any) {
     return {
