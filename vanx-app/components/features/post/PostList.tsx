@@ -49,7 +49,7 @@ export function PostList({ posts, onPostDelete }: PostListProps) {
         {posts.map((post) => {
           const normalizedPost = {
             ...post,
-            contents: post.contents ?? "",
+            contents: post.postContent ?? "",
           };
           
           return (

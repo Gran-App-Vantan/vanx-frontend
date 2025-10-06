@@ -18,7 +18,7 @@ export type ProfilePostIndexResponse =
     errors: { err: string }[];
   }
 
-export async function ProfilePostIndex({ userId }: { userId: string }) {
+export async function ProfilePostIndex({ userId }: { userId: number | undefined }) {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/profile/${userId}`;
   const authToken = Cookies.get("authToken");
 

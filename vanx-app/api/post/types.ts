@@ -3,8 +3,8 @@ export type Post = {
   userId: number;
   userName: string;
   imageSrc: string;
-  contents: string;
-  files?: PreviewFile[];
+  postContent: string;
+  files?: PostFile[];
   postReactions: PostReaction[];
 };
 
@@ -30,7 +30,7 @@ export type PreviewFile = {
   name?: string;
 };
 
-export type PostFiles = {
+export type PostFile = {
   id: number;
   postId: number;
   postFilePath: string;

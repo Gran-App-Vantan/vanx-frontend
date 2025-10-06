@@ -1,20 +1,39 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { ReturnButton } from "@/components/shared";
-import { ProfileHead } from "@/components/features/profile/ProfileHead";
+import { ProfileHead } from "@/components/features/profile/";
 import { PostList } from "@/components/features/post";
 import { useUser } from "@/contexts/UserContext";
-import { usePosts } from "@/hooks/usePosts";
 import { usePostDelete } from "@/hooks/usePostDelete";
+import { ProfilePostIndex } from "@/api/profile/profilePostIndex";
+import { Post } from "@/api/post";
 
 export default function Profile() {
   const { user } = useUser();
-  const { posts, setPosts, loading, error } = usePosts();
+  const [posts, setPosts] = useState<Post[]>([]);
   const { handlePostDelete } = usePostDelete();
 
   const onPostDelete = async (postId: number) => {
     await handlePostDelete(postId, setPosts);
   };
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await ProfilePostIndex({ userId: user?.id });
+
+        if (response.success && "data" in response) {
+          const data = response.data as { posts: Post[] };
+          setPosts(data.posts);
+        }
+      } catch (error) {
+        console.error("ERROR", error);
+      }
+    };
+
+    fetchPosts();
+  }, [user?.id]);
 
   return (
     <main>
@@ -24,13 +43,7 @@ export default function Profile() {
       </div>
 
       <div className="mt-56">
-        {loading ? (
-          <div>読み込み中...</div>
-        ) : error ? (
-          <div>エラー: {error}</div>
-        ) : (
-          <PostList posts={posts} onPostDelete={onPostDelete} />
-        )}
+        <PostList posts={posts} onPostDelete={onPostDelete} />
       </div>
     </main>
   );
