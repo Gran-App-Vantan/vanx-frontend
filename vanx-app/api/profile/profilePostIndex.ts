@@ -1,23 +1,23 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import humps from "humps";
-import { User } from "../auth";
 import { Post } from "../post";
+import { User } from "../auth";
 
 export type ProfilePostIndexResponse = 
   | {
-    success: true;
-    message: "取得に成功しました";
-    data: {
-      user: User;
-      posts: Post[];
+      success: true;
+      message: "取得に成功しました";
+      data: {
+        posts: Post[];
+        user: User;
+      };
     }
-  }
   | {
-    success: false;
-    message: "取得に失敗しました";
-    errors: { err: string }[];
-  }
+      success: false;
+      message: "取得に失敗しました";
+      errors: { err: string }[];
+    };
 
 export async function ProfilePostIndex({ userId }: { userId: number | undefined }) {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/profile/${userId}`;

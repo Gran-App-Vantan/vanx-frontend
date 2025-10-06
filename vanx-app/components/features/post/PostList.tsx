@@ -6,13 +6,15 @@ import { PostDeleteModal } from "./PostDeleteModal";
 import { ReactionBottomSheet } from "./ReactionBottomSheet";
 import { Modal } from "@/components/shared";
 import { Post } from "@/api/post/types";
+import { User } from "@/api/auth/types";
 
 type PostListProps = {
   posts: Post[];
+  user?: User | null;
   onPostDelete: (postId: number) => Promise<void>;
 };
 
-export function PostList({ posts, onPostDelete }: PostListProps) {
+export function PostList({ posts, user, onPostDelete }: PostListProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -56,6 +58,7 @@ export function PostList({ posts, onPostDelete }: PostListProps) {
             <li key={post.id}>
               <PostItem
                 post={normalizedPost}
+                user={user}
                 onDelete={() => {
                   setCurrentPostId(post.id);
                   setIsDeleteModalOpen(true);

@@ -3,19 +3,24 @@ import Link from "next/link";
 
 import { ReactionAddButton } from "./ReactionAddButton";
 import { Post } from "@/api/post/types";
+import { User } from "@/api/auth";
 import { DeleteIcon } from "@/components/shared/icons";
 
 type PostItemProps = {
   post: Post;
+  user?: User | null;
   onDelete: () => void;
   onClick: () => void;
 };
 
 export function PostItem({ 
   post, 
+  user,
   onDelete, 
   onClick 
 }: PostItemProps) {
+  const userName = user && user.name;
+
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
@@ -38,7 +43,7 @@ export function PostItem({
         </Link>
 
         <div className="flex items-center gap-2">
-          <h2 className="text-bold">{post.user.name}</h2>
+          <h2 className="text-bold">{userName}</h2>
         </div>
 
         <div className="justify-self-end ml-auto">
