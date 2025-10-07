@@ -19,7 +19,7 @@ export function PostItem({
   onDelete, 
   onClick 
 }: PostItemProps) {
-  const userName = user && user.name;
+  const userName = user ? user.name : post.user.name;
 
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
