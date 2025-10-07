@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PostingButton } from "@/components/features/post";
 import { HomeIcon, FloorMapIcon, PointIcon, ProfileIcon } from "./icons";
 
-export function FooterNavItem() {
+export function FooterNavItem({ userId }: { userId: number | undefined }) {
   return (
     <footer className="fixed bottom-0 z-40 w-full min-w-screen bg-white p-5 shadow-top rounded-tr-xl rounded-tl-xl">
       <nav>
@@ -27,13 +27,13 @@ export function FooterNavItem() {
           </li>
 
           <li>
-            <Link href="/wallet">
+            <Link href={`wallet/${userId}`}>
               <PointIcon />
             </Link>
           </li>
 
           <li>
-            <Link href="/profile">
+            <Link href={`/profile/${userId}`}>
               <ProfileIcon />
             </Link>
           </li>

@@ -1,24 +1,13 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-
-import { User } from "../auth/types";
-import { Reaction, PreviewFile } from "./types";
+import { Post } from "./types";
 
 export type PostStoreResponse = {
   success: boolean;
   message: string;
   data?: {
-    post: {
-      id: number;
-      userId: number;
-      postContent: string;
-      created_at: string;
-      updated_at: string;
-      user: User;
-      files: PreviewFile[];
-      reactions: Reaction[];
-    }
-  } 
+    post: Post[];
+  }
 }
 
 export async function postStore(formData: FormData) {

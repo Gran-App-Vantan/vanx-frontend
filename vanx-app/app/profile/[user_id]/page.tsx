@@ -1,90 +1,61 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Modal } from "@/components/shared";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { ReturnButton } from "@/components/shared";
-import { ProfileHead } from "@/components/features/profile/ProfileHead";
-import { posts } from "@/app/page";
-import {
-  PostItem,
-  ReactionBottomSheet,
-  PostDeleteModal,
-} from "@/components/features/post";
-
-//
-// ユーザー情報の取得ができていないので、仮でpostsを表示しています
-//
+import { ProfileHead } from "@/components/features/profile/";
+import { PostList } from "@/components/features/post";
+import { useUser } from "@/contexts/UserContext";
+import { usePostDelete } from "@/hooks/usePostDelete";
+import { ProfilePostIndex } from "@/api/profile/profilePostIndex";
+import { Post } from "@/api/post";
+import { User } from "@/api/auth";
 
 export default function Profile() {
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  const bottomSheetRef = useRef<HTMLDivElement>(null);
+  const { user } = useUser();
+  const { user_id: userId } = useParams();
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [userData, setUserData] = useState<User | null>(null);
+  const { handlePostDelete } = usePostDelete();
+
+  const onPostDelete = async (postId: number) => {
+    await handlePostDelete(postId, setPosts);
+  };
 
   useEffect(() => {
-    if (isBottomSheetOpen) {
-      setIsBottomSheetVisible(true);
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isBottomSheetOpen]);
+    const fetchPosts = async () => {
+      if (userId) {
+        try {
+          const response = await ProfilePostIndex({ userId: Number(userId) });
+          
+          if (response.success && "data" in response) {
+            const data = response.data as { posts: Post[]; user: User };
+            const responseUser = data.user;
+            const postsData = data.posts;
+            const postsArray = Array.isArray(postsData) ? postsData : [];
 
-  const handleCloseAnimationEnd = () => {
-    setIsBottomSheetVisible(false);
-  };
+            setPosts(postsArray);
+            setUserData(responseUser);
+          }
+        } catch (error) {
+          console.error("ERROR", error);
+        }
+      }
+    };
+
+    fetchPosts();
+  }, [userId]);
 
   return (
     <main>
       <div className="fixed top-0 left-0 w-full">
         <ReturnButton />
-        <ProfileHead />
+        {user && <ProfileHead user={user} />}
       </div>
-      <ul className="mt-56">
-        {posts.map((post) => {
-          const normalizedPost = {
-            ...post,
-            contents: post.contents ?? "",
-          };
 
-          return (
-            <li key={post.id}>
-              <PostItem
-                post={normalizedPost}
-                onDelete={() => setIsDeleteModalOpen(true)}
-                onClick={() => setIsBottomSheetOpen(true)}
-              />
-            </li>
-          );
-        })}
-      </ul>
-
-      {isDeleteModalOpen && (
-        <Modal
-          size="normal"
-          openModal={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-        >
-          <PostDeleteModal onClose={() => setIsDeleteModalOpen(false)} />
-        </Modal>
-      )}
-
-      {isBottomSheetVisible && (
-        <div
-          className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
-          onClick={() => setIsBottomSheetOpen(false)}
-        >
-          <div ref={bottomSheetRef} onClick={(e) => e.stopPropagation()}>
-            <ReactionBottomSheet
-              isOpen={isBottomSheetOpen}
-              onCloseAnimationEnd={handleCloseAnimationEnd}
-            />
-          </div>
-        </div>
-      )}
+      <div className="mt-56">
+        <PostList posts={posts} user={userData} onPostDelete={onPostDelete} />
+      </div>
     </main>
   );
 }
