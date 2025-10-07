@@ -3,15 +3,24 @@ import Link from "next/link";
 
 import { ReactionAddButton } from "./ReactionAddButton";
 import { Post } from "@/api/post/types";
+import { User } from "@/api/auth";
 import { DeleteIcon } from "@/components/shared/icons";
 
 type PostItemProps = {
   post: Post;
+  user?: User | null;
   onDelete: () => void;
   onClick: () => void;
 };
 
-export function PostItem({ post, onDelete, onClick }: PostItemProps) {
+export function PostItem({ 
+  post, 
+  user,
+  onDelete, 
+  onClick 
+}: PostItemProps) {
+  const userName = user ? user.name : post.user.name;
+
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
@@ -28,12 +37,13 @@ export function PostItem({ post, onDelete, onClick }: PostItemProps) {
               src="/icons/default-user-icon.svg" 
               alt="user-icon" 
               width={50} 
-              height={50} />
+              height={50} 
+            />
           )}
         </Link>
 
         <div className="flex items-center gap-2">
-          <h2 className="text-bold">{post.userName}</h2>
+          <h2 className="text-bold">{userName}</h2>
         </div>
 
         <div className="justify-self-end ml-auto">
@@ -43,19 +53,24 @@ export function PostItem({ post, onDelete, onClick }: PostItemProps) {
         </div>
       </div>
 
-      <div>{post.contents}</div>
+      <div>{post.postContent}</div>
 
       <div>
-        {post.files && post.files.length > 0 ? (
-          post.files.map((file, index) => (
-            file.url ? (
-              <div key={file.id || index} className="my-2">
+        {post.postfile && post.postfile.length > 0 ? (
+          post.postfile.map((file) => (
+            file.postFileUrl ? (
+              <div key={file.id} className="my-2">
                 <Image 
-                  src={file.url} 
-                  alt={`post-image-${index}`} 
+                  src={file.postFileUrl} 
+                  alt={`post-image-${file.id}`} 
                   width={300} 
                   height={200} 
-                  className="object-cover rounded-md"
+                  className={`
+                    ${file.postFileUrl.slice(-3) === "png"  // postFileTypeで判別できたら良いのになあ
+                      && "border-[0.5px] border-text-gray"  // png画像の時にborderをつけてみてるけど正直微妙
+                    }
+                    object-cover rounded-md
+                  `}
                   unoptimized
                 />
               </div>
@@ -66,7 +81,7 @@ export function PostItem({ post, onDelete, onClick }: PostItemProps) {
 
       <div className="flex justify-end">
         <ReactionAddButton
-          postReactions={post.postReactions}
+          postReactions={post.postReactions || []}
           onClick={onClick}
         />
       </div>

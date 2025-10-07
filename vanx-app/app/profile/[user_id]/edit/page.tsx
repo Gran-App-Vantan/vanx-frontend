@@ -5,7 +5,7 @@ export default function ProfileEdit() {
   return (
     <main>
       <ReturnButton />
-      <form className="flex flex-col justify-center mt-12">
+      <form className="flex flex-col justify-center mt-28">
         <div className="flex flex-col items-center gap-8">
           <Image
             className="border-[0.5px] border-text-gray rounded-full"

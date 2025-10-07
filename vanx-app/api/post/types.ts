@@ -1,11 +1,21 @@
+import { User } from "../auth";
+
 export type Post = {
   id: number;
   userId: number;
-  userName: string;
+  user: User;
   imageSrc: string;
-  contents: string;
-  files?: PreviewFile[];
-  postReactions: Reaction[];
+  postContent: string;
+  postfile?: PostFile[];
+  postReactions: PostReaction[];
+};
+
+export type PostReaction = {
+  id: number;
+  userId: number;
+  postId: number;
+  reactionId: number;
+  reaction: Reaction;
 };
 
 export type Reaction = {
@@ -22,11 +32,10 @@ export type PreviewFile = {
   name?: string;
 };
 
-export type PostFiles = {
+export type PostFile = {
   id: number;
   postId: number;
   postFilePath: string;
   postFileType: string;
-  createdAt: string;
-  updatedAt: string;
+  postFileUrl: string;
 }

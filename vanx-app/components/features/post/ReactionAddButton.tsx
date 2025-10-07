@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { Reaction } from "@/api/post/types";
+import { PostReaction } from "@/api/post/types";
 
 type ReactionAddButtonProps = {
-  postReactions: Reaction[];
+  postReactions: PostReaction[];
   onClick: () => void;
 };
 
@@ -33,8 +33,8 @@ export function ReactionAddButton({
         >
           <Image
             className="w-5 h-5"
-            src={reaction.reactionImageSrc}
-            alt={reaction.reactionName}
+            src={reaction.reaction.reactionImageSrc}
+            alt={reaction.reaction.reactionName}
             width={24}
             height={24}
           />
