@@ -9,7 +9,8 @@ export const usePosts = () => {
       const response: PostIndexResponse = await PostIndex();
 
       if (response.success) {
-        const postsData = response.data.posts.data;
+        console.log(response);
+        const postsData = response.posts.data;
         const postsArray = Array.isArray(postsData) ? postsData : [];
 
         setPosts(postsArray);
