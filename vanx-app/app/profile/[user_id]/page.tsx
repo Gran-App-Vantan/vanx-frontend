@@ -46,6 +46,8 @@ export default function Profile() {
     fetchPosts();
   }, [userId]);
 
+  console.log(user);
+
   return (
     <main>
       <div className="fixed top-0 left-0 w-full">

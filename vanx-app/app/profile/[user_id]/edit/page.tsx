@@ -11,7 +11,7 @@ import { useUser } from "@/contexts/UserContext";
 
 export default function ProfileEdit() {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, fetchUser } = useUser();
   const [formValues, setFormValues] = useState<ProfileUpdateParams>({
     name: "",
     userPath: "",
@@ -47,7 +47,6 @@ export default function ProfileEdit() {
     formData.append('name', formValues.name);
     formData.append('userPath', formValues.userPath);
 
-    // ファイル（userIcon）が存在する場合のみ追加
     if (formValues.userIcon) {
       formData.append('userIcon', formValues.userIcon);
     }
@@ -55,6 +54,8 @@ export default function ProfileEdit() {
     const response = await profileUpdate(formData);
 
     if (response.success) {
+      // プロフィール更新後にUserContextを更新
+      await fetchUser();
       router.push(`/profile/${user?.id}`);
     } else {
       console.log("Error:", response.message);
@@ -78,13 +79,14 @@ export default function ProfileEdit() {
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col items-center gap-8">
-          <Image
-            className="border-[0.5px] border-text-gray rounded-full"
-            src={previewFiles[0]?.url || "/icons/default-user-icon.svg"}
-            alt="user-icon"
-            width={100}
-            height={100}
-          />
+          <div className="relative w-[100px] h-[100px] border-[0.5px] border-text-gray rounded-full overflow-hidden">
+            <Image
+              src={previewFiles[0]?.url || "/icons/default-user-icon.svg"}
+              alt="user-icon"
+              fill
+              className="object-cover"
+            />
+          </div>
           <label className="text-label text-accent cursor-pointer">
             <input 
               type="file"
