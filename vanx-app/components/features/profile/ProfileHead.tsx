@@ -6,13 +6,18 @@ import { User } from "@/api/auth";
 import { EditIcon, LessThanIcon } from "@/components/shared/icons";
 
 export function ProfileHead({ user }: { user: User }) {
+  console.log(user);
   return (
     <div className="pt-22 pb-4 px-6 bg-accent-light flex flex-col gap-8 shadow-bottom">
       <div className="flex justify-between">
         <div className="flex gap-6 justify-center">
           <div className="size-12">
             <Image
-              src="/icons/default-user-icon.svg"
+              src={
+                user.userIcon
+                  ? `${process.env.NEXT_PUBLIC_API_URL}/storage/${user.userIcon}`
+                  : "/icons/default-user-icon.svg"
+              }
               alt="user-icon"
               width={50}
               height={50}

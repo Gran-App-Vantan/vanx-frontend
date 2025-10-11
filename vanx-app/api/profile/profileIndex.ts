@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import humps from "humps";
 import { User } from "../auth";
 import { Wallet } from "../wallet/types";
 
@@ -30,7 +31,7 @@ export async function ProfileIndex({ userId }: { userId: string | number; }) {
       }
     })
     .then(res => {
-      console.log("ProfileIndex成功:", res.data);
+      res.data = humps.camelizeKeys(res.data) as typeof res.data;
       return res.data;
     })
     .catch(err => {

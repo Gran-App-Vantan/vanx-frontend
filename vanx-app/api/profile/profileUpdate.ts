@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import humps from "humps";
 import { User } from "../auth";
 
 export type ProfileUpdateResponse =
@@ -22,23 +23,22 @@ export async function profileUpdate(formData: FormData) {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/update`;
   const authToken = Cookies.get("authToken");
 
-  try {
-    const res = await axios.post<ProfileUpdateResponse>(apiUrl, formData, {
+  return axios
+    .post<ProfileUpdateResponse>(apiUrl, formData, {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: "application/json",
         "Content-Type": "multipart/form-data",
       },
+    })
+    .then((res) => {
+      res.data = humps.camelizeKeys(res.data) as typeof res.data;
+      return res.data;
+    })
+    .catch((error) => {
+      return {
+        success: false,
+        message: "プロフィールの更新に失敗しました。",
+        errors: [{ err: error.message }],
+      }
     });
-
-    return res.data;
-  } catch (error: any) {
-    console.error("ERROR : ", error);
-
-    return {
-      success: false,
-      message: "プロフィール更新に失敗しました。",
-      errors: [{ err: error.message }],
-    };
-  }
 }

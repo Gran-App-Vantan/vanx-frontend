@@ -45,20 +45,16 @@ export default function ProfileEdit() {
     
     const formData = new FormData();
     formData.append('name', formValues.name);
-    formData.append('userPath', formValues.userPath);
-
-    if (formValues.userIcon) {
-      formData.append('userIcon', formValues.userIcon);
+    
+    if (previewFiles[0]?.file) {
+      formData.append('user_icon', previewFiles[0].file);
     }
 
     const response = await profileUpdate(formData);
 
     if (response.success) {
-      // プロフィール更新後にUserContextを更新
       await fetchUser();
       router.push(`/profile/${user?.id}`);
-    } else {
-      console.log("Error:", response.message);
     }
   };
 
