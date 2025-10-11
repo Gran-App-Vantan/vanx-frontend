@@ -6,7 +6,7 @@ import { User } from "@/api/auth";
 import { EditIcon, LessThanIcon } from "@/components/shared/icons";
 
 export function ProfileHead({ user }: { user: User }) {
-  console.log(user);
+  console.log(user.userIcon);
   return (
     <div className="pt-22 pb-4 px-6 bg-accent-light flex flex-col gap-8 shadow-bottom">
       <div className="flex justify-between">
@@ -15,7 +15,7 @@ export function ProfileHead({ user }: { user: User }) {
             <Image
               src={
                 user.userIcon
-                  ? `${process.env.NEXT_PUBLIC_API_URL}/storage/${user.userIcon}`
+                  ? `${process.env.NEXT_PUBLIC_API_URL}/api/storage/${user.userIcon}` // ゴリ押しすぎて死ぬ
                   : "/icons/default-user-icon.svg"
               }
               alt="user-icon"
