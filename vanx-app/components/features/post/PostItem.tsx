@@ -25,9 +25,9 @@ export function PostItem({
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
         <Link href={`/profile/${post.userId}`}>
-          {post.imageSrc ? (
+          {post.user.userIcon ? (
             <Image 
-              src={post.imageSrc} 
+              src={post.user.userIcon} 
               alt="user-icon" 
               width={50} 
               height={50} 
