@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ReturnButton } from "@/components/shared";
 import { profileUpdate } from "@/api/profile/profileUpdate";
 import { ProfileUpdateParams } from "@/api/profile";
-import { useFilePreview } from "@/hooks/usePreviewFIle";
+import { useFilePreview } from "@/hooks/usePreviewFile";
 import { useUser } from "@/contexts/UserContext";
 
 export default function ProfileEdit() {
@@ -24,7 +24,6 @@ export default function ProfileEdit() {
   } = useFilePreview({
     maxFiles: 1,
     maxFileSize: 2 * 1024 * 1024,
-    acceptedTypes: ["image/*"] // 画像のみ
   });
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

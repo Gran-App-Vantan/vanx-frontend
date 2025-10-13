@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/shared";
 import { LeftArrowIcon, CloseIcon, LessThanIcon, } from "@/components/shared/icons";
 import { postStore } from "@/api/post/postStore";
-import { useFilePreview } from "@/hooks/usePreviewFIle";
+import { useFilePreview } from "@/hooks/usePreviewFile";
 
 export default function Post() {
   const router = useRouter();
