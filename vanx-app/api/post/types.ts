@@ -30,6 +30,14 @@ export type PreviewFile = {
   url: string;
   type: string;
   name?: string;
+  base64Data?: string;
+  file?: File;
+};
+
+export type UseFilePreviewOptions = {
+  maxFiles?: number;
+  maxFileSize?: number;
+  acceptedTypes?: string[];
 };
 
 export type PostFile = {

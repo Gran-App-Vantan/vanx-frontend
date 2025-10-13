@@ -12,7 +12,11 @@ export function ProfileHead({ user }: { user: User }) {
         <div className="flex gap-6 justify-center">
           <div className="size-12">
             <Image
-              src="/icons/default-user-icon.svg"
+              src={
+                user.userIcon
+                  ? user.userIcon
+                  : "/icons/default-user-icon.svg"
+              }
               alt="user-icon"
               width={50}
               height={50}
