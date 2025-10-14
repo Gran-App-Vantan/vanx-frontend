@@ -11,21 +11,28 @@ export type ReactionIndexRequest = {
 export type ReactionIndexResponse = 
   | {
     success: true,
-    messages: "リアクションの取得に成功しました",
+    messages: string,
     reactions: Reaction[]
   } 
   | {
     success: false,
-    messages: "リアクションの取得に失敗しました",
+    messages: string,
     errors: { err: string }[]
   }
 
-export async function ReactionIndex() {
+export async function ReactionIndex({ 
+  category, 
+  page 
+}: ReactionIndexRequest): Promise<ReactionIndexResponse> {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/reaction/get`;
   const authToken = Cookies.get("authToken");
 
   return axios
   .get<ReactionIndexRequest>(apiUrl, {
+    params: {
+      category,
+      page
+    },
     headers: {
       Authorization: `Bearer ${authToken}`,
       Accept: "application/json"
@@ -40,8 +47,8 @@ export async function ReactionIndex() {
 
     return {
       success: false,
-      message: "リアクション取得に失敗しました",
-      errors: [{ err: err.message || "リアクションの取得に失敗しました" }]
+      messages: `${category}のリアクションの取得に失敗しました`,
+      errors: [{ err: err.message || `${category}のリアクションの取得に失敗しました` }]
     }
   })
 }
