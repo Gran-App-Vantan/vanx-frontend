@@ -7,10 +7,12 @@ import { ReactionBottomSheet } from "./ReactionBottomSheet";
 import { Modal } from "@/components/shared";
 import { Post } from "@/api/post/types";
 import { User } from "@/api/auth/types";
+import { Reaction } from "@/api/post/types";
 
 type PostListProps = {
   posts: Post[];
   user?: User | null;
+  reactions: Reaction[];
   onPostDelete: (postId: number) => Promise<void>;
 };
 
