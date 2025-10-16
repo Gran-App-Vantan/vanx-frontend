@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ReturnButton } from "@/components/shared";
+import { ReturnButton, Input } from "@/components/shared";
 import { profileUpdate } from "@/api/profile/profileUpdate";
 import { ProfileUpdateParams } from "@/api/profile";
 import { useFilePreview } from "@/hooks/usePreviewFile";
@@ -14,7 +14,7 @@ export default function ProfileEdit() {
   const { user, fetchUser } = useUser();
   const [formValues, setFormValues] = useState<ProfileUpdateParams>({
     name: "",
-    userPath: "",
+    password: "",
     userIcon: ""
   });
 
@@ -44,6 +44,7 @@ export default function ProfileEdit() {
     
     const formData = new FormData();
     formData.append('name', formValues.name);
+    formData.append('password', formValues.password);
     
     if (previewFiles[0]?.file) {
       formData.append('user_icon', previewFiles[0].file);
@@ -54,6 +55,8 @@ export default function ProfileEdit() {
     if (response.success) {
       await fetchUser();
       router.push(`/profile/${user?.id}`);
+    } else {
+      console.error('Profile update failed:', response);
     }
   };
 
@@ -97,28 +100,24 @@ export default function ProfileEdit() {
             <label htmlFor="userName" className="ml-2 text-text text-label">
               ユーザー名を編集
             </label>
-            <input
+            <Input 
               id="userName"
+              size="small"
               type="text"
-              className="w-72 h-11 border border-text-gray rounded-lg px-4 text-label outline-none"
-              value={formValues.name}
-              onChange={(e) => setFormValues({ ...formValues, name: e.target.value })}
               placeholder="新しいユーザー名を入力"
-              autoComplete="off"
+              onChange={(value) => setFormValues({ ...formValues, name: value })}
             />
           </div>
           <div className="flex flex-col gap-3">
             <label htmlFor="password" className="ml-2 text-text text-label">
               パスワードを編集
             </label>
-            <input
+            <Input 
               id="password"
-              type="text"
-              className="w-72 h-11 border border-text-gray rounded-lg px-4 text-label outline-none"
-              value={formValues.userPath}
-              placeholder="新しいユーザーIDを入力"
-              autoComplete="off"
-              onChange={(e) => setFormValues({ ...formValues, userPath: e.target.value })}
+              size="small"
+              type="password"
+              placeholder="新しいパスワードを入力"
+              onChange={(value) => setFormValues({ ...formValues, password: value })}
             />
           </div>
         </div>
