@@ -49,6 +49,7 @@ export function Input({
                 : "password"
               : type
           }
+          value={value}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
           autoComplete="off"
