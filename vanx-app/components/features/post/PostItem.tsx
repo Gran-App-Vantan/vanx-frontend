@@ -25,20 +25,20 @@ export function PostItem({
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
-        <Link href={`/profile/${post.userId}`}>
+        <Link href={`/profile/${post.userId}`} className="w-[50px] h-[50px] relative flex-shrink-0">
           {userIcon ? (
             <Image 
               src={userIcon} 
               alt="user-icon" 
-              width={50} 
-              height={50} 
+              fill
+              className="border-[0.5px] border-text-gray rounded-full object-cover"
             />
           ) : (
             <Image 
               src="/icons/default-user-icon.svg" 
               alt="user-icon" 
-              width={50} 
-              height={50} 
+              fill
+              className="object-cover rounded-full"
             />
           )}
         </Link>
@@ -66,12 +66,7 @@ export function PostItem({
                   alt={`post-image-${file.id}`} 
                   width={300} 
                   height={200} 
-                  className={`
-                    ${file.postFileUrl.slice(-3) === "png"  // postFileTypeで判別できたら良いのになあ
-                      && "border-[0.5px] border-text-gray"  // png画像の時にborderをつけてみてるけど正直微妙
-                    }
-                    object-cover rounded-md
-                  `}
+                  className="border-[0.5px] border-text-gray object-cover rounded-md"
                   unoptimized
                 />
               </div>
