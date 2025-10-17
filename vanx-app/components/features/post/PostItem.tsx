@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { ReactionAddButton } from "./ReactionAddButton";
+import { ReactionAddButton } from "../reaction/ReactionAddButton";
 import { Post } from "@/api/post/types";
 import { User } from "@/api/auth";
 import { DeleteIcon } from "@/components/shared/icons";
