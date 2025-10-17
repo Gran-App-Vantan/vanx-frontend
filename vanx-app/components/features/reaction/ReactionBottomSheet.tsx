@@ -11,13 +11,51 @@ type ReactionBottomSheetProps = {
   onCloseAnimationEnd: () => void;
 }
 
+const navigationItems = [
+  {
+    src: "./icons/all-icon.svg",
+    alt: "all-icon",
+    reactionType: "",
+  },
+  {
+    src: "./icons/emoji-icon.svg",
+    alt: "emoji-icon",
+    reactionType: "emoji",
+  },
+  {
+    src: "./icons/nature-icon.svg",
+    alt: "nature-icon",
+    reactionType: "nature",
+  },
+  {
+    src: "./icons/food-icon.svg",
+    alt: "food-icon",
+    reactionType: "food",
+  },
+  {
+    src: "./icons/activity-icon.svg",
+    alt: "activity-icon",
+    reactionType: "activity",
+  },
+  {
+    src: "./icons/travel-icon.svg",
+    alt: "travel-icon",
+    reactionType: "travel",
+  },
+  {
+    src: "./icons/symbols-icon.svg",
+    alt: "symbols-icon",
+    reactionType: "symbols",
+  },
+];
+
 export function ReactionBottomSheet({
   reactionData,
   isOpen,
   onCloseAnimationEnd,
 }: ReactionBottomSheetProps) {
   const [navClicked, setNavClicked] = useState(0);
-  const [reactionCategory, setReactionCategory] = useState("");
+  const [reactionreactionType, setReactionreactionType] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [visible, setVisible] = useState(isOpen);
   const [animClass, setAnimClass] = useState("anim-slidein");
@@ -42,7 +80,7 @@ export function ReactionBottomSheet({
   if (!visible) return null;
 
   const filteredIcons = reactions?.filter(
-    (icon) => icon.category === reactionCategory || reactionCategory === ""
+    (icon) => icon.reactionType === reactionreactionType || reactionreactionType === ""
   );
 
   const filteredResults = useMemo(() => {
@@ -50,10 +88,10 @@ export function ReactionBottomSheet({
 
     return reactions?.filter(
       (item) =>
-        (item.category === reactionCategory || reactionCategory === "") &&
+        (item.reactionType === reactionreactionType || reactionreactionType === "") &&
         item.reactionName.toLowerCase().includes(searchValue.toLowerCase())
     );
-  }, [searchValue, reactionCategory]);
+  }, [searchValue, reactionreactionType]);
 
   return (
     <div
@@ -76,7 +114,7 @@ export function ReactionBottomSheet({
       </div>
       <nav className="border-b-[0.5px] border-text-gray py-2">
         <ul className="flex items-center justify-between px-[30px]">
-          {reactions?.map((item, i) => {
+          {navigationItems?.map((item, i) => {
             const isClicked = navClicked === i;
 
             return (
@@ -88,12 +126,12 @@ export function ReactionBottomSheet({
                   `}
                   onClick={() => {
                     setNavClicked(i);
-                    setReactionCategory(item.category || "");
+                    setReactionreactionType(item.reactionType || "");
                   }}
                 >
                   <Image 
-                    src={item.reactionImage} 
-                    alt={item.reactionName} 
+                    src={item.src} 
+                    alt={item.alt} 
                     width={24} 
                     height={24}
                   />

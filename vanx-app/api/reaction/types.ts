@@ -1,4 +1,9 @@
-import { Reaction } from "@/api/post/";
+export type Reaction = {
+  id: number;
+  reactionType: "emoji" | "nature" | "food" | "activity" | "travel" | "symbols";
+  reactionName: string;
+  reactionImage: string;
+};
 
 export type ReactionData = {
   data: Reaction[];

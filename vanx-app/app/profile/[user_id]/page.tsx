@@ -10,10 +10,12 @@ import { usePostDelete } from "@/hooks/usePostDelete";
 import { ProfilePostIndex } from "@/api/profile/profilePostIndex";
 import { Post } from "@/api/post";
 import { User } from "@/api/auth";
+import { useReactions } from "@/hooks/useReactionIndex";
 
 export default function Profile() {
   const { user } = useUser();
   const { user_id: userId } = useParams();
+  const { reactions } = useReactions();
   const [posts, setPosts] = useState<Post[]>([]);
   const [userData, setUserData] = useState<User | null>(null);
   const { handlePostDelete } = usePostDelete();
@@ -54,7 +56,12 @@ export default function Profile() {
       </div>
 
       <div className="mt-56">
-        <PostList posts={posts} user={userData} onPostDelete={onPostDelete} />
+        <PostList 
+          posts={posts} 
+          user={userData}
+          reactions={reactions}
+          onPostDelete={onPostDelete} 
+        />
       </div>
     </main>
   );

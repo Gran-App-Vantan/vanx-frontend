@@ -35,10 +35,11 @@ export async function profileUpdate(formData: FormData) {
       return res.data;
     })
     .catch((error) => {
+
       return {
         success: false,
         message: "プロフィールの更新に失敗しました。",
-        errors: [{ err: error.message }],
+        errors: [{ err: error.response?.data?.message || error.message }],
       }
     });
 }

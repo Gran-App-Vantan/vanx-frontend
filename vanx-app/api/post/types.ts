@@ -1,4 +1,5 @@
 import { User } from "../auth";
+import { Reaction } from "../reaction";
 
 export type Post = {
   id: number;
@@ -16,13 +17,6 @@ export type PostReaction = {
   postId: number;
   reactionId: number;
   reaction: Reaction;
-};
-
-export type Reaction = {
-  id: number;
-  category: "emoji" | "nature" | "food" | "activity" | "travel" | "symbols";
-  reactionName: string;
-  reactionImage: string;
 };
 
 export type PreviewFile = {

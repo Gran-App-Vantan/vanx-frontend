@@ -3,20 +3,20 @@
 import { useState, useEffect, useRef } from "react";
 import { PostItem } from "./PostItem";
 import { PostDeleteModal } from "./PostDeleteModal";
-import { ReactionBottomSheet } from "./ReactionBottomSheet";
+import { ReactionBottomSheet } from "../reaction/ReactionBottomSheet";
 import { Modal } from "@/components/shared";
 import { Post } from "@/api/post/types";
 import { User } from "@/api/auth/types";
-import { Reaction } from "@/api/post/types";
+import { ReactionData } from "@/api/reaction";
 
 type PostListProps = {
   posts: Post[];
   user?: User | null;
-  reactions: Reaction[];
+  reactionData: ReactionData | null;
   onPostDelete: (postId: number) => Promise<void>;
 };
 
-export function PostList({ posts, user, onPostDelete }: PostListProps) {
+export function PostList({ posts, user, reactionData, onPostDelete }: PostListProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -46,6 +46,8 @@ export function PostList({ posts, user, onPostDelete }: PostListProps) {
       setCurrentPostId(null);
     }
   };
+
+  console.log(reactionData?.data);
 
   return (
     <>
@@ -102,6 +104,7 @@ export function PostList({ posts, user, onPostDelete }: PostListProps) {
         >
           <div ref={bottomSheetRef} onClick={(e) => e.stopPropagation()}>
             <ReactionBottomSheet
+              reactionData={reactionData}
               isOpen={isBottomSheetOpen}
               onCloseAnimationEnd={handleCloseAnimationEnd}
             />
