@@ -25,7 +25,7 @@ export default function Home() {
           <PostList 
             posts={posts} 
             onPostDelete={onPostDelete}
-            reactions={reactions} 
+            reactionData={reactions} 
           />
         </div>
       </main>

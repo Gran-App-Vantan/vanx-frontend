@@ -3,421 +3,26 @@
 import Image from "next/image";
 import { useState, useEffect, useMemo } from "react";
 import { SearchIcon } from "@/components/shared/icons";
+import { ReactionData } from "@/api/reaction";
 
-const navigationItems = [
-  {
-    src: "./icons/all-icon.svg",
-    alt: "all-icon",
-    category: "",
-  },
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-  },
-];
-
-// 仮データの皆さん
-const reactionIcons = [
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-    name: "平常心",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-    name: "葉っぱ",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-    name: "ジャンクフード",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-    name: "コントローラー",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-    name: "飛行機",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-    name: "ハート",
-  },
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-    name: "平常心",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-    name: "葉っぱ",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-    name: "ジャンクフード",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-    name: "コントローラー",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-    name: "飛行機",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-    name: "ハート",
-  },
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-    name: "平常心",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-    name: "葉っぱ",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-    name: "ジャンクフード",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-    name: "コントローラー",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-    name: "飛行機",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-    name: "ハート",
-  },
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-    name: "平常心",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-    name: "葉っぱ",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-    name: "ジャンクフード",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-    name: "コントローラー",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-    name: "飛行機",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-    name: "ハート",
-  },
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-    name: "平常心",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-    name: "葉っぱ",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-    name: "ジャンクフード",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-    name: "コントローラー",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-    name: "飛行機",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-    name: "ハート",
-  },
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-    name: "平常心",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-    name: "葉っぱ",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-    name: "ジャンクフード",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-    name: "コントローラー",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-    name: "飛行機",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-    name: "ハート",
-  },
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-    name: "平常心",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-    name: "葉っぱ",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-    name: "ジャンクフード",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-    name: "コントローラー",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-    name: "飛行機",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-    name: "ハート",
-  },
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-    name: "平常心",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-    name: "葉っぱ",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-    name: "ジャンクフード",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-    name: "コントローラー",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-    name: "飛行機",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-    name: "ハート",
-  },
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-    name: "平常心",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-    name: "葉っぱ",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-    name: "ジャンクフード",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-    name: "コントローラー",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-    name: "飛行機",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-    name: "ハート",
-  },
-  {
-    src: "./icons/emoji-icon.svg",
-    alt: "emoji-icon",
-    category: "emoji",
-    name: "平常心",
-  },
-  {
-    src: "./icons/nature-icon.svg",
-    alt: "nature-icon",
-    category: "nature",
-    name: "葉っぱ",
-  },
-  {
-    src: "./icons/food-icon.svg",
-    alt: "food-icon",
-    category: "food",
-    name: "ジャンクフード",
-  },
-  {
-    src: "./icons/activity-icon.svg",
-    alt: "activity-icon",
-    category: "activity",
-    name: "コントローラー",
-  },
-  {
-    src: "./icons/travel-icon.svg",
-    alt: "travel-icon",
-    category: "travel",
-    name: "飛行機",
-  },
-  {
-    src: "./icons/symbols-icon.svg",
-    alt: "symbols-icon",
-    category: "symbols",
-    name: "ハート",
-  },
-];
-
-export function ReactionBottomSheet({
-  isOpen,
-  onCloseAnimationEnd,
-}: {
+type ReactionBottomSheetProps = {
+  reactionData: ReactionData | null;
   isOpen: boolean;
   onCloseAnimationEnd: () => void;
-}) {
+}
+
+export function ReactionBottomSheet({
+  reactionData,
+  isOpen,
+  onCloseAnimationEnd,
+}: ReactionBottomSheetProps) {
   const [navClicked, setNavClicked] = useState(0);
   const [reactionCategory, setReactionCategory] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [visible, setVisible] = useState(isOpen);
   const [animClass, setAnimClass] = useState("anim-slidein");
+
+  const reactions = reactionData?.data || [];
 
   useEffect(() => {
     if (isOpen) {
@@ -436,17 +41,17 @@ export function ReactionBottomSheet({
 
   if (!visible) return null;
 
-  const filteredIcons = reactionIcons.filter(
+  const filteredIcons = reactions?.filter(
     (icon) => icon.category === reactionCategory || reactionCategory === ""
   );
 
   const filteredResults = useMemo(() => {
     if (!searchValue) return [];
 
-    return reactionIcons.filter(
+    return reactions?.filter(
       (item) =>
         (item.category === reactionCategory || reactionCategory === "") &&
-        item.name.toLowerCase().includes(searchValue.toLowerCase())
+        item.reactionName.toLowerCase().includes(searchValue.toLowerCase())
     );
   }, [searchValue, reactionCategory]);
 
@@ -471,7 +76,7 @@ export function ReactionBottomSheet({
       </div>
       <nav className="border-b-[0.5px] border-text-gray py-2">
         <ul className="flex items-center justify-between px-[30px]">
-          {navigationItems.map((item, i) => {
+          {reactions?.map((item, i) => {
             const isClicked = navClicked === i;
 
             return (
@@ -486,7 +91,12 @@ export function ReactionBottomSheet({
                     setReactionCategory(item.category || "");
                   }}
                 >
-                  <Image src={item.src} alt={item.alt} width={24} height={24} />
+                  <Image 
+                    src={item.reactionImage} 
+                    alt={item.reactionName} 
+                    width={24} 
+                    height={24}
+                  />
                 </button>
               </li>
             );
@@ -510,7 +120,12 @@ export function ReactionBottomSheet({
           filteredResults.length > 0 ? (
             filteredResults.map((icon, i) => (
               <span key={i} className="w-[30px] h-[30px]">
-                <Image src={icon.src} alt={icon.alt} width={30} height={30} />
+                <Image 
+                  src={icon.reactionImage} 
+                  alt={icon.reactionName} 
+                  width={30} 
+                  height={30} 
+                />
               </span>
             ))
           ) : (
@@ -522,7 +137,12 @@ export function ReactionBottomSheet({
         ) : filteredIcons.length > 0 ? (
           filteredIcons.map((icon, i) => (
             <span key={i} className="w-[30px] h-[30px]">
-              <Image src={icon.src} alt={icon.alt} width={30} height={30} />
+              <Image 
+                src={icon.reactionImage} 
+                alt={icon.reactionName} 
+                width={30} 
+                height={30} 
+              />
             </span>
           ))
         ) : (

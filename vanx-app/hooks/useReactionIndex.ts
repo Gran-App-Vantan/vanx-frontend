@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { ReactionIndex, UseReactionsOptions } from "@/api/reaction";
-import { Reaction } from "@/api/post/types";
+import { ReactionData } from "@/api/reaction";
 
 export const useReactions = () => {
-  const [reactions, setReactions] = useState<Reaction[]>([]);
+  const [reactions, setReactions] = useState<ReactionData | null>(null);
 
   const fetchReactions = async (options: UseReactionsOptions) => {
     try {
@@ -16,11 +16,11 @@ export const useReactions = () => {
         setReactions(response.reactions);
         return response.reactions;
       } else {
-        setReactions([]);
+        setReactions(null);
         console.error("取得に失敗しました", response.messages);
       }
     } catch (error) {
-      setReactions([]);
+      setReactions(null);
       console.error("ERROR", error);
     }
   };

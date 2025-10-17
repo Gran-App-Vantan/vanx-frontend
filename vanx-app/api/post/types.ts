@@ -22,7 +22,7 @@ export type Reaction = {
   id: number;
   category: "emoji" | "nature" | "food" | "activity" | "travel" | "symbols";
   reactionName: string;
-  reactionImageSrc: string;
+  reactionImage: string;
 };
 
 export type PreviewFile = {

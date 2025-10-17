@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import humps from "humps";
-import { Reaction } from "@/api/post/types";
+import { ReactionData } from "./types";
 
 export type ReactionIndexRequest = {
   category: "all" | "face" | "nature" | "food" | "activity" | "travel" | "object" | "symbol" | "original",
@@ -12,7 +12,7 @@ export type ReactionIndexResponse =
   | {
     success: true,
     messages: string,
-    reactions: Reaction[]
+    reactions: ReactionData
   } 
   | {
     success: false,
