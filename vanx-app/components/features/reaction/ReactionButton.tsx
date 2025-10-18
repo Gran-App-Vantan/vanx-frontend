@@ -3,11 +3,13 @@ import { Reaction } from "@/api/reaction";
 
 type ReactionProps = {
   reaction: Reaction;
+  count: number;
   onClick: () => void;
 }
 
 export function ReactionButton({ 
   reaction,
+  count,
   onClick 
 }: ReactionProps) {
   return (
@@ -21,6 +23,7 @@ export function ReactionButton({
         width={20} 
         height={20} 
       />
+      <span>{count}</span>
     </div>
   );
 }

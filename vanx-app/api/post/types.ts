@@ -16,7 +16,9 @@ export type PostReaction = {
   userId: number;
   postId: number;
   reactionId: number;
-  reaction: Reaction;
+  reaction: Reaction & {
+    reactionCount?: number;
+  };
 };
 
 export type PreviewFile = {

@@ -47,6 +47,8 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
     }
   };
 
+  console.log(posts);
+
   return (
     <>
       <ul>

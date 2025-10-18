@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { ReactionAddButton } from "../reaction/ReactionAddButton";
+import { ReactionButton, ReactionAddButton } from "@/components/features/reaction";
 import { Post } from "@/api/post/types";
 import { User } from "@/api/auth";
 import { DeleteIcon } from "@/components/shared/icons";
@@ -76,10 +76,20 @@ export function PostItem({
       </div>
 
       <div className="flex justify-end">
-        <ReactionAddButton
-          postReactions={post.postReactions || []}
-          onClick={() => onClick()}
-        />
+        <ul className="flex gap-2">
+          {post.postReactions.map((reaction) => (
+            <li key={reaction.reactionId}>
+              <ReactionButton
+                reaction={reaction.reaction}
+                count={reaction.reaction.reactionCount || 0}
+                onClick={() => onClick()}
+              />
+            </li>
+          ))}
+          <li>
+            <ReactionAddButton onClick={() => onClick()} />
+          </li>
+        </ul>
       </div>
     </div>
   );
