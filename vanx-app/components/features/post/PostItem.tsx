@@ -10,14 +10,16 @@ type PostItemProps = {
   post: Post;
   user?: User | null;
   onDelete: () => void;
-  onClick: () => void;
+  onOpen: () => void;
+  onAddReaction: () => void;
 };
 
 export function PostItem({ 
   post, 
   user,
   onDelete, 
-  onClick 
+  onOpen,
+  onAddReaction
 }: PostItemProps) {
   const userName = user ? user.name : post.user.name;
   const userIcon = user ? user.userIcon : post.user.userIcon;
@@ -75,19 +77,19 @@ export function PostItem({
         ) : null}
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-start">
         <ul className="flex gap-2">
           {post.postReactions.map((reaction) => (
             <li key={reaction.reactionId}>
               <ReactionButton
                 reaction={reaction.reaction}
                 count={reaction.reaction.reactionCount || 0}
-                onClick={() => onClick()}
+                onAdd={() => onAddReaction()}
               />
             </li>
           ))}
           <li>
-            <ReactionAddButton onClick={() => onClick()} />
+            <ReactionAddButton onOpen={() => onOpen()} />
           </li>
         </ul>
       </div>

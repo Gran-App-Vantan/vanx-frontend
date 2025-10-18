@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { SearchIcon } from "@/components/shared/icons";
 import { ReactionData, Reaction } from "@/api/reaction";
-import { ReactionIndex, toggleReaction, ToggleReactionResponse } from "@/api/reaction";
+import { ReactionIndex, toggleReaction } from "@/api/reaction";
 
 type ReactionBottomSheetProps = {
   reactionData: ReactionData | null;
@@ -57,7 +57,6 @@ export function ReactionBottomSheet({
   onCloseAnimationEnd,
   postId,
 }: ReactionBottomSheetProps) {
-  const [isReacted, setIsReacted] = useState(false);
   const [reactions, setReactions] = useState<Reaction[] | null>(reactionData?.data || null);
   const [nextPageUrl, setNextPageUrl] = useState<string | null>(reactionData?.nextPageUrl || null);
   const [loading, setLoading] = useState(false);
@@ -71,19 +70,11 @@ export function ReactionBottomSheet({
 
   const handleToggleReaction = async (reactionId: number) => {
     try {
-      const response = await toggleReaction({ reactionId, postId });
-
-      if (response.success) {
-        if ("action" in response && response.action === "created") {
-          setIsReacted(true);
-        } else if ("action" in response && response.action === "deleted") {
-          setIsReacted(false);
-        }
-      }
+      await toggleReaction({ reactionId, postId });
     } catch (error) {
       console.error("リアクションの切り替えに失敗しました:", error);
     }
-  }
+  };
 
   const handleCategoryChange = async (
     item: typeof navigationItems[0],

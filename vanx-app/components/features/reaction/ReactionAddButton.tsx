@@ -1,12 +1,11 @@
 import Image from "next/image";
-import { PostReaction } from "@/api/post/types";
 
-export function ReactionAddButton({ onClick }: { onClick: () => void; }) {
+export function ReactionAddButton({ onOpen }: { onOpen: () => void; }) {
 
   return (
     <button
       className="flex justify-center items-center w-12 h-8 bg-gray rounded-full cursor-pointer"
-      onClick={() => onClick()}
+      onClick={() => onOpen()}
     >
       <Image 
         src="/icons/reaction-add-icon.svg"

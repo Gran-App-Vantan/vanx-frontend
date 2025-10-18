@@ -17,6 +17,7 @@ type PostListProps = {
 };
 
 export function PostList({ posts, user, reactionData, onPostDelete }: PostListProps) {
+  const [addReaction, setAddReaction] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -47,7 +48,9 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
     }
   };
 
-  console.log(posts);
+  const handleAddReaction = () => {
+    
+  }
 
   return (
     <>
@@ -67,10 +70,11 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
                   setCurrentPostId(post.id);
                   setIsDeleteModalOpen(true);
                 }}
-                onClick={() => {
+                onOpen={() => {
                   setCurrentPostId(post.id);
                   setIsBottomSheetOpen(true);
                 }}
+                onAddReaction={() => handleAddReaction()}
               />
             </li>
           );
