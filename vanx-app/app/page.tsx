@@ -23,7 +23,8 @@ export default function Home() {
       <main>
         <div className="mt-24 mb-20">
           <PostList 
-            posts={posts} 
+            posts={posts}
+            user={user}
             onPostDelete={onPostDelete}
             reactionData={reactions} 
           />

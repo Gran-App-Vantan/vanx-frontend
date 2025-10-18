@@ -40,12 +40,29 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
     setIsBottomSheetVisible(false);
   };
 
+  const handleDeleteOpen = (post: Post) => {
+    setCurrentPostId(post.id);
+    setIsDeleteModalOpen(true);
+  }
+
   const handleDelete = async () => {
     if (currentPostId) {
       await onPostDelete(currentPostId);
       setIsDeleteModalOpen(false);
       setCurrentPostId(null);
     }
+  };
+
+  const handleBottomSheetOpen = (postId: number) => {
+    setCurrentPostId(postId);
+    setIsBottomSheetOpen(true);
+  };
+
+  const isOwnPost = (
+    post: Post
+  ): boolean => {
+    if (!user) return false;
+    return post.userId === user.id;
   };
 
   const handleAddReaction = () => {
@@ -66,14 +83,9 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
               <PostItem
                 post={normalizedPost}
                 user={user}
-                onDelete={() => {
-                  setCurrentPostId(post.id);
-                  setIsDeleteModalOpen(true);
-                }}
-                onOpen={() => {
-                  setCurrentPostId(post.id);
-                  setIsBottomSheetOpen(true);
-                }}
+                isOwnPost={isOwnPost(post)}
+                onDelete={() => handleDeleteOpen(post)}
+                onOpen={() => handleBottomSheetOpen(post.id)}
                 onAddReaction={() => handleAddReaction()}
               />
             </li>

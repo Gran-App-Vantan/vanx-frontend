@@ -9,6 +9,7 @@ import { DeleteIcon } from "@/components/shared/icons";
 type PostItemProps = {
   post: Post;
   user?: User | null;
+  isOwnPost: boolean;
   onDelete: () => void;
   onOpen: () => void;
   onAddReaction: () => void;
@@ -17,12 +18,13 @@ type PostItemProps = {
 export function PostItem({ 
   post, 
   user,
+  isOwnPost,
   onDelete, 
   onOpen,
   onAddReaction
 }: PostItemProps) {
-  const userName = user ? user.name : post.user.name;
-  const userIcon = user ? user.userIcon : post.user.userIcon;
+  const userName = post.user?.name || user?.name || "名無しのユーザー";
+  const userIcon = post.user?.userIcon || user?.userIcon;
 
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
@@ -49,11 +51,13 @@ export function PostItem({
           <h2 className="text-bold">{userName}</h2>
         </div>
 
-        <div className="justify-self-end ml-auto">
-          <button className="cursor-pointer" onClick={onDelete}>
-            <DeleteIcon />
-          </button>
-        </div>
+        {isOwnPost && (
+          <div className="justify-self-end ml-auto">
+            <button className="cursor-pointer" onClick={onDelete}>
+              <DeleteIcon />
+            </button>
+          </div>
+        )}
       </div>
 
       <div>{post.postContent}</div>
@@ -84,6 +88,7 @@ export function PostItem({
               <ReactionButton
                 reaction={reaction.reaction}
                 count={reaction.reaction.reactionCount || 0}
+                isOwnPost={isOwnPost}
                 onAdd={() => onAddReaction()}
               />
             </li>
