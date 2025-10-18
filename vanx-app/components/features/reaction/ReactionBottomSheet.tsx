@@ -5,12 +5,14 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { SearchIcon } from "@/components/shared/icons";
 import { ReactionData, Reaction } from "@/api/reaction";
 import { ReactionIndex, toggleReaction } from "@/api/reaction";
+import { useReactions } from "@/hooks/useReactionIndex";
 
 type ReactionBottomSheetProps = {
   reactionData: ReactionData | null;
   isOpen: boolean;
   onCloseAnimationEnd: () => void;
   postId: number;
+  onReactionToggled?: () => void;
 };
 
 const navigationItems = [
@@ -56,6 +58,7 @@ export function ReactionBottomSheet({
   isOpen,
   onCloseAnimationEnd,
   postId,
+  onReactionToggled,
 }: ReactionBottomSheetProps) {
   const [reactions, setReactions] = useState<Reaction[] | null>(reactionData?.data || null);
   const [nextPageUrl, setNextPageUrl] = useState<string | null>(reactionData?.nextPageUrl || null);
@@ -70,7 +73,10 @@ export function ReactionBottomSheet({
 
   const handleToggleReaction = async (reactionId: number) => {
     try {
-      await toggleReaction({ reactionId, postId });
+      const result = await toggleReaction({ reactionId, postId });
+      if (result.success) {
+        onReactionToggled?.();
+      }
     } catch (error) {
       console.error("リアクションの切り替えに失敗しました:", error);
     }

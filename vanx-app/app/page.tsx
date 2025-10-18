@@ -9,12 +9,17 @@ import { useReactions } from "@/hooks/useReactionIndex";
 
 export default function Home() {
   const { user } = useUser();
-  const { posts, setPosts } = usePosts();
+  const { posts, setPosts, refreshPostsData } = usePosts();
   const { handlePostDelete } = usePostDelete();
   const { reactions } = useReactions();
 
   const onPostDelete = async (postId: number) => {
     await handlePostDelete(postId, setPosts);
+  };
+
+  const onReactionToggled = async () => {
+    // リアクションが変更された時に投稿データを再取得
+    await refreshPostsData();
   };
 
   return (
@@ -26,7 +31,8 @@ export default function Home() {
             posts={posts}
             user={user}
             onPostDelete={onPostDelete}
-            reactionData={reactions} 
+            reactionData={reactions}
+            onReactionToggled={onReactionToggled}
           />
         </div>
       </main>

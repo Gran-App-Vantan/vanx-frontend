@@ -24,27 +24,32 @@ export default function Profile() {
     await handlePostDelete(postId, setPosts);
   };
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      if (userId) {
-        try {
-          const response = await ProfilePostIndex({ userId: Number(userId) });
-          
-          if (response.success && "data" in response) {
-            const data = response.data as { posts: Post[]; user: User };
-            const responseUser = data.user;
-            const postsData = data.posts;
-            const postsArray = Array.isArray(postsData) ? postsData : [];
+  const fetchPosts = async () => {
+    if (userId) {
+      try {
+        const response = await ProfilePostIndex({ userId: Number(userId) });
+        
+        if (response.success && "data" in response) {
+          const data = response.data as { posts: Post[]; user: User };
+          const responseUser = data.user;
+          const postsData = data.posts;
+          const postsArray = Array.isArray(postsData) ? postsData : [];
 
-            setPosts(postsArray);
-            setUserData(responseUser);
-          }
-        } catch (error) {
-          console.error("ERROR", error);
+          setPosts(postsArray);
+          setUserData(responseUser);
         }
+      } catch (error) {
+        console.error("ERROR", error);
       }
-    };
+    }
+  };
 
+  const onReactionToggled = async () => {
+    // リアクションが変更された時に投稿データを再取得
+    await fetchPosts();
+  };
+
+  useEffect(() => {
     fetchPosts();
   }, [userId]);
 
@@ -60,7 +65,8 @@ export default function Profile() {
           posts={posts} 
           user={userData}
           reactionData={reactions}
-          onPostDelete={onPostDelete} 
+          onPostDelete={onPostDelete}
+          onReactionToggled={onReactionToggled}
         />
       </div>
     </main>

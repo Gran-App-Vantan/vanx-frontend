@@ -23,6 +23,10 @@ export const usePosts = () => {
     }
   };
 
+  const refreshPostsData = async () => {
+    await fetchPosts();
+  };
+
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -31,5 +35,6 @@ export const usePosts = () => {
     posts,
     setPosts,
     fetchPosts,
+    refreshPostsData,
   };
 };

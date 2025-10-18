@@ -4,7 +4,17 @@ import humps from "humps";
 import { ReactionData } from "./types";
 
 export type ReactionIndexRequest = {
-  category: "all" | "emoji" | "nature" | "food" | "activity" | "travel" | "object" | "symbol" | "original",
+  category:
+  | "symbol"
+  | "object"
+  | "all"
+  | "face"
+  | "nature"
+  | "food"
+  | "activity"
+  | "travel"
+  | "original"
+  | "emoji";
   page: number,
 }
 

@@ -14,10 +14,16 @@ type PostListProps = {
   user?: User | null;
   reactionData: ReactionData | null;
   onPostDelete: (postId: number) => Promise<void>;
+  onReactionToggled?: () => void;
 };
 
-export function PostList({ posts, user, reactionData, onPostDelete }: PostListProps) {
-  const [addReaction, setAddReaction] = useState(false);
+export function PostList({ 
+  posts, 
+  user, 
+  reactionData, 
+  onPostDelete,
+  onReactionToggled 
+}: PostListProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -124,6 +130,7 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
               isOpen={isBottomSheetOpen}
               onCloseAnimationEnd={handleCloseAnimationEnd}
               postId={currentPostId}
+              onReactionToggled={onReactionToggled}
             />
           </div>
         </div>
