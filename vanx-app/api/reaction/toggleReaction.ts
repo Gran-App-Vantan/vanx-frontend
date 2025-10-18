@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Post } from "./types";
+import humps from "humps";
+import { Post } from "../post/types";
 
 export type ToggleReactionRequest = {
   reactionId: number;
@@ -11,6 +12,7 @@ export type ToggleReactionResponse =
   | {
     success:true;
     message: "リアクションを追加しました";
+    action: "created";
     data: {
       isReacted: true;
       reactionCount: number;
@@ -19,6 +21,7 @@ export type ToggleReactionResponse =
   | {
     success: true;
     message: "リアクションを削除しました";
+    action: "deleted";
     data: {
       post: Post;
     }
@@ -43,6 +46,7 @@ export async function toggleReaction({ reactionId, postId }: ToggleReactionReque
       }
     })
     .then((res) => {
+      res.data = humps.camelizeKeys(res.data) as typeof res.data;
       return res.data;
     })
     .catch((err) => {
