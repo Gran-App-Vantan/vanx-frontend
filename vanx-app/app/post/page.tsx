@@ -20,7 +20,6 @@ export default function Post() {
     setCurrentIndex,
     addFiles,
     removeFile,
-    canAddMore
   } = useFilePreview({
     maxFiles: 5,
     maxFileSize: 2 * 1024 * 1024, // 2MB

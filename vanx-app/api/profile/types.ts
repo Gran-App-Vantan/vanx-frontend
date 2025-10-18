@@ -1,5 +1,5 @@
 export type ProfileUpdateParams = {
   name: string;
-  userPath: string;
+  password: string;
   userIcon: string;
 }
