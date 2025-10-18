@@ -27,15 +27,6 @@ export async function ReactionIndex({
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/reaction/get`;
   const authToken = Cookies.get("authToken");
 
-  // デバッグ情報
-  console.log('API Request Details:', {
-    category,
-    page,
-    apiUrl,
-    authToken: authToken ? 'present' : 'missing',
-    fullUrl: `${apiUrl}?category=${category}&page=${page}`
-  });
-
   return axios
   .get<ReactionIndexResponse>(apiUrl, {
     params: {
@@ -54,16 +45,6 @@ export async function ReactionIndex({
   })
   .catch(err => {
     console.error("ERROR", err);
-    console.error("Request config:", err.config);
-    console.error("Response data:", err.response?.data);
-    
-    // サーバーからのエラーメッセージを詳細に出力
-    if (err.response?.data) {
-      console.error("Server error details:", JSON.stringify(err.response.data, null, 2));
-      if (err.response.data.messages) {
-        console.error("Server messages:", err.response.data.messages);
-      }
-    }
 
     return {
       success: false,

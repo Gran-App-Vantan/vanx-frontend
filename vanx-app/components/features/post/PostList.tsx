@@ -47,8 +47,6 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
     }
   };
 
-  console.log(reactionData?.data);
-
   return (
     <>
       <ul>
@@ -97,7 +95,7 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
         </Modal>
       )}
 
-      {isBottomSheetVisible && (
+      {isBottomSheetVisible && currentPostId !== null && (
         <div
           className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
           onClick={() => setIsBottomSheetOpen(false)}
@@ -107,6 +105,7 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
               reactionData={reactionData}
               isOpen={isBottomSheetOpen}
               onCloseAnimationEnd={handleCloseAnimationEnd}
+              postId={currentPostId}
             />
           </div>
         </div>

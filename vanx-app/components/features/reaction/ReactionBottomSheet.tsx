@@ -4,13 +4,14 @@ import Image from "next/image";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { SearchIcon } from "@/components/shared/icons";
 import { ReactionData, Reaction } from "@/api/reaction";
-import { ReactionIndex } from "@/api/reaction";
+import { ReactionIndex, toggleReaction, ToggleReactionResponse } from "@/api/reaction";
 
 type ReactionBottomSheetProps = {
   reactionData: ReactionData | null;
   isOpen: boolean;
   onCloseAnimationEnd: () => void;
-}
+  postId: number;
+};
 
 const navigationItems = [
   {
@@ -54,7 +55,9 @@ export function ReactionBottomSheet({
   reactionData,
   isOpen,
   onCloseAnimationEnd,
+  postId,
 }: ReactionBottomSheetProps) {
+  const [isReacted, setIsReacted] = useState(false);
   const [reactions, setReactions] = useState<Reaction[] | null>(reactionData?.data || null);
   const [nextPageUrl, setNextPageUrl] = useState<string | null>(reactionData?.nextPageUrl || null);
   const [loading, setLoading] = useState(false);
@@ -65,6 +68,24 @@ export function ReactionBottomSheet({
   const [searchValue, setSearchValue] = useState("");
   const [visible, setVisible] = useState(isOpen);
   const [animClass, setAnimClass] = useState("anim-slidein");
+
+  console.log(reactions);
+
+  const handleToggleReaction = async (reactionId: number) => {
+    try {
+      const response = await toggleReaction({ reactionId, postId });
+
+      if (response.success) {
+        if ("action" in response && response.action === "created") {
+          setIsReacted(true);
+        } else if ("action" in response && response.action === "deleted") {
+          setIsReacted(false);
+        }
+      }
+    } catch (error) {
+      console.error("リアクションの切り替えに失敗しました:", error);
+    }
+  }
 
   const handleCategoryChange = async (
     item: typeof navigationItems[0],
@@ -184,6 +205,8 @@ export function ReactionBottomSheet({
     ) || [];
   }, [searchValue, selectedCategory, reactions]);
 
+  console.log(filteredResults, filteredIcons);
+
   return (
     <div
       className={`
@@ -246,14 +269,18 @@ export function ReactionBottomSheet({
         {searchValue ? (
           filteredResults.length > 0 ? (
             filteredResults.map((icon, i) => (
-              <span key={i} className="w-[30px] h-[30px]">
+              <button 
+                key={`${icon.id || i}`} 
+                className="w-[30px] h-[30px] cursor-pointer"
+                onClick={() => handleToggleReaction(icon.id)}
+              >
                 <Image 
                   src={icon.reactionImage} 
                   alt={icon.reactionName} 
                   width={30} 
                   height={30} 
                 />
-              </span>
+              </button>
             ))
           ) : (
             <div className="col-span-8 flex flex-col justify-center items-center min-h-[240px] text-center text-text-gray">
@@ -264,14 +291,18 @@ export function ReactionBottomSheet({
         ) : filteredIcons.length > 0 ? (
           <>
             {filteredIcons.map((icon, i) => (
-              <span key={`${icon.id || i}`} className="w-[30px] h-[30px]">
+              <button 
+                key={`${icon.id || i}`} 
+                className="w-[30px] h-[30px] cursor-pointer"
+                onClick={() => handleToggleReaction(icon.id)}
+              >
                 <Image 
                   src={icon.reactionImage} 
                   alt={icon.reactionName} 
                   width={30} 
                   height={30} 
                 />
-              </span>
+              </button>
             ))}
             
             {nextPageUrl && !searchValue && (

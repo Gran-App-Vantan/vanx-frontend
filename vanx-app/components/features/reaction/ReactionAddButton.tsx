@@ -33,7 +33,7 @@ export function ReactionAddButton({
         >
           <Image
             className="w-5 h-5"
-            src={reaction.reaction.reactionImageSrc}
+            src={reaction.reaction.reactionImage}
             alt={reaction.reaction.reactionName}
             width={24}
             height={24}
