@@ -21,7 +21,7 @@ const navigationItems = [
   {
     src: "./icons/emoji-icon.svg",
     alt: "emoji-icon",
-    reactionType: "face" as const,
+    reactionType: "emoji" as const,
   },
   {
     src: "./icons/nature-icon.svg",
@@ -61,7 +61,7 @@ export function ReactionBottomSheet({
   const observerRef = useRef<HTMLDivElement | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [navClicked, setNavClicked] = useState(0);
-  const [reactionreactionType, setReactionreactionType] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchValue, setSearchValue] = useState("");
   const [visible, setVisible] = useState(isOpen);
   const [animClass, setAnimClass] = useState("anim-slidein");
@@ -71,7 +71,7 @@ export function ReactionBottomSheet({
     index: number
   ) => {
     setNavClicked(index);
-    setReactionreactionType(item.reactionType);
+    setSelectedCategory(item.reactionType);
     setCurrentPage(1);
     setLoading(true);
 
@@ -171,7 +171,7 @@ export function ReactionBottomSheet({
   if (!visible) return null;
 
   const filteredIcons = reactions?.filter(
-    (icon) => icon.reactionType === reactionreactionType || reactionreactionType === "all"
+    (icon) => icon.reactionType === selectedCategory || selectedCategory === "all"
   ) || [];
 
   const filteredResults = useMemo(() => {
@@ -179,10 +179,10 @@ export function ReactionBottomSheet({
 
     return reactions?.filter(
       (item) =>
-        (item.reactionType === reactionreactionType || reactionreactionType === "all") &&
+        (item.reactionType === selectedCategory || selectedCategory === "all") &&
         item.reactionName.toLowerCase().includes(searchValue.toLowerCase())
     ) || [];
-  }, [searchValue, reactionreactionType, reactions]);
+  }, [searchValue, selectedCategory, reactions]);
 
   return (
     <div
@@ -282,12 +282,6 @@ export function ReactionBottomSheet({
                 {loading && (
                   <p className="text-sm text-text-gray">読み込み中...</p>
                 )}
-              </div>
-            )}
-            
-            {!nextPageUrl && !loading && !searchValue && (
-              <div className="col-span-8 flex items-center justify-center text-sm text-text-gray py-4">
-                すべて読み込みました
               </div>
             )}
           </>
