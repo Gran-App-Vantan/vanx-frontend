@@ -5,7 +5,7 @@ import { ReactionData } from "./types";
 
 export type ReactionIndexRequest = {
   category: "all" | "face" | "nature" | "food" | "activity" | "travel" | "object" | "symbol" | "original",
-  page: Number,
+  page: number,
 }
 
 export type ReactionIndexResponse = 
@@ -28,14 +28,15 @@ export async function ReactionIndex({
   const authToken = Cookies.get("authToken");
 
   return axios
-  .get<ReactionIndexRequest>(apiUrl, {
+  .get<ReactionIndexResponse>(apiUrl, {
     params: {
       category,
-      page
+      page: page.toString(),
     },
     headers: {
       Authorization: `Bearer ${authToken}`,
-      Accept: "application/json"
+      Accept: "application/json",
+      'Content-Type': 'application/json'
     }
   })
   .then(res => {

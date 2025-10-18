@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { SearchIcon } from "@/components/shared/icons";
-import { ReactionData } from "@/api/reaction";
+import { ReactionData, Reaction } from "@/api/reaction";
+import { ReactionIndex } from "@/api/reaction";
 
 type ReactionBottomSheetProps = {
   reactionData: ReactionData | null;
@@ -15,37 +16,37 @@ const navigationItems = [
   {
     src: "./icons/all-icon.svg",
     alt: "all-icon",
-    reactionType: "",
+    reactionType: "all" as const,
   },
   {
     src: "./icons/emoji-icon.svg",
     alt: "emoji-icon",
-    reactionType: "emoji",
+    reactionType: "face" as const,
   },
   {
     src: "./icons/nature-icon.svg",
     alt: "nature-icon",
-    reactionType: "nature",
+    reactionType: "nature" as const,
   },
   {
     src: "./icons/food-icon.svg",
     alt: "food-icon",
-    reactionType: "food",
+    reactionType: "food" as const,
   },
   {
     src: "./icons/activity-icon.svg",
     alt: "activity-icon",
-    reactionType: "activity",
+    reactionType: "activity" as const,
   },
   {
     src: "./icons/travel-icon.svg",
     alt: "travel-icon",
-    reactionType: "travel",
+    reactionType: "travel" as const,
   },
   {
     src: "./icons/symbols-icon.svg",
     alt: "symbols-icon",
-    reactionType: "symbols",
+    reactionType: "symbol" as const,
   },
 ];
 
@@ -54,13 +55,103 @@ export function ReactionBottomSheet({
   isOpen,
   onCloseAnimationEnd,
 }: ReactionBottomSheetProps) {
+  const [reactions, setReactions] = useState<Reaction[] | null>(reactionData?.data || null);
+  const [nextPageUrl, setNextPageUrl] = useState<string | null>(reactionData?.nextPageUrl || null);
+  const [loading, setLoading] = useState(false);
+  const observerRef = useRef<HTMLDivElement | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [navClicked, setNavClicked] = useState(0);
   const [reactionreactionType, setReactionreactionType] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [visible, setVisible] = useState(isOpen);
   const [animClass, setAnimClass] = useState("anim-slidein");
 
-  const reactions = reactionData?.data || [];
+  const handleCategoryChange = async (
+    item: typeof navigationItems[0],
+    index: number
+  ) => {
+    setNavClicked(index);
+    setReactionreactionType(item.reactionType);
+    setCurrentPage(1);
+    setLoading(true);
+
+    try {
+      const response = await ReactionIndex({
+        category: item.reactionType,
+        page: 1,
+      });
+
+      if (response.success) {
+        setReactions(response.reactions.data);
+        setNextPageUrl(response.reactions.nextPageUrl);
+      } else {
+        console.error("ERROR: ", response.messages);
+        setReactions([]);
+        setNextPageUrl(null);
+      }
+    } catch (error) {
+      console.error("ERROR: ", error);
+      setReactions([]);
+      setNextPageUrl(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchMoreReactions = async () => {
+    if (loading || !nextPageUrl) return;
+
+    setLoading(true);
+
+    try {
+      const currentReactionType = navigationItems[navClicked].reactionType;
+      const nextPage = currentPage + 1;
+
+      const response = await ReactionIndex({
+        category: currentReactionType,
+        page: nextPage,
+      })
+
+      if (response.success) {
+        setReactions(prev => prev ? [...prev, ...response.reactions.data] : response.reactions.data);
+        setNextPageUrl(response.reactions.nextPageUrl);
+        setCurrentPage(nextPage);
+      } else {
+        console.error("ERROR: ", response.messages);
+        setNextPageUrl(null);
+      }
+    } catch (error) {
+      console.error("ERROR: ", error);
+      setNextPageUrl(null);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    setReactions(reactionData?.data || null);
+  }, [reactionData]);
+
+  useEffect(() => {
+    if (!observerRef.current || !nextPageUrl || loading || searchValue) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting) {
+          fetchMoreReactions();
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "50px",
+      }
+    );
+
+    observer.observe(observerRef.current);
+
+    return () => observer.disconnect();
+  }, [nextPageUrl, loading, searchValue, navClicked]);
 
   useEffect(() => {
     if (isOpen) {
@@ -80,18 +171,18 @@ export function ReactionBottomSheet({
   if (!visible) return null;
 
   const filteredIcons = reactions?.filter(
-    (icon) => icon.reactionType === reactionreactionType || reactionreactionType === ""
-  );
+    (icon) => icon.reactionType === reactionreactionType || reactionreactionType === "all"
+  ) || [];
 
   const filteredResults = useMemo(() => {
     if (!searchValue) return [];
 
     return reactions?.filter(
       (item) =>
-        (item.reactionType === reactionreactionType || reactionreactionType === "") &&
+        (item.reactionType === reactionreactionType || reactionreactionType === "all") &&
         item.reactionName.toLowerCase().includes(searchValue.toLowerCase())
-    );
-  }, [searchValue, reactionreactionType]);
+    ) || [];
+  }, [searchValue, reactionreactionType, reactions]);
 
   return (
     <div
@@ -124,10 +215,8 @@ export function ReactionBottomSheet({
                     py-[2px] px-[10px] rounded cursor-pointer
                     ${isClicked ? "bg-gray" : "bg-white"}
                   `}
-                  onClick={() => {
-                    setNavClicked(i);
-                    setReactionreactionType(item.reactionType || "");
-                  }}
+                  onClick={() => handleCategoryChange(item, i)}
+                  disabled={loading}
                 >
                   <Image 
                     src={item.src} 
@@ -147,9 +236,9 @@ export function ReactionBottomSheet({
           mx-auto h-60 min-h-[240px] gap-[15px] overflow-y-scroll
           ${
             searchValue
-              ? "grid grid-cols-8 grid-rows-[30px_30px]"
+              ? "grid grid-cols-[repeat(8,30px)] auto-rows-[30px]"
               : filteredIcons.length > 0
-                ? "grid grid-cols-8 grid-rows-[30px_30px]"
+                ? "grid grid-cols-[repeat(8,30px)] auto-rows-[30px]"
                 : "flex justify-center items-center"
           }
         `}
@@ -173,19 +262,38 @@ export function ReactionBottomSheet({
             </div>
           )
         ) : filteredIcons.length > 0 ? (
-          filteredIcons.map((icon, i) => (
-            <span key={i} className="w-[30px] h-[30px]">
-              <Image 
-                src={icon.reactionImage} 
-                alt={icon.reactionName} 
-                width={30} 
-                height={30} 
-              />
-            </span>
-          ))
+          <>
+            {filteredIcons.map((icon, i) => (
+              <span key={`${icon.id || i}`} className="w-[30px] h-[30px]">
+                <Image 
+                  src={icon.reactionImage} 
+                  alt={icon.reactionName} 
+                  width={30} 
+                  height={30} 
+                />
+              </span>
+            ))}
+            
+            {nextPageUrl && !searchValue && (
+              <div 
+                ref={observerRef} 
+                className="col-span-8 h-10 flex items-center justify-center"
+              >
+                {loading && (
+                  <p className="text-sm text-text-gray">読み込み中...</p>
+                )}
+              </div>
+            )}
+            
+            {!nextPageUrl && !loading && !searchValue && (
+              <div className="col-span-8 flex items-center justify-center text-sm text-text-gray py-4">
+                すべて読み込みました
+              </div>
+            )}
+          </>
         ) : (
           <div className="col-span-8 flex justify-center items-center min-h-[240px] text-center text-text-gray">
-            リアクションが見つかりません
+            {loading ? "読み込み中..." : "リアクションが見つかりません"}
           </div>
         )}
       </div>
