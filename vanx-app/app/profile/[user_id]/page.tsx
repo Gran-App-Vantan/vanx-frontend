@@ -50,7 +50,7 @@ export default function Profile() {
 
   return (
     <main>
-      <div className="fixed top-0 left-0 w-full">
+      <div className="fixed top-0 left-0 w-full z-50">
         <ReturnButton />
         {user && <ProfileHead user={user} />}
       </div>
@@ -59,7 +59,7 @@ export default function Profile() {
         <PostList 
           posts={posts} 
           user={userData}
-          reactions={reactions}
+          reactionData={reactions}
           onPostDelete={onPostDelete} 
         />
       </div>

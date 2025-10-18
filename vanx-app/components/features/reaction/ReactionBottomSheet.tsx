@@ -14,37 +14,37 @@ type ReactionBottomSheetProps = {
 
 const navigationItems = [
   {
-    src: "./icons/all-icon.svg",
+    src: "/icons/all-icon.svg",
     alt: "all-icon",
     reactionType: "all" as const,
   },
   {
-    src: "./icons/emoji-icon.svg",
+    src: "/icons/emoji-icon.svg",
     alt: "emoji-icon",
     reactionType: "emoji" as const,
   },
   {
-    src: "./icons/nature-icon.svg",
+    src: "/icons/nature-icon.svg",
     alt: "nature-icon",
     reactionType: "nature" as const,
   },
   {
-    src: "./icons/food-icon.svg",
+    src: "/icons/food-icon.svg",
     alt: "food-icon",
     reactionType: "food" as const,
   },
   {
-    src: "./icons/activity-icon.svg",
+    src: "/icons/activity-icon.svg",
     alt: "activity-icon",
     reactionType: "activity" as const,
   },
   {
-    src: "./icons/travel-icon.svg",
+    src: "/icons/travel-icon.svg",
     alt: "travel-icon",
     reactionType: "travel" as const,
   },
   {
-    src: "./icons/symbols-icon.svg",
+    src: "/icons/symbols-icon.svg",
     alt: "symbols-icon",
     reactionType: "symbol" as const,
   },
