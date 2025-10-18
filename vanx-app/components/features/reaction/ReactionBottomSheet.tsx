@@ -69,8 +69,6 @@ export function ReactionBottomSheet({
   const [visible, setVisible] = useState(isOpen);
   const [animClass, setAnimClass] = useState("anim-slidein");
 
-  console.log(reactions);
-
   const handleToggleReaction = async (reactionId: number) => {
     try {
       const response = await toggleReaction({ reactionId, postId });
@@ -205,8 +203,6 @@ export function ReactionBottomSheet({
     ) || [];
   }, [searchValue, selectedCategory, reactions]);
 
-  console.log(filteredResults, filteredIcons);
-
   return (
     <div
       className={`
@@ -272,7 +268,10 @@ export function ReactionBottomSheet({
               <button 
                 key={`${icon.id || i}`} 
                 className="w-[30px] h-[30px] cursor-pointer"
-                onClick={() => handleToggleReaction(icon.id)}
+                onClick={() => {
+                  console.log("Clicked reaction:", icon);
+                  handleToggleReaction(icon.id);
+                }}
               >
                 <Image 
                   src={icon.reactionImage} 
@@ -294,7 +293,10 @@ export function ReactionBottomSheet({
               <button 
                 key={`${icon.id || i}`} 
                 className="w-[30px] h-[30px] cursor-pointer"
-                onClick={() => handleToggleReaction(icon.id)}
+                onClick={() => {
+                  console.log("Clicked reaction:", icon);
+                  handleToggleReaction(icon.id);
+                }}
               >
                 <Image 
                   src={icon.reactionImage} 

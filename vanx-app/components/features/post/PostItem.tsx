@@ -78,7 +78,7 @@ export function PostItem({
       <div className="flex justify-end">
         <ReactionAddButton
           postReactions={post.postReactions || []}
-          onClick={onClick}
+          onClick={() => onClick()}
         />
       </div>
     </div>

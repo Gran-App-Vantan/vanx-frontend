@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { PostReaction } from "@/api/post/types";
+import { ReactionButton } from "./ReactionButton";
 
 type ReactionAddButtonProps = {
   postReactions: PostReaction[];
@@ -10,6 +11,7 @@ export function ReactionAddButton({
   postReactions,
   onClick,
 }: ReactionAddButtonProps) {
+
   return (
     <div>
       {postReactions.length === 0 &&
@@ -26,19 +28,11 @@ export function ReactionAddButton({
         </button>
       }
       {postReactions.map((reaction) => (
-        <button
-          key={reaction.id}
+        <ReactionButton
+          key={reaction.reactionId}
+          reaction={reaction.reaction}
           onClick={() => onClick()}
-          className="flex justify-center items-center w-[50px] h-[30px] bg-gray rounded-full cursor-pointer"
-        >
-          <Image
-            className="w-5 h-5"
-            src={reaction.reaction.reactionImage}
-            alt={reaction.reaction.reactionName}
-            width={24}
-            height={24}
-          />
-        </button>
+        />
       ))}
     </div>
   );

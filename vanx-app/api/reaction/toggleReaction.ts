@@ -37,12 +37,14 @@ export type ToggleReactionResponse =
 export async function toggleReaction({ reactionId, postId }: ToggleReactionRequest) {
   const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/reaction/${postId}`;
   const authToken = Cookies.get("authToken");
+  const requestBody = humps.decamelizeKeys({ reactionId });
 
   return axios
-    .post<ToggleReactionResponse>(apiUrl, { reactionId }, {
+    .post<ToggleReactionResponse>(apiUrl, requestBody, {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: "application/json"
+        Accept: "application/json",
+        'Content-Type': 'application/json'
       }
     })
     .then((res) => {
@@ -50,12 +52,12 @@ export async function toggleReaction({ reactionId, postId }: ToggleReactionReque
       return res.data;
     })
     .catch((err) => {
-      console.warn(err);
+      console.error("toggleReaction error:", err);
 
       return {
         success: false,
-        message: "リアクション追加に失敗しました",
-        errors: { err: err.message }
+        message: err.response?.data?.message || "リアクション追加に失敗しました",
+        errors: { err: err.response?.data || err.message }
       }
     });
 }
