@@ -1,4 +1,5 @@
 import { User } from "../auth";
+import { Reaction } from "../reaction";
 
 export type Post = {
   id: number;
@@ -18,18 +19,19 @@ export type PostReaction = {
   reaction: Reaction;
 };
 
-export type Reaction = {
-  id: number;
-  category: "emoji" | "nature" | "food" | "activity" | "travel" | "symbols";
-  reactionName: string;
-  reactionImageSrc: string;
-};
-
 export type PreviewFile = {
   id: string;
   url: string;
   type: string;
   name?: string;
+  base64Data?: string;
+  file?: File;
+};
+
+export type UseFilePreviewOptions = {
+  maxFiles?: number;
+  maxFileSize?: number;
+  acceptedTypes?: string[];
 };
 
 export type PostFile = {

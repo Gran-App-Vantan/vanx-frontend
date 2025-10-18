@@ -6,10 +6,8 @@ export type PostIndexResponse =
   | {
     success: true;
     message: string;
-    data: {
-      posts: {
-        data: Post[];
-      }
+    posts: {
+      data: Post[];
     }
   }
   | {

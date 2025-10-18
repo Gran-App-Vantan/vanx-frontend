@@ -2,36 +2,43 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/shared";
-import { PreviewFile } from "@/api/post/types";
 import { LeftArrowIcon, CloseIcon, LessThanIcon, } from "@/components/shared/icons";
 import { postStore } from "@/api/post/postStore";
-
-type ExtendedPreviewFile = PreviewFile & {
-  base64Data?: string;
-  file?: File;
-};
+import { useFilePreview } from "@/hooks/usePreviewFile";
 
 export default function Post() {
   const router = useRouter();
-  const urlsRef = useRef<Set<string>>(new Set());
-  const [previewFiles, setPreviewFiles] = useState<ExtendedPreviewFile[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [postContent, setPostContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const generateId = () =>
-    `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+  const {
+    previewFiles,
+    currentIndex,
+    setCurrentIndex,
+    addFiles,
+    removeFile,
+  } = useFilePreview({
+    maxFiles: 5,
+    maxFileSize: 2 * 1024 * 1024, // 2MB
+  });
 
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
-    });
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    replaceIndex: number | null = null
+  ) => {
+    const files = e.target.files;
+    
+    if (files) {
+      await addFiles(files, replaceIndex);
+    }
+    
+    // inputをリセット
+    if (e.target) {
+      e.target.value = "";
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,12 +48,13 @@ export default function Post() {
 
     try {
       setIsSubmitting(true);
-    
-      const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB制限
+
+      // ファイルサイズの最終チェック
+      const MAX_FILE_SIZE = 2 * 1024 * 1024;
       const oversizedFiles = previewFiles.filter(file => file.file && file.file.size > MAX_FILE_SIZE);
       
       if (oversizedFiles.length > 0) {
-        const fileNames = oversizedFiles.map(f => f.file?.name).join(', ');
+        const fileNames = oversizedFiles.map(f => f.file?.name).join(", ");
         alert(`以下のファイルがサイズ制限（2MB）を超えています: ${fileNames}`);
         return;
       }
@@ -56,143 +64,25 @@ export default function Post() {
 
       previewFiles.forEach((previewFile) => {
         if (previewFile.file) {
-          formData.append('files[]', previewFile.file);
+          formData.append("files[]", previewFile.file);
         }
       });
 
       const response = await postStore(formData);
 
-      //
-      // TODO: alert()はローディング画面を実装後に削除
-      //
-      
       if (response.success) {
-        alert('投稿が完了しました');
-        router.push('/');
+        alert("投稿が完了しました");
+        router.push("/");
       } else {
         console.error("投稿失敗:", response);
         alert(`投稿に失敗しました: ${response.message}`);
       }
     } catch (error) {
       console.error("投稿エラー:", error);
-      alert('投稿処理中にエラーが発生しました');
+      alert("投稿処理中にエラーが発生しました");
     } finally {
       setIsSubmitting(false);
     }
-  }
-
-  useEffect(() => {
-    return () => {
-      urlsRef.current.forEach((url) => {
-        URL.revokeObjectURL(url);
-      });
-      urlsRef.current.clear();
-    };
-  }, []);
-
-  const handleFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    replaceIndex: number | null = null
-  ) => {
-    const files = e.target.files;
-
-    const resetInput = () => {
-      if (e.target) {
-        e.target.value = "";
-      }
-    };
-
-    if (files) {
-      if (replaceIndex === null && previewFiles.length >= 5) {
-        alert("ファイルは最大5つまでアップロードできます。");
-        resetInput();
-        return;
-      }
-
-      if (replaceIndex === null && previewFiles.length + files.length > 5) {
-        const remainingSlots = 5 - previewFiles.length;
-        alert(
-          `ファイルは最大5つまでアップロードできます。あと${remainingSlots}つまで追加可能です。`
-        );
-        resetInput();
-        return;
-      }
-
-      const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB制限
-      const validFiles = Array.from(files).filter((file) => {
-        if (file.size > MAX_FILE_SIZE) {
-          const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-          alert(
-            `"${file.name}" のサイズが大きすぎます。\nファイルサイズ: ${fileSizeMB}MB\n制限: 2MB以下のファイルを選択してください。`
-          );
-          return false;
-        }
-        return true;
-      });
-
-      if (validFiles.length === 0) {
-        resetInput();
-        return;
-      }
-
-      const newPreviews = await Promise.all(
-        validFiles.map(async (file) => {
-          const url = URL.createObjectURL(file);
-          urlsRef.current.add(url);
-          
-          const base64Data = await fileToBase64(file);
-
-          return {
-            id: generateId(),
-            url,
-            type: file.type,
-            base64Data,
-            file,
-          };
-        })
-      );
-
-      if (replaceIndex !== null) {
-        setPreviewFiles((prev) => {
-          const oldUrl = prev[replaceIndex].url;
-          URL.revokeObjectURL(oldUrl);
-          urlsRef.current.delete(oldUrl);
-
-          return prev.map((file, i) =>
-            i === replaceIndex ? newPreviews[0] : file
-          );
-        });
-      } else {
-        setPreviewFiles((prev) => {
-          const updated = [...prev, ...newPreviews];
-          const limitedUpdated = updated.slice(0, 5);
-
-          setCurrentIndex(limitedUpdated.length - 1);
-          return limitedUpdated;
-        });
-      }
-
-      resetInput();
-    }
-  };
-
-  const removePreview = (index: number) => {
-    setPreviewFiles((prev) => {
-      const urlToRevoke = prev[index].url;
-      URL.revokeObjectURL(urlToRevoke);
-      urlsRef.current.delete(urlToRevoke);
-
-      const updated = prev.filter((_, i) => i !== index);
-
-      if (updated.length === 0) {
-        setCurrentIndex(0);
-      } else if (index <= currentIndex && currentIndex > 0) {
-        setCurrentIndex(currentIndex - 1);
-      } else if (currentIndex >= updated.length) {
-        setCurrentIndex(updated.length - 1);
-      }
-      return updated;
-    });
   };
 
   return (
@@ -235,7 +125,7 @@ export default function Post() {
                   <button
                     className="bg-text-gray rounded-full p-1 cursor-pointer"
                     type="button"
-                    onClick={() => removePreview(currentIndex)}
+                    onClick={() => removeFile(currentIndex)}
                   >
                     <CloseIcon />
                   </button>

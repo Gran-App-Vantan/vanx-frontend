@@ -10,13 +10,12 @@ export function ProfileHead({ user }: { user: User }) {
     <div className="pt-22 pb-4 px-6 bg-accent-light flex flex-col gap-8 shadow-bottom">
       <div className="flex justify-between">
         <div className="flex gap-6 justify-center">
-          <div className="size-12">
+          <div className="size-12 w-[50px] h-[50px] relative flex-shrink-0">
             <Image
-              src="/icons/default-user-icon.svg"
+              src={user.userIcon}
               alt="user-icon"
-              width={50}
-              height={50}
-              className="rounded-full"
+              fill
+              className="border-[0.5px] border-text-gray rounded-full object-cover"
             />
           </div>
           <div className="flex items-center text-normal font-bold">
