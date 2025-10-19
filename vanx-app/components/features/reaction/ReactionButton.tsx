@@ -4,21 +4,21 @@ import { Reaction } from "@/api/reaction";
 type ReactionProps = {
   reaction: Reaction;
   count: number;
-  isOwnPost: boolean;
+  isOwnReaction: boolean;
   onAdd: () => void;
 }
 
 export function ReactionButton({ 
   reaction,
   count,
-  isOwnPost,
+  isOwnReaction,
   onAdd
 }: ReactionProps) {
   return (
     <div 
       className={
         `flex items-center justify-center gap-1.5 w-[50px] h-[30px] rounded-full cursor-pointer
-        ${isOwnPost 
+        ${isOwnReaction
           ? "border-blue-400 border-2 bg-blue-100" 
           : "bg-gray"
         }
@@ -34,7 +34,7 @@ export function ReactionButton({
       <span 
         className={`
           text-small
-          ${isOwnPost
+          ${isOwnReaction
             ? "text-blue-600 font-bold"
             : "text-text"
           }

@@ -7,7 +7,7 @@ import { ReactionBottomSheet } from "../reaction/ReactionBottomSheet";
 import { Modal } from "@/components/shared";
 import { Post } from "@/api/post/types";
 import { User } from "@/api/auth/types";
-import { ReactionData } from "@/api/reaction";
+import { ReactionData, toggleReaction, Reaction } from "@/api/reaction";
 
 type PostListProps = {
   posts: Post[];
@@ -65,15 +65,32 @@ export function PostList({
   };
 
   const isOwnPost = (
-    post: Post
+    post: Post,
   ): boolean => {
     if (!user) return false;
     return post.userId === user.id;
   };
 
-  const handleAddReaction = () => {
-    
-  }
+  const isOwnReaction = (
+    postReactions: { userId: number }[],
+  ): boolean => {
+    if (!user) return false;
+    return postReactions.some(r => r.userId === user.id);
+  };
+
+  const handleToggleReaction = async (
+    reactionId: number, 
+    postId: number
+  ) => {
+    try {
+      const result = await toggleReaction({ reactionId, postId });
+      if (result.success) {
+        onReactionToggled?.();
+      }
+    } catch (error) {
+      console.error("リアクションの切り替えに失敗しました:", error);
+    }
+  };
 
   return (
     <>
@@ -90,9 +107,10 @@ export function PostList({
                 post={normalizedPost}
                 user={user}
                 isOwnPost={isOwnPost(post)}
+                isOwnReaction={isOwnReaction(post.postReactions)}
                 onDelete={() => handleDeleteOpen(post)}
                 onOpen={() => handleBottomSheetOpen(post.id)}
-                onAddReaction={() => handleAddReaction()}
+                toggleReaction={(reactionId: number) => handleToggleReaction(reactionId, post.id)}
               />
             </li>
           );
@@ -128,7 +146,7 @@ export function PostList({
             <ReactionBottomSheet
               reactionData={reactionData}
               isOpen={isBottomSheetOpen}
-              onCloseAnimationEnd={handleCloseAnimationEnd}
+              onCloseAnimationEnd={() => handleCloseAnimationEnd()}
               postId={currentPostId}
               onReactionToggled={onReactionToggled}
             />

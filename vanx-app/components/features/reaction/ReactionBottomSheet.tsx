@@ -5,7 +5,6 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { SearchIcon } from "@/components/shared/icons";
 import { ReactionData, Reaction } from "@/api/reaction";
 import { ReactionIndex, toggleReaction } from "@/api/reaction";
-import { useReactions } from "@/hooks/useReactionIndex";
 
 type ReactionBottomSheetProps = {
   reactionData: ReactionData | null;
@@ -265,10 +264,7 @@ export function ReactionBottomSheet({
               <button 
                 key={`${icon.id || i}`} 
                 className="w-[30px] h-[30px] cursor-pointer"
-                onClick={() => {
-                  console.log("Clicked reaction:", icon);
-                  handleToggleReaction(icon.id);
-                }}
+                onClick={() => handleToggleReaction(icon.id)}
               >
                 <Image 
                   src={icon.reactionImage} 

@@ -1,5 +1,6 @@
 export type Reaction = {
   id: number;
+  userId: number;
   reactionType: "emoji" | "nature" | "food" | "activity" | "travel" | "symbols";
   reactionName: string;
   reactionImage: string;

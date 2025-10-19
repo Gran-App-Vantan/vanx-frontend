@@ -10,18 +10,20 @@ type PostItemProps = {
   post: Post;
   user?: User | null;
   isOwnPost: boolean;
+  isOwnReaction: boolean;
   onDelete: () => void;
   onOpen: () => void;
-  onAddReaction: () => void;
+  toggleReaction: (reactionId: number) => void;
 };
 
 export function PostItem({ 
   post, 
   user,
   isOwnPost,
+  isOwnReaction,
   onDelete, 
   onOpen,
-  onAddReaction
+  toggleReaction
 }: PostItemProps) {
   const userName = post.user?.name || user?.name || "名無しのユーザー";
   const userIcon = post.user?.userIcon || user?.userIcon;
@@ -83,17 +85,17 @@ export function PostItem({
 
       <div className="flex justify-start">
         <ul className="flex gap-2">
-          {post.postReactions.map((reaction) => (
-            <li key={reaction.reactionId}>
+          {post.postReactions.map((reaction, index) => (
+            <li key={`${post.id}-${reaction.id}-${index}`}>
               <ReactionButton
                 reaction={reaction.reaction}
                 count={reaction.reaction.reactionCount || 0}
-                isOwnPost={isOwnPost}
-                onAdd={() => onAddReaction()}
+                isOwnReaction={isOwnReaction}
+                onAdd={() => toggleReaction(reaction.reactionId)}
               />
             </li>
           ))}
-          <li>
+          <li key={`${post.id}-add-reaction`}>
             <ReactionAddButton onOpen={() => onOpen()} />
           </li>
         </ul>
