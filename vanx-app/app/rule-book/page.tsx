@@ -19,9 +19,9 @@ export default function RuleBook() {
       image : "/rule/GameImage1.png",
       imagewidth : 261,
       imageheight : 172,
-      BottomText1 : "親PCで掛金を決めれます",
-      BottomText2 : "ここもみんなで話し合いを掛金を",
-      BottomText3 : "決めましょう",
+      BottomText1 : "相手より高い数字のカードを",
+      BottomText2 : "予想して勝利を目指します",
+      BottomText3 : "みんなで話し騙しあいましょう",
     },
 
     { 
