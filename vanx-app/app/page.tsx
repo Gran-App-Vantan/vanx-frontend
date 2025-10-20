@@ -9,12 +9,16 @@ import { useReactions } from "@/hooks/useReactionIndex";
 
 export default function Home() {
   const { user } = useUser();
-  const { posts, setPosts } = usePosts();
+  const { posts, setPosts, refreshPostsData } = usePosts();
   const { handlePostDelete } = usePostDelete();
   const { reactions } = useReactions();
 
   const onPostDelete = async (postId: number) => {
     await handlePostDelete(postId, setPosts);
+  };
+
+  const onReactionToggled = async () => {
+    await refreshPostsData();
   };
 
   return (
@@ -23,9 +27,11 @@ export default function Home() {
       <main>
         <div className="mt-24 mb-20">
           <PostList 
-            posts={posts} 
+            posts={posts}
+            user={user}
             onPostDelete={onPostDelete}
-            reactionData={reactions} 
+            reactionData={reactions}
+            onReactionToggled={onReactionToggled}
           />
         </div>
       </main>

@@ -7,16 +7,23 @@ import { ReactionBottomSheet } from "../reaction/ReactionBottomSheet";
 import { Modal } from "@/components/shared";
 import { Post } from "@/api/post/types";
 import { User } from "@/api/auth/types";
-import { ReactionData } from "@/api/reaction";
+import { ReactionData, toggleReaction } from "@/api/reaction";
 
 type PostListProps = {
   posts: Post[];
   user?: User | null;
   reactionData: ReactionData | null;
   onPostDelete: (postId: number) => Promise<void>;
+  onReactionToggled?: () => void;
 };
 
-export function PostList({ posts, user, reactionData, onPostDelete }: PostListProps) {
+export function PostList({ 
+  posts, 
+  user, 
+  reactionData, 
+  onPostDelete,
+  onReactionToggled 
+}: PostListProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -39,6 +46,11 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
     setIsBottomSheetVisible(false);
   };
 
+  const handleDeleteOpen = (post: Post) => {
+    setCurrentPostId(post.id);
+    setIsDeleteModalOpen(true);
+  }
+
   const handleDelete = async () => {
     if (currentPostId) {
       await onPostDelete(currentPostId);
@@ -47,7 +59,39 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
     }
   };
 
-  console.log(reactionData?.data);
+  const handleBottomSheetOpen = (postId: number) => {
+    setCurrentPostId(postId);
+    setIsBottomSheetOpen(true);
+  };
+
+  const isOwnPost = (
+    post: Post,
+  ): boolean => {
+    if (!user) return false;
+    return post.userId === user.id;
+  };
+
+  const isOwnReaction = (
+    postReactions: { userId: number; reactionId: number }[],
+    reactionId: number
+  ): boolean => {
+    if (!user) return false;
+    return postReactions.some(r => r.userId === user.id && r.reactionId === reactionId);
+  };
+
+  const handleToggleReaction = async (
+    reactionId: number, 
+    postId: number
+  ) => {
+    try {
+      const result = await toggleReaction({ reactionId, postId });
+      if (result.success) {
+        onReactionToggled?.();
+      }
+    } catch (error) {
+      console.error("リアクションの切り替えに失敗しました:", error);
+    }
+  };
 
   return (
     <>
@@ -63,14 +107,11 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
               <PostItem
                 post={normalizedPost}
                 user={user}
-                onDelete={() => {
-                  setCurrentPostId(post.id);
-                  setIsDeleteModalOpen(true);
-                }}
-                onClick={() => {
-                  setCurrentPostId(post.id);
-                  setIsBottomSheetOpen(true);
-                }}
+                isOwnPost={isOwnPost(post)}
+                isOwnReaction={(reactionId: number) => isOwnReaction(post.postReactions, reactionId)}
+                onDelete={() => handleDeleteOpen(post)}
+                onOpen={() => handleBottomSheetOpen(post.id)}
+                toggleReaction={(reactionId: number) => handleToggleReaction(reactionId, post.id)}
               />
             </li>
           );
@@ -97,7 +138,7 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
         </Modal>
       )}
 
-      {isBottomSheetVisible && (
+      {isBottomSheetVisible && currentPostId !== null && (
         <div
           className="fixed top-0 left-0 w-screen h-screen bg-[#9A9A9A]/50 flex items-end z-50"
           onClick={() => setIsBottomSheetOpen(false)}
@@ -106,7 +147,10 @@ export function PostList({ posts, user, reactionData, onPostDelete }: PostListPr
             <ReactionBottomSheet
               reactionData={reactionData}
               isOpen={isBottomSheetOpen}
-              onCloseAnimationEnd={handleCloseAnimationEnd}
+              onCloseAnimationEnd={() => handleCloseAnimationEnd()}
+              onClose={() => setIsBottomSheetOpen(false)}
+              postId={currentPostId}
+              onReactionToggled={onReactionToggled}
             />
           </div>
         </div>

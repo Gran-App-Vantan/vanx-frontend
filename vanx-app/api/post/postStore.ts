@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Post } from "./types";
 
-export type postStoreResponse = {
+export type PostStoreResponse = {
   success: boolean;
   message: string;
   data?: {
@@ -15,7 +15,7 @@ export async function postStore(formData: FormData) {
   const authToken = Cookies.get("authToken");
 
   return axios
-    .post<postStoreResponse>(apiUrl, formData, {
+    .post<PostStoreResponse>(apiUrl, formData, {
       headers: {
         Authorization: `Bearer ${authToken}`,
         Accept: "application/json",

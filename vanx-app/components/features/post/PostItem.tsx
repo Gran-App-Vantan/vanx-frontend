@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { ReactionAddButton } from "../reaction/ReactionAddButton";
+import { ReactionButton, ReactionAddButton } from "@/components/features/reaction";
 import { Post } from "@/api/post/types";
 import { User } from "@/api/auth";
 import { DeleteIcon } from "@/components/shared/icons";
@@ -9,18 +9,27 @@ import { DeleteIcon } from "@/components/shared/icons";
 type PostItemProps = {
   post: Post;
   user?: User | null;
+  isOwnPost: boolean;
+  isOwnReaction: (reactionId: number) => boolean;
   onDelete: () => void;
-  onClick: () => void;
+  onOpen: () => void;
+  toggleReaction: (reactionId: number) => void;
 };
 
 export function PostItem({ 
   post, 
   user,
+  isOwnPost,
+  isOwnReaction,
   onDelete, 
-  onClick 
+  onOpen,
+  toggleReaction
 }: PostItemProps) {
-  const userName = user ? user.name : post.user.name;
-  const userIcon = user ? user.userIcon : post.user.userIcon;
+  const userName = post.user?.name || user?.name || "名無しのユーザー";
+  const userIcon = post.user?.userIcon || user?.userIcon;
+
+  console.log(post);
+  console.log(post.reactionStats);
 
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
@@ -47,11 +56,13 @@ export function PostItem({
           <h2 className="text-bold">{userName}</h2>
         </div>
 
-        <div className="justify-self-end ml-auto">
-          <button className="cursor-pointer" onClick={onDelete}>
-            <DeleteIcon />
-          </button>
-        </div>
+        {isOwnPost && (
+          <div className="justify-self-end ml-auto">
+            <button className="cursor-pointer" onClick={onDelete}>
+              <DeleteIcon />
+            </button>
+          </div>
+        )}
       </div>
 
       <div>{post.postContent}</div>
@@ -75,11 +86,28 @@ export function PostItem({
         ) : null}
       </div>
 
-      <div className="flex justify-end">
-        <ReactionAddButton
-          postReactions={post.postReactions || []}
-          onClick={onClick}
-        />
+      <div className="flex justify-start">
+        <ul className="flex gap-2">
+          {post.reactionStats.map((reaction, index) => {
+            const matchedReaction = post.postReactions.find(
+              pr => pr.reaction.reactionName === reaction.name
+            );
+            const reactionId = matchedReaction?.reactionId;
+            
+            return (
+              <li key={`${post.id}-${reaction.name}-${index}`}>
+                <ReactionButton
+                  reaction={reaction}
+                  isOwnReaction={reactionId ? isOwnReaction(reactionId) : false}
+                  onAdd={() => reactionId && toggleReaction(reactionId)}
+                />
+              </li>
+            );
+          })}
+          <li key={`${post.id}-add-reaction`}>
+            <ReactionAddButton onOpen={() => onOpen()} />
+          </li>
+        </ul>
       </div>
     </div>
   );
