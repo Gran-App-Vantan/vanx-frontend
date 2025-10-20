@@ -57,7 +57,7 @@ export function Modal({
     >
       <dialog
         className={`
-          flex items-center justify-center bg-white rounded-2xl m-auto p-4 
+          flex items-center justify-center bg-white rounded-2xl m-auto
           transition-all duration-300 ease-out transform
           ${animClass}
           ${animClass === "opacity-100" ? "scale-100" : "scale-95"}
