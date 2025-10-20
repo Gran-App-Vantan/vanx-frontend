@@ -108,7 +108,7 @@ export default function RuleBook() {
                   <LessThanIcon className="rotate-180" />
                 </button>
               )}
-              {page < 4 && ( // ここでページ数の上限を設定
+              {page < 5 && ( // ここでページ数の上限を設定
                 <button
                   className="flex justify-center items-center w-11 h-11 bg-accent rounded-full"
                   onClick={() => setPage(page + 1)}
