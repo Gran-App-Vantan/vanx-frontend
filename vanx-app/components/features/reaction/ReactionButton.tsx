@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { ReactionStats } from "@/api/reaction";
 
 type ReactionProps = {
   reaction: {

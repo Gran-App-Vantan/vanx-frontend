@@ -10,7 +10,7 @@ type PostItemProps = {
   post: Post;
   user?: User | null;
   isOwnPost: boolean;
-  isOwnReaction: boolean;
+  isOwnReaction: (reactionId: number) => boolean;
   onDelete: () => void;
   onOpen: () => void;
   toggleReaction: (reactionId: number) => void;
@@ -98,7 +98,7 @@ export function PostItem({
               <li key={`${post.id}-${reaction.name}-${index}`}>
                 <ReactionButton
                   reaction={reaction}
-                  isOwnReaction={isOwnReaction}
+                  isOwnReaction={reactionId ? isOwnReaction(reactionId) : false}
                   onAdd={() => reactionId && toggleReaction(reactionId)}
                 />
               </li>

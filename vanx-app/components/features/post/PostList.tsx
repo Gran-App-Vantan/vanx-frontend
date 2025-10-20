@@ -72,10 +72,11 @@ export function PostList({
   };
 
   const isOwnReaction = (
-    postReactions: { userId: number }[],
+    postReactions: { userId: number; reactionId: number }[],
+    reactionId: number
   ): boolean => {
     if (!user) return false;
-    return postReactions.some(r => r.userId === user.id);
+    return postReactions.some(r => r.userId === user.id && r.reactionId === reactionId);
   };
 
   const handleToggleReaction = async (
@@ -107,7 +108,7 @@ export function PostList({
                 post={normalizedPost}
                 user={user}
                 isOwnPost={isOwnPost(post)}
-                isOwnReaction={isOwnReaction(post.postReactions)}
+                isOwnReaction={(reactionId: number) => isOwnReaction(post.postReactions, reactionId)}
                 onDelete={() => handleDeleteOpen(post)}
                 onOpen={() => handleBottomSheetOpen(post.id)}
                 toggleReaction={(reactionId: number) => handleToggleReaction(reactionId, post.id)}
