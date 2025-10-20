@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { LeftArrowIcon } from "@/components/shared/icons";
 import { PointLogItem } from "@/components/features/wallet";
 import { useUser } from "@/contexts/UserContext";
-import { WalletIndex } from "@/api/wallet";
+import { WalletIndex, WalletData } from "@/api/wallet";
 
 const switchButtons = ["すべて", "獲得ポイント", "損失ポイント"];
 
@@ -28,7 +28,7 @@ const testItems = [
 
 export default function Wallet() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [walletPoint, setWalletPoint] = useState(0);
+  const [walletData, setWalletData] = useState<WalletData | null>(null);
   const { user } = useUser();
 
   const filteredItems = testItems.filter((item) => {
@@ -43,7 +43,7 @@ export default function Wallet() {
         const response = await WalletIndex({ filter: "all" });
 
         if (response.success) {
-          setWalletPoint(response.data.pointBalance);
+          setWalletData(response.data.pointlogs);
         }
       } catch (error) {
         console.error("ウォレット情報の取得に失敗しました。", error);
@@ -52,11 +52,12 @@ export default function Wallet() {
     fetchWalletIndex();
   }, []);
 
-  console.log(walletPoint);
-
+  // ユーザーのポイントをカンマ区切りでフォーマット
   const userPoint = user?.point
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "P";
+
+  console.log(walletData);
 
   return (
     <main>

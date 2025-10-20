@@ -1,13 +1,16 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import humps from "humps";
+import { WalletData } from "./types";
+import { User } from "../auth";
 
 export type WalletIndexResponse = 
   | {
     success: true;
     message: string;
     data: {
-      pointBalance: number;
+      pointlogs: WalletData;
+      user: User;
     }
   }
   | {

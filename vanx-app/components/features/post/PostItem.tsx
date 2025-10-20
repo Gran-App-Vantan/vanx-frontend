@@ -28,9 +28,6 @@ export function PostItem({
   const userName = post.user?.name || user?.name || "名無しのユーザー";
   const userIcon = post.user?.userIcon || user?.userIcon;
 
-  console.log(post);
-  console.log(post.reactionStats);
-
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
