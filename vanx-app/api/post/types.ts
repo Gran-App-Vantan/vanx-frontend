@@ -1,5 +1,5 @@
 import { User } from "../auth";
-import { Reaction } from "../reaction";
+import { Reaction, ReactionStats } from "@/api/reaction";
 
 export type Post = {
   id: number;
@@ -9,6 +9,7 @@ export type Post = {
   postContent: string;
   postfile?: PostFile[];
   postReactions: PostReaction[];
+  reactionStats: ReactionStats;
 };
 
 export type PostReaction = {

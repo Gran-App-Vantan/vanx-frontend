@@ -28,6 +28,9 @@ export function PostItem({
   const userName = post.user?.name || user?.name || "名無しのユーザー";
   const userIcon = post.user?.userIcon || user?.userIcon;
 
+  console.log(post);
+  console.log(post.reactionStats);
+
   return (
     <div className="flex flex-col gap-2 w-full min-w-screen border-b-[0.5px] border-b-text-gray py-4 px-6">
       <div className="flex gap-6">
@@ -85,16 +88,22 @@ export function PostItem({
 
       <div className="flex justify-start">
         <ul className="flex gap-2">
-          {post.postReactions.map((reaction, index) => (
-            <li key={`${post.id}-${reaction.id}-${index}`}>
-              <ReactionButton
-                reaction={reaction.reaction}
-                count={reaction.reaction.reactionCount || 0}
-                isOwnReaction={isOwnReaction}
-                onAdd={() => toggleReaction(reaction.reactionId)}
-              />
-            </li>
-          ))}
+          {post.reactionStats.map((reaction, index) => {
+            const matchedReaction = post.postReactions.find(
+              pr => pr.reaction.reactionName === reaction.name
+            );
+            const reactionId = matchedReaction?.reactionId;
+            
+            return (
+              <li key={`${post.id}-${reaction.name}-${index}`}>
+                <ReactionButton
+                  reaction={reaction}
+                  isOwnReaction={isOwnReaction}
+                  onAdd={() => reactionId && toggleReaction(reactionId)}
+                />
+              </li>
+            );
+          })}
           <li key={`${post.id}-add-reaction`}>
             <ReactionAddButton onOpen={() => onOpen()} />
           </li>

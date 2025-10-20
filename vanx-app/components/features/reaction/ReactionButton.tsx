@@ -1,16 +1,18 @@
 import Image from "next/image";
-import { Reaction } from "@/api/reaction";
+import { ReactionStats } from "@/api/reaction";
 
 type ReactionProps = {
-  reaction: Reaction;
-  count: number;
+  reaction: {
+    count: number;
+    image: string;
+    name: string;
+  }
   isOwnReaction: boolean;
   onAdd: () => void;
 }
 
 export function ReactionButton({ 
   reaction,
-  count,
   isOwnReaction,
   onAdd
 }: ReactionProps) {
@@ -26,8 +28,8 @@ export function ReactionButton({
       onClick={() => onAdd()}
     >
       <Image 
-        src={reaction.reactionImage} 
-        alt={reaction.reactionName} 
+        src={reaction.image} 
+        alt={reaction.name} 
         width={20} 
         height={20} 
       />
@@ -40,7 +42,7 @@ export function ReactionButton({
           }
         `}
       >
-        {count}
+        {reaction.count}
       </span>
     </div>
   );

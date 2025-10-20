@@ -7,7 +7,7 @@ import { ReactionBottomSheet } from "../reaction/ReactionBottomSheet";
 import { Modal } from "@/components/shared";
 import { Post } from "@/api/post/types";
 import { User } from "@/api/auth/types";
-import { ReactionData, toggleReaction, Reaction } from "@/api/reaction";
+import { ReactionData, toggleReaction } from "@/api/reaction";
 
 type PostListProps = {
   posts: Post[];
@@ -147,6 +147,7 @@ export function PostList({
               reactionData={reactionData}
               isOpen={isBottomSheetOpen}
               onCloseAnimationEnd={() => handleCloseAnimationEnd()}
+              onClose={() => setIsBottomSheetOpen(false)}
               postId={currentPostId}
               onReactionToggled={onReactionToggled}
             />

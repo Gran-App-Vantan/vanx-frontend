@@ -18,7 +18,6 @@ export default function Home() {
   };
 
   const onReactionToggled = async () => {
-    // リアクションが変更された時に投稿データを再取得
     await refreshPostsData();
   };
 

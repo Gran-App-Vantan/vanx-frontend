@@ -10,6 +10,7 @@ type ReactionBottomSheetProps = {
   reactionData: ReactionData | null;
   isOpen: boolean;
   onCloseAnimationEnd: () => void;
+  onClose: () => void;
   postId: number;
   onReactionToggled?: () => void;
 };
@@ -56,6 +57,7 @@ export function ReactionBottomSheet({
   reactionData,
   isOpen,
   onCloseAnimationEnd,
+  onClose,
   postId,
   onReactionToggled,
 }: ReactionBottomSheetProps) {
@@ -75,6 +77,7 @@ export function ReactionBottomSheet({
       const result = await toggleReaction({ reactionId, postId });
       if (result.success) {
         onReactionToggled?.();
+        onClose();
       }
     } catch (error) {
       console.error("リアクションの切り替えに失敗しました:", error);
