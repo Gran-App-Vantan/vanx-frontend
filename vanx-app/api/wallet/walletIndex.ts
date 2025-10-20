@@ -18,8 +18,8 @@ export type WalletIndexResponse =
     }
   }
 
-export async function WalletIndex(): Promise<WalletIndexResponse> {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/wallet`;
+export async function WalletIndex({ filter }: { filter: string }): Promise<WalletIndexResponse> {
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/wallet/get/?filter=${filter}`;
   const authToken = Cookies.get("authToken");
 
   return axios

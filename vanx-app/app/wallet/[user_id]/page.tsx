@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LeftArrowIcon } from "@/components/shared/icons";
 import { PointLogItem } from "@/components/features/wallet";
+import { useUser } from "@/contexts/UserContext";
+import { WalletIndex } from "@/api/wallet";
 
 const switchButtons = ["すべて", "獲得ポイント", "損失ポイント"];
 
@@ -24,18 +26,37 @@ const testItems = [
   },
 ];
 
-//
-// ユーザーの情報の取得ができていないので、一旦仮データを配置してUIを作成しています
-//
-
 export default function Wallet() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [walletPoint, setWalletPoint] = useState(0);
+  const { user } = useUser();
 
   const filteredItems = testItems.filter((item) => {
     if (activeIndex === 1) return item.isPuls; // ポイントがプラスの場合
     if (activeIndex === 2) return !item.isPuls; // ポイントがマイナスの場合
     return true; // すべての場合
   });
+
+  useEffect(() => {
+    const fetchWalletIndex = async () => {
+      try {
+        const response = await WalletIndex({ filter: "all" });
+
+        if (response.success) {
+          setWalletPoint(response.data.pointBalance);
+        }
+      } catch (error) {
+        console.error("ウォレット情報の取得に失敗しました。", error);
+      }
+    };
+    fetchWalletIndex();
+  }, []);
+
+  console.log(walletPoint);
+
+  const userPoint = user?.point
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "P";
 
   return (
     <main>
@@ -47,18 +68,17 @@ export default function Wallet() {
           </Link>
           <div className="flex items-center gap-8 mt-4 text-normal">
             <Image
-              src="/icons/default-user-icon.svg"
-              alt="default-user-icon"
+              src={user?.userIcon || "/icons/default-user-icon.svg"}
+              alt="user-icon"
               width={50}
               height={50}
-            />{" "}
-            {/* userIcon */}
-            <p>じゅんぺいちゃん</p> {/* name */}
+            />
+            <p>{user?.name}</p>
           </div>
         </div>
         <div className="mt-12 bg-accent text-white py-4 px-6 rounded-br-xl rounded-bl-xl">
           <p className="text-label mb-2">現在のポイント</p>
-          <p className="text-h1">1,000P</p> {/* point */}
+          <p className="text-h1">{userPoint || 0}</p>
         </div>
       </div>
       <div className="mt-10">
