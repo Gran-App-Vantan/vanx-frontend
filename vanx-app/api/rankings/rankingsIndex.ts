@@ -1,18 +1,13 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import humps from "humps";
-import { RankingItem } from "./types";
+import { RankingsData } from "./types";
 
 export type RankingsIndexResponse = 
   | {
     success: true;
     message: string;
-    data: {
-      myAccount: RankingItem;
-      users: [
-        RankingItem
-      ]
-    }
+    data: RankingsData;
   }
   | {
     success: false;

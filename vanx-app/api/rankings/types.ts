@@ -4,3 +4,8 @@ export type RankingItem = {
   userIcon: string;
   points: number;
 };
+
+export type RankingsData = {
+  myAccount: RankingItem;
+  users: RankingItem[];
+}
