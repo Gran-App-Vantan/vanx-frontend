@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { RankingsItem } from "@/components/features/rankings";
 import { ReturnButton } from "@/components/shared";
@@ -10,6 +10,34 @@ export default function Rankings() {
   const [isScrolled, setIsScrolled] = useState(false); // スクロールしたかどうかの状態を管理
   const [myAccount, setMyAccount] = useState<RankingItem | null>(null);
   const [users, setUsers] = useState<RankingItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  const fetchMoreRankings = async () => {
+    if (loading || !nextPageUrl) return;
+
+    setLoading(true);
+
+    try {
+      const nextPage = currentPage + 1;
+
+      const response = await RankingsIndex({ page: nextPage });
+
+      if (response.success) {
+        setUsers((prev) => [...prev, ...response.data.users.data]);
+        setNextPageUrl(response.data.users.nextPageUrl);
+        setCurrentPage(nextPage);
+      } else {
+        console.error("ERROR: ", response.message);
+      }
+    } catch (error) {
+      console.error("ERROR: ", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,8 +55,10 @@ export default function Rankings() {
         const response = await RankingsIndex({ page: 1});
 
         if (response.success) {
+          console.log(response.data);
           setMyAccount(response.data.myAccount);
-          setUsers(response.data.users);
+          setUsers(response.data.users.data);
+          setNextPageUrl(response.data.users.nextPageUrl);
         }
       } catch (error) {
         console.error("ランキングデータの取得に失敗しました:", error);
@@ -38,7 +68,26 @@ export default function Rankings() {
     fetchRankings();
   }, []);
 
-  console.log(users);
+  useEffect(() => {
+    if (!observerRef.current || !nextPageUrl || loading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting) {
+          fetchMoreRankings();
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "100px",
+      }
+    );
+
+    observer.observe(observerRef.current);
+
+    return () => observer.disconnect();
+  }, [observerRef, nextPageUrl, loading]);
 
   return (
     <main>
@@ -53,32 +102,39 @@ export default function Rankings() {
           }`}
         >
           <div className="flex items-center gap-2">
-            {/* ユーザーアイコン */}
             <Image
-              src="/icons/default-user-icon.svg"
-              alt="default-user-icon"
+              src={myAccount?.userIcon || "/icons/default-user-icon.svg"}
+              alt={myAccount?.name || "user-icon"}
               width={48}
               height={48}
             />
-            <p className="text-text-color text-text-normal">じゅんぺいちゃん</p> {/* ユーザー名 */}
+            <p className="text-text-color text-text-normal">{myAccount?.name || "ユーザー名"}</p>
           </div>
           <div className="flex items-center gap-2">
-            <p className="text-text-color text-h1">100位</p> {/* ランキング */}
+            <p className="text-text-color text-h1">100位</p> {/* TODO: myAccountにユーザーのランキングを追加 */}
           </div>
-        </div>  
+      </div>  
+    </div>
+    <ul className="flex flex-col gap-4 mt-55">
+        {users.map((user, i) => (
+          <li key={`${user.id}-${i}`}>
+            <RankingsItem
+              rank={i + 1}
+              name={user.name}
+              userIcon={user.userIcon}
+              point={user.point}
+            />
+          </li>
+        ))}
+    </ul>      
+
+    <div ref={observerRef} className="h-10 w-full" />
+    
+    {loading && (
+      <div className="flex justify-center items-center py-4">
+        <p className="text-text-color">読み込み中...</p>
       </div>
-      <ul className="flex flex-col gap-4 mt-55">
-          {users.map((user, i) => (
-            <li key={user.id}>
-              <RankingsItem
-                rank={i + 1}
-                name={user.name}
-                userIcon={user.userIcon}
-                point={user.point}
-              />
-            </li>
-          ))}
-      </ul>
+    )}
     </main>
   );
 }
