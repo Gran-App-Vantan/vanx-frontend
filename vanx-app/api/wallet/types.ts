@@ -3,7 +3,7 @@ export type Wallet = {
   userId: number;
   serviceName: string;
   pointAmount: number;
-  type: "puls" | "minus";
+  type: "plus" | "minus";
   date: string;
   time: string;
 }

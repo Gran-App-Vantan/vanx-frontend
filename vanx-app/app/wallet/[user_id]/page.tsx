@@ -16,7 +16,9 @@ export default function Wallet() {
   const { user } = useUser();
 
   const filteredWalletData = walletData?.data?.filter((wallet) => {
-    
+    if (activeIndex === 1) return wallet.type === "plus"; // 獲得ポイントの場合
+    if (activeIndex === 2) return wallet.type === "minus"; // 損失ポイントの場合
+    return true; // すべての場合
   });
 
   useEffect(() => {
@@ -86,14 +88,15 @@ export default function Wallet() {
           })}
         </div>
         <ul>
-          {filteredWalletData.map((wallet, i) => {
+          {filteredWalletData?.map((wallet) => {
             return (
-              <li key={i}>
+              <li key={wallet.id}>
                 <PointLogItem
+                  serviceName={wallet.serviceName}
+                  pointAmount={wallet.pointAmount}
+                  type={wallet.type}
+                  date={wallet.date}
                   time={wallet.time}
-                  boothName={wallet.name}
-                  point={wallet.point}
-                  isPuls={wallet.isPuls}
                 />
               </li>
             );
