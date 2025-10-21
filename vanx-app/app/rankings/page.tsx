@@ -4,9 +4,12 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { RankingsItem } from "@/components/features/rankings";
 import { ReturnButton } from "@/components/shared";
+import { RankingsIndex, RankingItem } from "@/api/rankings";
 
 export default function Rankings() {
   const [isScrolled, setIsScrolled] = useState(false); // スクロールしたかどうかの状態を管理
+  const [myAccount, setMyAccount] = useState<RankingItem | null>(null);
+  const [users, setUsers] = useState<RankingItem[]>([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,7 +20,26 @@ export default function Rankings() {
     window.addEventListener('scroll', handleScroll);  // スクロールイベントを追加
     return () => window.removeEventListener('scroll', handleScroll);  // スクロールイベントを削除
   }, []);
-  
+
+  useEffect(() => {
+    const fetchRankings = async () => {
+      try {
+        const response = await RankingsIndex({ page: 1});
+
+        if (response.success) {
+          setMyAccount(response.data.myAccount);
+          setUsers(response.data.users);
+        }
+      } catch (error) {
+        console.error("ランキングデータの取得に失敗しました:", error);
+      }
+    }
+
+    fetchRankings();
+  }, []);
+
+  console.log(users);
+
   return (
     <main>
       <div className="fixed top-0 w-full z-10">
@@ -46,15 +68,16 @@ export default function Rankings() {
         </div>  
       </div>
       <ul className="flex flex-col gap-4 mt-55">
-        {[...Array(11)].map((_, index) => (
-          <RankingsItem 
-            key={index}
-            rank={index + 1} // ランキングの順位
-            icon={"/icons/default-user-icon.svg"} // ユーザーアイコン
-            name={`ユーザー${index + 1}`} // ユーザー名
-            score={(20 - index) * 10} // ポイント
-          />
-        ))}
+          {users.map((user, i) => (
+            <li key={user.id}>
+              <RankingsItem
+                rank={i + 1}
+                name={user.name}
+                userIcon={user.userIcon}
+                point={user.point}
+              />
+            </li>
+          ))}
       </ul>
     </main>
   );

@@ -18,7 +18,7 @@ export type RankingsIndexResponse =
   }
 
 export async function RankingsIndex({ page }: { page?: number }): Promise<RankingsIndexResponse> {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/wallet/get/?page=${page}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/ranking?page=${page || 1}`;
   const authToken = Cookies.get("authToken");
 
   return axios

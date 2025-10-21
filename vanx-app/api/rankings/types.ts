@@ -2,7 +2,7 @@ export type RankingItem = {
   id: number;
   name: string;
   userIcon: string;
-  points: number;
+  point: number;
 };
 
 export type RankingsData = {
