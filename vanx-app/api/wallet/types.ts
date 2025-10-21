@@ -1,7 +1,11 @@
 export type Wallet = {
   id: number;
   userId: number;
-  balance: number;
+  serviceName: string;
+  pointAmount: number;
+  type: "puls" | "minus";
+  date: string;
+  time: string;
 }
 
 export type WalletData = {
