@@ -1,6 +1,7 @@
 export type User = {
   id: number;
   name: string;
+  point: number;
   userIcon: string;
   userJob: string;
 }
