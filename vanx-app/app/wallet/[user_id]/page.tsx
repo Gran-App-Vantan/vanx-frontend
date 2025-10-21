@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { LeftArrowIcon } from "@/components/shared/icons";
 import { PointLogItem } from "@/components/features/wallet";
 import { useUser } from "@/contexts/UserContext";
@@ -29,25 +29,8 @@ export default function Wallet() {
   const [currentPage, setCurrentPage] = useState(1);
   const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [category, setCategory] = useState("all");
+  const observerRef = useRef<HTMLDivElement | null>(null);
   const { user } = useUser();
-
-  useEffect(() => {
-    const fetchWalletIndex = async () => {
-      try {
-        const response = await WalletIndex({ filter: "all" });
-
-        if (response.success) {
-          setWalletData(response.data.pointlogs);
-          setCurrentPage(response.data.pointlogs.currentPage);
-          setNextPageUrl(response.data.pointlogs.nextPageUrl);
-        }
-      } catch (error) {
-        console.error("ウォレット情報の取得に失敗しました。", error);
-      }
-    };
-    fetchWalletIndex();
-  }, []);
 
   const fetchMoreWalletData = async () => {
     if (loading || !nextPageUrl) return;
@@ -93,7 +76,49 @@ export default function Wallet() {
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "P";
 
-  console.log(walletData?.data);
+  useEffect(() => {
+    const fetchWalletIndex = async () => {
+      try {
+        const response = await WalletIndex({ filter: "all" });
+
+        if (response.success) {
+          setWalletData(response.data.pointlogs);
+          setCurrentPage(response.data.pointlogs.currentPage);
+          setNextPageUrl(response.data.pointlogs.nextPageUrl);
+        }
+      } catch (error) {
+        console.error("ウォレット情報の取得に失敗しました。", error);
+      }
+    };
+    fetchWalletIndex();
+  }, []);
+
+  useEffect(() => {
+    if (!observerRef.current || !nextPageUrl || loading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting) {
+          fetchMoreWalletData();
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "100px",
+      }
+    );
+
+    const currentObserverRef = observerRef.current;
+    observer.observe(currentObserverRef);
+
+    return () => {
+      if (currentObserverRef) {
+        observer.unobserve(currentObserverRef);
+      }
+      observer.disconnect();
+    };
+  }, [nextPageUrl, loading, activeIndex]);
 
   return (
     <main>
@@ -154,6 +179,12 @@ export default function Wallet() {
             );
           })}
         </ul>
+
+        {nextPageUrl && (
+          <div ref={observerRef} className="h-10 flex justify-center items-center">
+            {loading && <p className="text-text-gray text-label">読み込み中...</p>}
+          </div>
+        )}
       </div>
     </main>
   );
