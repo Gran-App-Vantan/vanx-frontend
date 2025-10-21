@@ -8,18 +8,29 @@ import { PointLogItem } from "@/components/features/wallet";
 import { useUser } from "@/contexts/UserContext";
 import { WalletIndex, WalletData } from "@/api/wallet";
 
-const switchButtons = ["すべて", "獲得ポイント", "損失ポイント"];
+const switchButtons = [
+  {
+    text: "すべて", 
+    category: "all"
+  },
+  {
+    text: "獲得ポイント", 
+    category: "plus"
+  },
+  {
+    text: "損失ポイント", 
+    category: "minus"
+  }
+];
 
 export default function Wallet() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [walletData, setWalletData] = useState<WalletData | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("all");
   const { user } = useUser();
-
-  const filteredWalletData = walletData?.data?.filter((wallet) => {
-    if (activeIndex === 1) return wallet.type === "plus"; // 獲得ポイントの場合
-    if (activeIndex === 2) return wallet.type === "minus"; // 損失ポイントの場合
-    return true; // すべての場合
-  });
 
   useEffect(() => {
     const fetchWalletIndex = async () => {
@@ -28,6 +39,8 @@ export default function Wallet() {
 
         if (response.success) {
           setWalletData(response.data.pointlogs);
+          setCurrentPage(response.data.pointlogs.currentPage);
+          setNextPageUrl(response.data.pointlogs.nextPageUrl);
         }
       } catch (error) {
         console.error("ウォレット情報の取得に失敗しました。", error);
@@ -35,6 +48,45 @@ export default function Wallet() {
     };
     fetchWalletIndex();
   }, []);
+
+  const fetchMoreWalletData = async () => {
+    if (loading || !nextPageUrl) return;
+
+    setLoading(true);
+
+    try {
+      const currentCategory = switchButtons[activeIndex].category;
+      const nextPage = currentPage + 1;
+
+      const response = await WalletIndex({
+        filter: currentCategory, 
+        page: nextPage 
+      });
+
+      if (response.success) {
+        setWalletData(prev => {
+          if (!prev) return response.data.pointlogs;
+          
+          return {
+            ...response.data.pointlogs,
+            data: [...prev.data, ...response.data.pointlogs.data]
+          };
+        });
+        setCurrentPage(nextPage);
+        setNextPageUrl(response.data.pointlogs.nextPageUrl);
+      }
+    } catch (error) {
+      console.error("追加データの取得に失敗しました。", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const filteredWalletData = walletData?.data?.filter((wallet) => {
+    if (activeIndex === 1) return wallet.type === "plus"; // 獲得ポイントの場合
+    if (activeIndex === 2) return wallet.type === "minus"; // 損失ポイントの場合
+    return true; // すべての場合
+  });
 
   // ユーザーのポイントをカンマ区切りでフォーマット
   const userPoint = user?.point
@@ -82,7 +134,7 @@ export default function Wallet() {
                   w-24 py-4 box-border cursor-pointer
                 `}
               >
-                {button}
+                {button.text}
               </button>
             );
           })}
