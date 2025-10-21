@@ -3,8 +3,8 @@ import Image from "next/image";
 type RankingsItemProps = {
   rank: number;
   name: string;
-  icon: string;
-  score: number;
+  userIcon: string;
+  point: number;
 };
 
 const RankingsItemStyles = {
@@ -77,10 +77,10 @@ const RankingsItemStyles = {
 }
 
 export function RankingsItem({ 
-  rank, 
+  rank,
   name, 
-  icon, 
-  score 
+  userIcon, 
+  point
 }: RankingsItemProps) {
   function getRankKey(rank: number): keyof typeof RankingsItemStyles {
     if (rank === 1) return "1st";
@@ -108,16 +108,15 @@ export function RankingsItem({
         </div>
         <div className="flex gap-4 h-[42px] items-center">
           <Image
-            src={icon ?? "/default.png"}
+            src={userIcon || "/default.png"}
             alt="user-icon"
             width={42}
             height={42}
           />
-          {/* デフォルト画像 */}
           <div className="inline-flex">
             <div className="flex flex-col items-center justify-center w-45">
               <p>{name}</p>
-              <p className="text-accent">{score}P</p>
+              <p className="text-accent">{point}P</p>
             </div>
           </div>
         </div>
