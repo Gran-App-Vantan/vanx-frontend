@@ -10,31 +10,13 @@ import { WalletIndex, WalletData } from "@/api/wallet";
 
 const switchButtons = ["すべて", "獲得ポイント", "損失ポイント"];
 
-// テスト用データ
-const testItems = [
-  {
-    time: "06/05 10:01",
-    name: "インディアンポーカー",
-    point: 80000,
-    isPuls: false,
-  },
-  {
-    time: "06/05 10:11",
-    name: "ルーレット",
-    point: 500,
-    isPuls: true,
-  },
-];
-
 export default function Wallet() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [walletData, setWalletData] = useState<WalletData | null>(null);
   const { user } = useUser();
 
-  const filteredItems = testItems.filter((item) => {
-    if (activeIndex === 1) return item.isPuls; // ポイントがプラスの場合
-    if (activeIndex === 2) return !item.isPuls; // ポイントがマイナスの場合
-    return true; // すべての場合
+  const filteredWalletData = walletData?.data?.filter((wallet) => {
+    
   });
 
   useEffect(() => {
@@ -57,7 +39,7 @@ export default function Wallet() {
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "P";
 
-  console.log(walletData);
+  console.log(walletData?.data);
 
   return (
     <main>
@@ -104,14 +86,14 @@ export default function Wallet() {
           })}
         </div>
         <ul>
-          {filteredItems.map((item, i) => {
+          {filteredWalletData.map((wallet, i) => {
             return (
               <li key={i}>
                 <PointLogItem
-                  time={item.time}
-                  boothName={item.name}
-                  point={item.point}
-                  isPuls={item.isPuls}
+                  time={wallet.time}
+                  boothName={wallet.name}
+                  point={wallet.point}
+                  isPuls={wallet.isPuls}
                 />
               </li>
             );
