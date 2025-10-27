@@ -2,6 +2,10 @@ import axios from "axios";
 import humps from "humps";
 import { Post } from "./types";
 
+export type PostIndexRequest = {
+  page: number;
+}
+
 export type PostIndexResponse = 
   | {
     success: true;
