@@ -1,26 +1,20 @@
 import axios from "axios";
 import humps from "humps";
-import { Post } from "./types";
-
-export type PostIndexRequest = {
-  page: number;
-}
+import { PostData } from "./types";
 
 export type PostIndexResponse = 
   | {
     success: true;
     message: string;
-    posts: {
-      data: Post[];
-    }
+    posts: PostData;
   }
   | {
     success: false;
     message: string;
   }
 
-export async function PostIndex(): Promise<PostIndexResponse> {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/posts`;
+export async function PostIndex({ page }: { page: number }): Promise<PostIndexResponse> {
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/posts?page=${page}`;
 
   try {
     const res = await axios.get<PostIndexResponse>(apiUrl);

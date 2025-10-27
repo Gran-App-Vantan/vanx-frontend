@@ -16,9 +16,20 @@ export type PostData = {
   data: Post[];
   currentPage: number;
   lastPage: number;
-  nextPageUrl: string | null;
-  prevPageUrl: string | null;
+  nextPageUrl: number | null;
+  prevPageUrl: number | null;
   total: number;
+  firstPageUrl: number | null;
+  from: number;
+  lastPageUrl: number | null;
+  links: Array<{
+    url: string | null;
+    label: string;
+    active: boolean;
+  }>;
+  path: string;
+  perPage: number;
+  to: number;
 }
 
 export type PostReaction = {
