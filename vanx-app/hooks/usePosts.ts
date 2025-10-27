@@ -4,9 +4,9 @@ import { Post, PostIndex, PostIndexResponse } from "@/api/post/";
 export const usePosts = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
-  const fetchPosts = async () => {
+  const fetchPosts = async ({ page }: { page: number }) => {
     try {
-      const response: PostIndexResponse = await PostIndex();
+      const response: PostIndexResponse = await PostIndex({ page });
 
       if (response.success) {
         const postsData = response.posts.data;
@@ -24,11 +24,11 @@ export const usePosts = () => {
   };
 
   const refreshPostsData = async () => {
-    await fetchPosts();
+    await fetchPosts({ page: 1 });
   };
 
   useEffect(() => {
-    fetchPosts();
+    fetchPosts({ page: 1 });
   }, []);
 
   return {
