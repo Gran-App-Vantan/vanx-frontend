@@ -12,6 +12,15 @@ export type Post = {
   reactionStats: ReactionStats;
 };
 
+export type PostData = {
+  data: Post[];
+  currentPage: number;
+  lastPage: number;
+  nextPageUrl: string | null;
+  prevPageUrl: string | null;
+  total: number;
+}
+
 export type PostReaction = {
   id: number;
   userId: number;
