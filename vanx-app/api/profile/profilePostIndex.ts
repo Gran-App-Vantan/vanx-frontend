@@ -4,6 +4,11 @@ import humps from "humps";
 import { Post } from "../post";
 import { User } from "../auth";
 
+export type ProfilePostIndexRequest = {
+  userId: number | undefined;
+  page?: number;
+}
+
 export type ProfilePostIndexResponse = 
   | {
       success: true;
@@ -19,8 +24,11 @@ export type ProfilePostIndexResponse =
       errors: { err: string }[];
     };
 
-export async function ProfilePostIndex({ userId }: { userId: number | undefined }) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/profile/${userId}`;
+export async function ProfilePostIndex({
+  userId,
+  page
+}: ProfilePostIndexRequest): Promise<ProfilePostIndexResponse> {
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/profile/${userId}&page=${page || 1}`;
   const authToken = Cookies.get("authToken");
 
   return axios
