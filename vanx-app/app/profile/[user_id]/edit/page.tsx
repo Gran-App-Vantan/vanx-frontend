@@ -79,7 +79,7 @@ export default function ProfileEdit() {
         <div className="flex flex-col items-center gap-8">
           <div className="relative w-[100px] h-[100px] border-[0.5px] border-text-gray rounded-full overflow-hidden">
             <Image
-              src={previewFiles[0]?.url || user?.userIcon || "/default-user-icon.png"}
+              src={previewFiles[0]?.url || user?.userIcon || "/icons/default-user-icon.svg"}
               alt="user-icon"
               fill
               className="object-cover"
