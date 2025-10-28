@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import { ReturnButton } from "@/components/shared";
 import { ProfileHead } from "@/components/features/profile/";
@@ -18,6 +18,9 @@ export default function Profile() {
   const { reactions } = useReactions();
   const [posts, setPosts] = useState<Post[]>([]);
   const [userData, setUserData] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [nextPageUrl, setNextPageUrl] = useState<number | null>(null);
+  const observerRef = useRef<HTMLDivElement | null>(null);
   const { handlePostDelete } = usePostDelete();
 
   const onPostDelete = async (postId: number) => {
@@ -44,6 +47,33 @@ export default function Profile() {
     }
   };
 
+  const fetchMorePosts = async () => {
+    if (loading || !nextPageUrl) return;
+
+    setLoading(true);
+
+    try {
+      const response = await ProfilePostIndex({
+        userId: Number(userId),
+        page: nextPageUrl,
+      })
+
+      if (response.success) {
+        setPosts((prevPosts) => {
+          const data = response.data as { posts: Post[]; user: User };
+          const newPosts = data.posts;
+          const postsArray = Array.isArray(newPosts) ? newPosts : [];
+
+          return [...prevPosts, ...postsArray];
+        });
+      }
+    } catch (error) {
+      console.error("ERROR", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const onReactionToggled = async () => {
     // リアクションが変更された時に投稿データを再取得
     await fetchPosts();
@@ -52,6 +82,27 @@ export default function Profile() {
   useEffect(() => {
     fetchPosts();
   }, [userId]);
+
+  useEffect(() => {
+    if (!observerRef.current || !nextPageUrl || loading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting) {
+          fetchMorePosts();
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "100px",
+      }
+    );
+
+    observer.observe(observerRef.current);
+
+    return () => observer.disconnect();
+  }, [observerRef, nextPageUrl, loading]);
 
   return (
     <main>
