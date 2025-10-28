@@ -107,12 +107,14 @@ export function RankingsItem({
           </p>
         </div>
         <div className="flex gap-4 h-[42px] items-center">
-          <Image
-            src={userIcon || "/default.png"}
-            alt="user-icon"
-            width={42}
-            height={42}
-          />
+          <div className="relative w-[42px] h-[42px]">
+            <Image
+              src={userIcon || "/default.png"}
+              alt="user-icon"
+              fill
+              className="object-cover rounded-full border-[0.5px] border-text-gray"
+            />
+          </div>
           <div className="inline-flex">
             <div className="flex flex-col items-center justify-center w-45">
               <p>{name}</p>

@@ -102,12 +102,14 @@ export default function Rankings() {
           }`}
         >
           <div className="flex items-center gap-2">
-            <Image
-              src={myAccount?.userIcon || "/icons/default-user-icon.svg"}
-              alt={myAccount?.name || "user-icon"}
-              width={48}
-              height={48}
-            />
+            <div className="relative w-[48px] h-[48px]">
+              <Image
+                fill
+                className="object-cover rounded-full border-[0.5px] border-text-gray"
+                src={myAccount?.userIcon || "/icons/default-user-icon.svg"}
+                alt={myAccount?.name || "user-icon"}
+              />
+            </div>
             <p className="text-text-color text-text-normal">{myAccount?.name || "ユーザー名"}</p>
           </div>
           <div className="flex items-center gap-2">
