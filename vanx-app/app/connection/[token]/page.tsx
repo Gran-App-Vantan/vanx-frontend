@@ -1,18 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { Logo, Modal } from "@/components/shared";
-import {
-  LoadingIcon,
-  LargeCheckIcon,
-  FailureIcon,
-} from "@/components/shared/icons";
+import { LoadingIcon, LargeCheckIcon, FailureIcon } from "@/components/shared/icons";
+import { TokenCheck } from "@/api/auth/";
 
 type isConnecting = "connecting" | "connected" | "failed";
 
 export default function Connection() {
+  const params = useParams<{ token: string }>();
   const [connectionState, setConnectionState] =
-    useState<isConnecting>("failed");
+    useState<isConnecting>("connecting");
+
+  const tokenCheck = async () => {
+    try {
+      const response = await TokenCheck(params.token);
+
+      if (response.success) {
+        console.log("トークンの確認に成功しました");
+        setConnectionState("connected");
+      } else {
+        console.error("トークンの確認に失敗しました");
+        setConnectionState("failed");
+      }
+    } catch (error) {
+      console.error("エラー: ", error);
+      setConnectionState("failed");
+    }
+  }
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
 
   return (
     <main>
@@ -43,7 +63,10 @@ export default function Connection() {
             <p>接続に失敗しました</p>
             <button
               className="flex justify-center items-center w-50 h-11 bg-accent text-white rounded-full mt-7"
-              onClick={() => setConnectionState("connecting")} // connectionStateを"connecting"に変更
+              onClick={() => {
+                setConnectionState("connecting");
+                tokenCheck();
+              }}
             >
               もう一度接続
             </button>
