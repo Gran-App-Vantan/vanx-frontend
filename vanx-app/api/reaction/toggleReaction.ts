@@ -35,7 +35,7 @@ export type ToggleReactionResponse =
   }
 
 export async function toggleReaction({ reactionId, postId }: ToggleReactionRequest) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/reaction/${postId}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/post/reaction/${postId}`;
   const authToken = Cookies.get("authToken");
   const requestBody = humps.decamelizeKeys({ reactionId });
 

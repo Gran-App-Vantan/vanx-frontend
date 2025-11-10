@@ -20,7 +20,7 @@ export type ProfileIndexResponse =
   }
 
 export async function ProfileIndex({ userId }: { userId: string | number; }) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/profile/${userId}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/account/profile/${userId}`;
   const authToken = Cookies.get("authToken");
 
   return axios

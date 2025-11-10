@@ -11,7 +11,7 @@ export type PostStoreResponse = {
 }
 
 export async function postStore(formData: FormData) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/post`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/post/post`;
   const authToken = Cookies.get("authToken");
 
   return axios

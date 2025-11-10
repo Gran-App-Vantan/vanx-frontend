@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Logo, Modal } from "@/components/shared";
 import { LoadingIcon, LargeCheckIcon, FailureIcon } from "@/components/shared/icons";
-import { TokenCheck } from "@/api/auth/";
+import { TokenCheck } from "@/api/game";
 
 type isConnecting = "connecting" | "connected" | "failed";
 

@@ -30,7 +30,7 @@ export async function WalletIndex({
   filter,
   page
 }: WalletIndexRequest): Promise<WalletIndexResponse> {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/wallet/get/?filter=${filter}&page=${page}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/account/wallet/get/?filter=${filter}&page=${page}`;
   const authToken = Cookies.get("authToken");
 
   return axios

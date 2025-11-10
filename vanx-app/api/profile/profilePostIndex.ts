@@ -28,7 +28,7 @@ export async function ProfilePostIndex({
   userId,
   page
 }: ProfilePostIndexRequest): Promise<ProfilePostIndexResponse> {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/profile/${userId}&page=${page || 1}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/account/profile/${userId}&page=${page || 1}`;
   const authToken = Cookies.get("authToken");
 
   return axios

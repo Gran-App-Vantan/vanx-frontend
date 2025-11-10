@@ -14,7 +14,7 @@ export type PostIndexResponse =
   }
 
 export async function PostIndex({ page }: { page: number }): Promise<PostIndexResponse> {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/posts?page=${page}`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/post/posts?page=${page}`;
 
   try {
     const res = await axios.get<PostIndexResponse>(apiUrl);
