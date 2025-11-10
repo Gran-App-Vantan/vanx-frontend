@@ -11,24 +11,26 @@ type isConnecting = "connecting" | "connected" | "failed";
 export default function Connection() {
   const params = useParams<{ token: string }>();
   const [connectionState, setConnectionState] =
-    useState<isConnecting>("failed");
+    useState<isConnecting>("connecting");
 
-  console.log(params);
+  const tokenCheck = async () => {
+    try {
+      const response = await TokenCheck(params.token);
+
+      if (response.success) {
+        console.log("トークンの確認に成功しました");
+        setConnectionState("connected");
+      } else {
+        console.error("トークンの確認に失敗しました");
+        setConnectionState("failed");
+      }
+    } catch (error) {
+      console.error("エラー: ", error);
+      setConnectionState("failed");
+    }
+  }
 
   useEffect(() => {
-    const tokenCheck = async () => {
-      try {
-        const response = await TokenCheck(params.token);
-
-        if (response.success) {
-          console.log("トークンの確認に成功しました");
-        } else {
-          console.error("トークンの確認に失敗しました");
-        }
-      } catch (error) {
-        console.error("エラー: ", error);
-      }
-    }
     tokenCheck();
   }, []);
 
@@ -61,7 +63,10 @@ export default function Connection() {
             <p>接続に失敗しました</p>
             <button
               className="flex justify-center items-center w-50 h-11 bg-accent text-white rounded-full mt-7"
-              onClick={() => setConnectionState("connecting")} // connectionStateを"connecting"に変更
+              onClick={() => {
+                setConnectionState("connecting");
+                tokenCheck();
+              }}
             >
               もう一度接続
             </button>
