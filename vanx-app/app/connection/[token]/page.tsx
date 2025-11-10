@@ -1,18 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { Logo, Modal } from "@/components/shared";
-import {
-  LoadingIcon,
-  LargeCheckIcon,
-  FailureIcon,
-} from "@/components/shared/icons";
+import { LoadingIcon, LargeCheckIcon, FailureIcon } from "@/components/shared/icons";
+import { TokenCheck } from "@/api/auth/";
 
 type isConnecting = "connecting" | "connected" | "failed";
 
 export default function Connection() {
+  const params = useParams<{ token: string }>();
   const [connectionState, setConnectionState] =
     useState<isConnecting>("failed");
+
+  console.log(params);
+
+  useEffect(() => {
+    const tokenCheck = async () => {
+      try {
+        const response = await TokenCheck(params.token);
+
+        if (response.success) {
+          console.log("トークンの確認に成功しました");
+        } else {
+          console.error("トークンの確認に失敗しました");
+        }
+      } catch (error) {
+        console.error("エラー: ", error);
+      }
+    }
+    tokenCheck();
+  }, []);
 
   return (
     <main>

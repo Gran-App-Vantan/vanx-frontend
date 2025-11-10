@@ -10,7 +10,7 @@ export type TokenCheckResponse =
       userId: number;
       hasPoint: number;
       token: string;
-      deviceId: number;
+      deviceNumber: number;
       expiresAt: string;
     }
   }
@@ -24,7 +24,7 @@ export async function TokenCheck(token: string): Promise<TokenCheckResponse> {
   const authToken = Cookies.get("authToken");
 
   return axios
-    .post(apiUrl, {
+    .post(apiUrl, { token }, {
       headers: {
         Authorization: `Bearer ${authToken}`,
         Accept: "application/json"
