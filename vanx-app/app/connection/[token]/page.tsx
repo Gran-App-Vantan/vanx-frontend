@@ -3,13 +3,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Logo, Modal } from "@/components/shared";
+import { useUser } from "@/contexts/UserContext";
 import { LoadingIcon, LargeCheckIcon, FailureIcon } from "@/components/shared/icons";
-import { TokenCheck } from "@/api/game";
+import { TokenCheck, AccountLink } from "@/api/game";
 
 type isConnecting = "connecting" | "connected" | "failed";
 
 export default function Connection() {
+  const { user } = useUser();
   const params = useParams<{ token: string }>();
+  const [gameUserId, setGameUserId] = useState<number>(0);
   const [connectionState, setConnectionState] =
     useState<isConnecting>("connecting");
 
@@ -18,6 +21,8 @@ export default function Connection() {
       const response = await TokenCheck(params.token);
 
       if (response.success) {
+        setGameUserId(response.data.userId);
+
         console.log("トークンの確認に成功しました");
         setConnectionState("connected");
       } else {
@@ -30,9 +35,34 @@ export default function Connection() {
     }
   }
 
+  const accountLink = async () => {
+    if (!user?.id || !gameUserId) {
+      console.error("ユーザー情報が不足しています", { userId: user?.id, gameUserId });
+      return;
+    }
+    
+    try {
+      await AccountLink({
+        userId: user.id,
+        snsId: gameUserId,
+        point: user.point
+      });
+      console.log("アカウント接続に成功しました");
+    } catch (error) {
+      console.error("アカウントの接続に失敗しました", error);
+      setConnectionState("failed");
+    }
+  }
+
   useEffect(() => {
     tokenCheck();
   }, []);
+
+  useEffect(() => {
+    if (connectionState === "connected" && user?.id && gameUserId) {
+      accountLink();
+    }
+  }, [connectionState, user?.id, gameUserId]);
 
   return (
     <main>

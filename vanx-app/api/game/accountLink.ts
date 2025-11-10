@@ -3,9 +3,9 @@ import Cookies from "js-cookie";
 import humps from "humps";
 
 export interface AccountLinkRequest {
-  userId: number;
+  userId: number | undefined;
   snsId: number;
-  point: number;
+  point: number | undefined;
 }
 
 export async function AccountLink({
@@ -16,22 +16,22 @@ export async function AccountLink({
   const apiUrl = `${process.env.NEXT_PUBLIC_INDIAN_POKER_API_URL}/auth/enter`;
   const authToken = Cookies.get("authToken");
 
+  // このマッピング頭悪すぎてしぬ
+  const requestData = {
+    user_id: userId,
+    sns_id: snsId,
+    point: point,
+  }
+
+  console.log(requestData);
+
   return axios
-    .post(apiUrl, 
-      {
-        userId,
-        snsId,
-        point
-      },
+    .post(apiUrl, requestData,
       {
       headers: {
         Authorization: `Bearer ${authToken}`,
         Accept: "application/json"
       }
-    })
-    .then((res) => {
-      res.data = humps.camelizeKeys(res.data) as typeof res.data;
-      return res.data;
     })
     .catch((err) => {
       throw err;

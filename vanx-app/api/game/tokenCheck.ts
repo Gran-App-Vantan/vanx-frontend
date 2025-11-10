@@ -20,7 +20,7 @@ export type TokenCheckResponse =
   }
 
 export async function TokenCheck(token: string): Promise<TokenCheckResponse> {
-  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/auth/enter`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/game/token-check`;
   const authToken = Cookies.get("authToken");
 
   return axios
