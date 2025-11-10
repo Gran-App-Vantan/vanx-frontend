@@ -34,7 +34,7 @@ export async function ReactionIndex({
   category, 
   page 
 }: ReactionIndexRequest): Promise<ReactionIndexResponse> {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/post/reaction/get`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/post/reaction/get`;
   const authToken = Cookies.get("authToken");
 
   return axios

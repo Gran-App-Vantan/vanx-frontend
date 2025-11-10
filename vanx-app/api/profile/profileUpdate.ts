@@ -20,7 +20,7 @@ export type ProfileUpdateResponse =
     };
 
 export async function profileUpdate(formData: FormData) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/update`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/account/update`;
   const authToken = Cookies.get("authToken");
 
   return axios

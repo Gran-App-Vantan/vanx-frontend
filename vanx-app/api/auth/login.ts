@@ -19,7 +19,7 @@ export type LoginResponse =
   };
 
 export async function Login(req: LoginRequest) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/login`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/account/login`;
 
   return axios
     .post<LoginResponse>(apiUrl, req)
