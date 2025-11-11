@@ -18,36 +18,50 @@ export default function Connection() {
 
   const tokenCheck = async () => {
     try {
+      console.log("TokenCheck 開始:", params.token);
       const response = await TokenCheck(params.token);
+      console.log("TokenCheck レスポンス:", response);
 
       if (response.success) {
         setGameUserId(response.data.userId);
 
-        console.log("トークンの確認に成功しました");
+        console.log("トークンの確認に成功しました", { gameUserId: response.data.userId });
         setConnectionState("connected");
       } else {
         console.error("トークンの確認に失敗しました");
         setConnectionState("failed");
       }
     } catch (error) {
-      console.error("エラー: ", error);
+      console.error("TokenCheck エラー: ", error);
       setConnectionState("failed");
     }
   }
 
   const accountLink = async () => {
+    console.log("accountLink 開始", { userId: user?.id, gameUserId, point: user?.point });
+    
     if (!user?.id || !gameUserId) {
       console.error("ユーザー情報が不足しています", { userId: user?.id, gameUserId });
       return;
     }
     
     try {
-      await AccountLink({
-        userId: user.id,
-        snsId: gameUserId,
+      console.log("AccountLink 呼び出し直前", {
+        userId: gameUserId,
+        snsId: user.id,
         point: user.point
       });
+      
+      const response = await AccountLink({
+        userId: gameUserId,  // ゲームユーザーID (1~4)
+        snsId: user.id,      // SNSユーザーID
+        point: user.point
+      });
+      console.log("AccountLink レスポンス:", response);
       console.log("アカウント接続に成功しました");
+      
+      // 接続成功を維持（ゲーム側で待機画面が表示されるまでこの画面を表示）
+      // ユーザーは手動でこのタブを閉じることができる
     } catch (error) {
       console.error("アカウントの接続に失敗しました", error);
       setConnectionState("failed");
@@ -59,7 +73,14 @@ export default function Connection() {
   }, []);
 
   useEffect(() => {
+    console.log("useEffect [connectionState, user, gameUserId]", {
+      connectionState,
+      userId: user?.id,
+      gameUserId
+    });
+    
     if (connectionState === "connected" && user?.id && gameUserId) {
+      console.log("条件満たしたのでaccountLink呼び出し");
       accountLink();
     }
   }, [connectionState, user?.id, gameUserId]);
@@ -83,8 +104,9 @@ export default function Connection() {
           <div className="flex flex-col items-center gap-4">
             <LargeCheckIcon />
             <div className="text-normal text-text text-center">
-              <p>接続に成功しました！</p>
-              <p>ゲームをお楽しみください！</p>
+              <p>接続に成功しました!</p>
+              <p className="mt-2">ゲーム画面に戻って</p>
+              <p>ゲームをお楽しみください!</p>
             </div>
           </div>
         ) : (
