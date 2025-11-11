@@ -14,24 +14,17 @@ export async function AccountLink({
   point
 }: AccountLinkRequest) {
   const apiUrl = `${process.env.NEXT_PUBLIC_INDIAN_POKER_API_URL}/auth/enter`;
-  const authToken = Cookies.get("authToken");
 
-  // このマッピング頭悪すぎてしぬ
-  const requestData = {
+  const requestBody = {
     user_id: userId,
     sns_id: snsId,
     point: point,
   }
 
-  console.log(requestData);
-
   return axios
-    .post(apiUrl, requestData,
-      {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        Accept: "application/json"
-      }
+    .post(apiUrl, requestBody)
+    .then((res) => {
+      return res;
     })
     .catch((err) => {
       throw err;
