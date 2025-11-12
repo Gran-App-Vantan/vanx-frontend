@@ -27,6 +27,14 @@ export async function AccountLink({
       return res;
     })
     .catch((err) => {
+      // エラーレスポンスをより詳細に処理
+      if (err.response) {
+        const error = new Error();
+        error.message = err.response.data?.message || 'アカウント連携に失敗しました';
+        (error as any).statusCode = err.response.status;
+        (error as any).data = err.response.data;
+        throw error;
+      }
       throw err;
     });
 };
