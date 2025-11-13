@@ -45,8 +45,8 @@ export default function QRPage() {
                 setSuccess(res.data.success);
 
                 // ポイント数がある場合だけ設定
-                if (res.data.data?.earned_point) {
-                    setEarnedPoint(res.data.data.earned_point);
+                if (res.data.data?.getPoint) {
+                    setEarnedPoint(res.data.data.getPoint);
                 } else {
                     setEarnedPoint(null);
                 }
