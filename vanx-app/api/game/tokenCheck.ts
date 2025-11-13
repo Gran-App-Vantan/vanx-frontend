@@ -8,6 +8,7 @@ export type TokenCheckResponse =
     message: string;
     data: {
       userId: number;
+      userName: string;  // ユーザー名を追加
       hasPoint: number;
       token: string;
       deviceNumber: number;
