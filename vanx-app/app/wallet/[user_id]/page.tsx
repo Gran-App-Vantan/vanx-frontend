@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { LeftArrowIcon } from "@/components/shared/icons";
 import { PointLogItem } from "@/components/features/wallet";
-import { useUser } from "@/contexts/UserContext";
+import { useAuth } from "@/hooks/useAuth";
 import { WalletIndex, WalletData } from "@/api/wallet";
 
 const switchButtons = [
@@ -30,7 +30,7 @@ export default function Wallet() {
   const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const { user } = useUser();
+  const { user } = useAuth();
 
   const fetchMoreWalletData = async () => {
     if (loading || !nextPageUrl) return;

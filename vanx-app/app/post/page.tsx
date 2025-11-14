@@ -8,8 +8,10 @@ import { Button } from "@/components/shared";
 import { LeftArrowIcon, CloseIcon, LessThanIcon, } from "@/components/shared/icons";
 import { postStore } from "@/api/post/postStore";
 import { useFilePreview } from "@/hooks/usePreviewFile";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Post() {
+  useAuth(); // 認証チェック
   const router = useRouter();
   const [postContent, setPostContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);

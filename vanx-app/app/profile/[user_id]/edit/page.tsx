@@ -7,11 +7,11 @@ import { ReturnButton, Input } from "@/components/shared";
 import { profileUpdate } from "@/api/profile/profileUpdate";
 import { ProfileUpdateParams } from "@/api/profile";
 import { useFilePreview } from "@/hooks/usePreviewFile";
-import { useUser } from "@/contexts/UserContext";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function ProfileEdit() {
   const router = useRouter();
-  const { user, fetchUser } = useUser();
+  const { user, fetchUser } = useAuth();
   const [formValues, setFormValues] = useState<ProfileUpdateParams>({
     name: "",
     password: "",

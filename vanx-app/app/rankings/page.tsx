@@ -5,8 +5,10 @@ import Image from "next/image";
 import { RankingsItem } from "@/components/features/rankings";
 import { ReturnButton } from "@/components/shared";
 import { RankingsIndex, RankingItem } from "@/api/rankings";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Rankings() {
+  useAuth(); // 認証チェック
   const [isScrolled, setIsScrolled] = useState(false); // スクロールしたかどうかの状態を管理
   const [myAccount, setMyAccount] = useState<RankingItem | null>(null);
   const [users, setUsers] = useState<RankingItem[]>([]);

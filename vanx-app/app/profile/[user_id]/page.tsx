@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { ReturnButton } from "@/components/shared";
 import { ProfileHead } from "@/components/features/profile/";
 import { PostList } from "@/components/features/post";
-import { useUser } from "@/contexts/UserContext";
+import { useAuth } from "@/hooks/useAuth";
 import { usePostDelete } from "@/hooks/usePostDelete";
 import { ProfilePostIndex } from "@/api/profile/profilePostIndex";
 import { Post } from "@/api/post";
@@ -13,7 +13,7 @@ import { User } from "@/api/auth";
 import { useReactions } from "@/hooks/useReactionIndex";
 
 export default function Profile() {
-  const { user } = useUser();
+  const { user } = useAuth();
   const { user_id: userId } = useParams();
   const { reactions } = useReactions();
   const [posts, setPosts] = useState<Post[]>([]);

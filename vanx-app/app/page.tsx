@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { PostList } from "@/components/features/post";
 import { Header, FooterNavItem } from "@/components/shared/";
-import { useUser } from "@/contexts/UserContext";
+import { useAuth } from "@/hooks/useAuth";
 import { usePosts } from "@/hooks/usePosts";
 import { usePostDelete } from "@/hooks/usePostDelete";
 import { useReactions } from "@/hooks/useReactionIndex";
@@ -12,7 +12,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const { user } = useUser();
+  const { user } = useAuth();
   const { posts, fetchPosts, setPosts, refreshPostsData } = usePosts();
   const { handlePostDelete } = usePostDelete();
   const { reactions } = useReactions();
