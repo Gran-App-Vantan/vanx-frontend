@@ -11,7 +11,13 @@ const UserContext = createContext<UserContextType>({
   fetchUser: async () => null
 });
 
-export function UserProvider({ children }: { children: React.ReactNode}) {
+export function UserProvider({ 
+  children, 
+  skipInitialFetch = false 
+}: { 
+  children: React.ReactNode;
+  skipInitialFetch?: boolean;
+}) {
   const [user, setUser] = useState<User | null>(null);
 
   const fetchUser = async () => {
@@ -41,7 +47,10 @@ export function UserProvider({ children }: { children: React.ReactNode}) {
   }
 
   useEffect(() => {
-    fetchUser();
+    if (!skipInitialFetch) {
+      fetchUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

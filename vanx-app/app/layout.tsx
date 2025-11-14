@@ -1,14 +1,16 @@
 "use client";
 
 import "./globals.css";
-
-import { UserProvider } from "@/contexts/UserContext"
+import { usePathname } from "next/navigation";
+import { UserProvider } from "@/contexts/UserContext";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isAuthRoute = pathname?.startsWith('/auth');
   
   return (
     <html lang="ja">
@@ -19,7 +21,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <UserProvider>
+        <UserProvider skipInitialFetch={isAuthRoute}>
           {children}
         </UserProvider>
       </body>
