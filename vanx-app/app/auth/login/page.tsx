@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import Link from "next/link";
 import { LoginParams } from "@/api/auth/types";
 import { Logo, Input, Button } from "@/components/shared";
 import { Login as loginApi } from "@/api/auth/login";
@@ -122,6 +123,15 @@ export default function Login() {
           disabled={!isAllFilled}
           type="submit"
         />
+        <div className="flex flex-col gap-2 items-center text-sm">
+          <p>アカウントをお持ちではないですか？</p>
+          <Link 
+            className="text-blue-600"
+            href="/auth/signup"
+          >
+            新規登録
+          </Link>
+        </div>
       </form>
     </main>
   );

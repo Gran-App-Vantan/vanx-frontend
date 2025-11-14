@@ -7,6 +7,7 @@ import { SignUpParams } from "@/api/auth/types";
 import { Logo, Input, Button } from "@/components/shared";
 import { Signup } from "@/api/auth/signup";
 import { useUser } from "@/contexts/UserContext";
+import Link from "next/link";
 
 export default function SignUp() {
   const router = useRouter();
@@ -205,6 +206,15 @@ export default function SignUp() {
           disabled={!isAllFilled}
           type="submit"
         />
+        <div className="flex flex-col gap-2 items-center text-sm">
+          <p>アカウントを既にお持ちですか？</p>
+          <Link 
+            className="text-blue-600"
+            href="/auth/login"
+          >
+            ログイン
+          </Link>
+        </div>
       </form>
     </main>
   );
