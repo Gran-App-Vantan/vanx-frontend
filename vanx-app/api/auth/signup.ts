@@ -25,7 +25,7 @@ export type SignupResponse =
     };
 
 export async function Signup(req: SignupRequest) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_SNS_API_URL}/api/account/sign-up`;
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/account/sign-up`;
 
   return axios
     .post<SignupResponse>(apiUrl, req)

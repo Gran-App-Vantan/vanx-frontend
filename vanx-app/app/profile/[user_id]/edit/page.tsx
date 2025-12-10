@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ReturnButton, Input } from "@/components/shared";
+import { Input } from "@/components/shared";
 import { profileUpdate } from "@/api/profile/profileUpdate";
 import { ProfileUpdateParams } from "@/api/profile";
 import { useFilePreview } from "@/hooks/usePreviewFile";
 import { useAuth } from "@/hooks/useAuth";
+import Link from "next/link";
 
 export default function ProfileEdit() {
   const router = useRouter();
@@ -71,7 +72,14 @@ export default function ProfileEdit() {
   
   return (
     <main>
-      <ReturnButton />
+      <div className="fixed top-0 left-0 bg-accent w-screen h-16 z-50 text-white px-4 flex justify-start items-center">
+        <Link
+          className="cursor-pointer"
+          href="/profile"
+        >
+          ← 戻る
+        </Link>
+      </div>
       <form 
         className="flex flex-col justify-center mt-28"
         onSubmit={handleSubmit}
