@@ -75,7 +75,6 @@ KADOKAWAドワンゴ情報工科学院で実施された、<b>「VANTAN文化祭
         <img src="https://img.shields.io/badge/-TailwindCSS-444444?logo=tailwindcss&style=for-the-badge" />
         <img src="https://img.shields.io/badge/-Axios-444444?logo=axios&style=for-the-badge" />
         <img src="https://img.shields.io/badge/-Prettier-444444?logo=prettier&style=for-the-badge" />
-        <img src="https://img.shields.io/badge/-ESLint-444444?logo=eslint&style=for-the-badge" />
       </div>
     </td>
   </tr>
